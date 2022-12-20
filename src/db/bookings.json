@@ -1,0 +1,37 @@
+[
+    {
+        "day": "Lunes",
+        "money": 50,
+        "percentage": 50
+    },
+    {
+        "day": "Martes",
+        "money": 80,
+        "percentage": 70
+    },
+    {
+        "day": "Miercoles",
+        "money": 70,
+        "percentage": 20
+    },
+    {
+        "day": "Jueves",
+        "money": 160,
+        "percentage": 50
+    },
+    {
+        "day": "Viernes",
+        "money": 30,
+        "percentage": 10
+    },
+    {
+        "day": "Sabado",
+        "money": 90,
+        "percentage": 30
+    },
+    {
+        "day": "Domingo",
+        "money": 100,
+        "percentage": 100
+    }
+]

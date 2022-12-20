@@ -43,7 +43,7 @@ router.get("/rooms", (req, res) => {
 });
 /* GET room */
 router.get(("/rooms/:idroom"), (req, res) => {
-    res.send("Room get");
+    res.send("Room get" + req.params.idroom);
 });
 /* POST a new room. */
 router.post("/rooms", (req, res) => {
