@@ -6,19 +6,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 /* GET contacts listing. */
-router.get("/", (req, res) => {
+router.get("/contacts", (req, res) => {
     res.send("Contacts");
 });
+/* GET Contact */
+router.get(("/contacts/:idcontact"), (req, res) => {
+    res.send("Contact get");
+});
 /* POST a new contact. */
-router.post("/", (req, res) => {
+router.post("/contacts", (req, res) => {
     res.send("Contact post");
 });
 /* PUT an existing contact. */
-router.put(("/contact"), (req, res) => {
+router.put(("/contact/:idcontact"), (req, res) => {
     res.send("Contact put");
 });
 /* DELETE an existing contact. */
-router.delete(("/contact"), (req, res) => {
+router.delete(("/contacts/:idcontact"), (req, res) => {
     res.send("Contact delete");
 });
 module.exports = router;
