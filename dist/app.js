@@ -8,7 +8,7 @@ const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const morgan_1 = __importDefault(require("morgan"));
-const routes_1 = __importDefault(require("../routes/routes"));
+const routes_1 = __importDefault(require("./routes/routes"));
 const app = (0, express_1.default)();
 // view engine setup
 app.set('views', path_1.default.join(__dirname, 'views'));
@@ -32,5 +32,5 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
-module.exports = app;
-//# sourceMappingURL=index.js.map
+exports.default = app;
+//# sourceMappingURL=app.js.map
