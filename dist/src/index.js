@@ -3,41 +3,47 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 /** Module dependencies.*/
-var app_1 = __importDefault(require("./app"));
-var debug_1 = __importDefault(require("debug"));
-var http_1 = __importDefault(require("http"));
+const app_1 = __importDefault(require("./app"));
+const http_1 = __importDefault(require("http"));
 /** Get port from environment and store in Express.*/
-var port = normalizePort(process.env.PORT || '3000');
-app_1["default"].set('port', port);
+/* const port: string = normalizePort(process.env.PORT || '3000'); */
+const port = "3000";
+app_1.default.set('port', port);
 /** Create HTTP server. */
-var server = http_1["default"].createServer(app_1["default"]);
+const server = http_1.default.createServer(app_1.default);
 /** Listen on provided port, on all network interfaces.*/
 server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+/* server.on('error', onError);
+server.on('listening', onListening); */
 /** Normalize a port into a number, string, or false. */
-function normalizePort(val) {
-    var port = parseInt(val, 10);
+/* function normalizePort(val) {
+    const port: number = parseInt(val, 10);
+
     if (isNaN(port)) {
         // named pipe
         return val;
     }
+
     if (port >= 0) {
         // port number
         return port;
     }
+
     return false;
-}
+} */
 /** Event listener for HTTP server "error" event. */
-function onError(error) {
+/* function onError(error) {
     if (error.syscall !== 'listen') {
         throw error;
-    }
-    var bind = typeof port === 'string'
+    }server.on('error', onError);
+server.on('listening', onListening);
+
+    const bind: string = typeof port === 'string'
         ? 'Pipe ' + port
         : 'Port ' + port;
+
     // handle specific listen errors with friendly messages
     switch (error.code) {
         case 'EACCES':
@@ -51,13 +57,14 @@ function onError(error) {
         default:
             throw error;
     }
-}
+} */
 /** Event listener for HTTP server "listening" event. */
-function onListening() {
-    var addr = server.address();
-    var bind = typeof addr === 'string'
+/* function onListening() {
+    const addr = server.address();
+    const bind: string = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
-    (0, debug_1["default"])('Listening on ' + bind);
-}
-exports["default"] = server;
+    debug('Listening on ' + bind);
+} */
+exports.default = server;
+//# sourceMappingURL=index.js.map
