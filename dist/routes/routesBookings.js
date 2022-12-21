@@ -5,27 +5,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.routerBookings = void 0;
 const express_1 = __importDefault(require("express"));
+const bookingsController_1 = require("../controllers/bookingsController");
 const routerBookings = express_1.default.Router();
 exports.routerBookings = routerBookings;
-/** Bookings */
 /* GET bookings listing. */
-routerBookings.get("/bookings", (req, res) => {
-    res.send("Bookings");
-});
+routerBookings.get("/bookings", bookingsController_1.bookings_list);
 /* GET booking */
-routerBookings.get(("/bookings/:idbooking"), (req, res) => {
-    res.send("Booking get");
-});
+routerBookings.get(("/bookings/:idbooking"), bookingsController_1.bookings_detail);
 /* POST a new booking. */
-routerBookings.post(("/bookings"), (req, res) => {
-    res.send("Booking post");
-});
+routerBookings.post(("/bookings"), bookingsController_1.bookings_post);
 /* PUT an existing booking. */
-routerBookings.put(("/bookings/:idbooking"), (req, res) => {
-    res.send("Booking put");
-});
+routerBookings.put(("/bookings/:idbooking"), bookingsController_1.bookings_put);
 /* DELETE an existing booking. */
-routerBookings.delete(("/bookings/:idbooking"), (req, res) => {
-    res.send("Booking delete");
-});
+routerBookings.delete(("/bookings/:idbooking"), bookingsController_1.bookings_delete);
 //# sourceMappingURL=routesBookings.js.map

@@ -1,30 +1,26 @@
 import express from "express";
+import {
+    contact_delete,
+    contact_detail,
+    contact_list,
+    contact_post,
+    contact_put
+} from "../controllers/contactsController";
 const routerContacts = express.Router();
 
-/** Contacts */
 /* GET contacts listing. */
-routerContacts.get("/contacts", (req, res) => {
-    res.send("Contacts");
-})
+routerContacts.get("/contacts", contact_list)
 
 /* GET Contact */
-routerContacts.get(("/contacts/:idcontact"), (req, res) => {
-    res.send("Contact get");
-})
+routerContacts.get(("/contacts/:idcontact"), contact_detail)
 
 /* POST a new contact. */
-routerContacts.post("/contacts", (req, res) => {
-    res.send("Contact post");
-});
+routerContacts.post("/contacts", contact_post);
 
 /* PUT an existing contact. */
-routerContacts.put(("/contact/:idcontact"), (req, res) => {
-    res.send("Contact put");
-})
+routerContacts.put(("/contact/:idcontact"), contact_put)
 
 /* DELETE an existing contact. */
-routerContacts.delete(("/contacts/:idcontact"), (req, res) => {
-    res.send("Contact delete");
-});
+routerContacts.delete(("/contacts/:idcontact"), contact_delete);
 
 export { routerContacts }

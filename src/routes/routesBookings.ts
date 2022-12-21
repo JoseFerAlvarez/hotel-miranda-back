@@ -1,31 +1,27 @@
 import express from "express";
+import {
+    bookings_delete,
+    bookings_detail,
+    bookings_list,
+    bookings_post,
+    bookings_put
+} from "../controllers/bookingsController";
 
 const routerBookings = express.Router();
 
-/** Bookings */
 /* GET bookings listing. */
-routerBookings.get("/bookings", (req, res) => {
-    res.send("Bookings");
-})
+routerBookings.get("/bookings", bookings_list)
 
 /* GET booking */
-routerBookings.get(("/bookings/:idbooking"), (req, res) => {
-    res.send("Booking get");
-})
+routerBookings.get(("/bookings/:idbooking"), bookings_detail)
 
 /* POST a new booking. */
-routerBookings.post(("/bookings"), (req, res) => {
-    res.send("Booking post");
-});
+routerBookings.post(("/bookings"), bookings_post);
 
 /* PUT an existing booking. */
-routerBookings.put(("/bookings/:idbooking"), (req, res) => {
-    res.send("Booking put");
-});
+routerBookings.put(("/bookings/:idbooking"), bookings_put);
 
 /* DELETE an existing booking. */
-routerBookings.delete(("/bookings/:idbooking"), (req, res) => {
-    res.send("Booking delete");
-});
+routerBookings.delete(("/bookings/:idbooking"), bookings_delete);
 
 export { routerBookings };

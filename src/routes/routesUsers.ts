@@ -1,30 +1,27 @@
 import express from "express";
+import {
+    user_delete,
+    user_detail,
+    user_list,
+    user_post,
+    user_put
+} from "../controllers/usersController";
 
 const routerUsers = express.Router();
 
-/** Users */
 /* GET users listing. */
-routerUsers.get('/users', (req, res) => {
-    res.send('Users');
-});
+routerUsers.get('/users', user_list);
+
 /* GET user */
-routerUsers.get("/users/:iduser", (req, res) => {
-    res.send("User get");
-})
+routerUsers.get("/users/:iduser", user_detail)
 
 /* POST a new user. */
-routerUsers.post("/users", (req, res) => {
-    res.send("User post");
-});
+routerUsers.post("/users", user_post);
 
 /* PUT an existing user. */
-routerUsers.put("/users/:iduser", (req, res) => {
-    res.send("User put");
-})
+routerUsers.put("/users/:iduser", user_put)
 
 /* DELETE an existing user. */
-routerUsers.delete("/users/:iduser", (req, res) => {
-    res.send("User delete");
-});
+routerUsers.delete("/users/:iduser", user_delete);
 
 export { routerUsers };

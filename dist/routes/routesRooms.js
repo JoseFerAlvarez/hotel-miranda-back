@@ -5,36 +5,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.routerRooms = void 0;
 const express_1 = __importDefault(require("express"));
+const roomsController_1 = require("../controllers/roomsController");
 const routerRooms = express_1.default.Router();
 exports.routerRooms = routerRooms;
-/** Rooms */
 /* GET rooms listing. */
-routerRooms.get("/rooms", (req, res) => {
-    res.send("Rooms get");
-});
+routerRooms.get("/rooms", roomsController_1.room_list);
 /* GET room */
-routerRooms.get(("/rooms/:idroom"), (req, res) => {
-    res.send("Room get");
-});
+routerRooms.get(("/rooms/:idroom"), roomsController_1.room_detail);
 /* POST a new room. */
-routerRooms.post("/rooms", (req, res) => {
-    res.send("Room post");
-});
+routerRooms.post("/rooms", roomsController_1.room_post);
 /* PUT an existing room. */
-routerRooms.put("/room/:idroom", (req, res) => {
-    res.send("Room put");
-});
+routerRooms.put("/room/:idroom", roomsController_1.room_put);
 /* DELETE an existing room. */
-routerRooms.delete("/room/:idroom", (req, res) => {
-    res.send("Room deleted");
-});
-/** Users */
-/* GET users listing. */
-routerRooms.get('/users', (req, res) => {
-    res.send('Users');
-});
-/* GET user */
-routerRooms.get("/users/:iduser", (req, res) => {
-    res.send("User get");
-});
+routerRooms.delete("/room/:idroom", roomsController_1.room_delete);
 //# sourceMappingURL=routesRooms.js.map

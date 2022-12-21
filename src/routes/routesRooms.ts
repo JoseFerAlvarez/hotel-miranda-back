@@ -1,41 +1,26 @@
 import express from "express";
+import {
+    room_delete,
+    room_detail,
+    room_list,
+    room_post,
+    room_put
+} from "../controllers/roomsController";
 const routerRooms = express.Router();
 
-/** Rooms */
 /* GET rooms listing. */
-routerRooms.get("/rooms", (req, res) => {
-    res.send("Rooms get");
-})
+routerRooms.get("/rooms", room_list)
 
 /* GET room */
-routerRooms.get(("/rooms/:idroom"), (req, res) => {
-    res.send("Room get");
-});
+routerRooms.get(("/rooms/:idroom"), room_detail);
 
 /* POST a new room. */
-routerRooms.post("/rooms", (req, res) => {
-    res.send("Room post");
-})
+routerRooms.post("/rooms", room_post);
 
 /* PUT an existing room. */
-routerRooms.put("/room/:idroom", (req, res) => {
-    res.send("Room put");
-})
+routerRooms.put("/room/:idroom", room_put);
 
 /* DELETE an existing room. */
-routerRooms.delete("/room/:idroom", (req, res) => {
-    res.send("Room deleted")
-})
-
-
-/** Users */
-/* GET users listing. */
-routerRooms.get('/users', (req, res) => {
-    res.send('Users');
-});
-/* GET user */
-routerRooms.get("/users/:iduser", (req, res) => {
-    res.send("User get");
-})
+routerRooms.delete("/room/:idroom", room_delete)
 
 export { routerRooms };
