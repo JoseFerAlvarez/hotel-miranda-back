@@ -37,33 +37,6 @@ router.post(
     }
 );
 
-/** Rooms */
-/* GET rooms listing. */
-router.get("/rooms", (req, res) => {
-    res.send("Rooms get");
-})
-
-/* GET room */
-router.get(("/rooms/:idroom"), (req, res) => {
-    res.send("Room get");
-});
-
-/* POST a new room. */
-router.post("/rooms", (req, res) => {
-    res.send("Room post");
-})
-
-/* PUT an existing room. */
-router.put("/room/:idroom", (req, res) => {
-    res.send("Room put");
-})
-
-/* DELETE an existing room. */
-router.delete("/room/:idroom", (req, res) => {
-    res.send("Room deleted")
-})
-
-
 /** Users */
 /* GET users listing. */
 router.get('/users', (req, res) => {
@@ -143,4 +116,4 @@ router.delete(("/contacts/:idcontact"), (req, res) => {
     res.send("Contact delete");
 });
 
-export default router;
+export { router };

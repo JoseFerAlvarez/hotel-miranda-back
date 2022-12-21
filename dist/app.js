@@ -31,7 +31,9 @@ const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const morgan_1 = __importDefault(require("morgan"));
-const routes_1 = __importDefault(require("./routes/routes"));
+const passport_1 = __importDefault(require("passport"));
+const routes_1 = require("./routes/routes");
+const routesRooms_1 = require("./routes/routesRooms");
 Promise.resolve().then(() => __importStar(require("./auth/auth")));
 const app = (0, express_1.default)();
 // view engine setup
@@ -42,7 +44,8 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));
-app.use('/', routes_1.default);
+app.use('/', routes_1.router);
+app.use("/", passport_1.default.authenticate("jwt", { session: false }), routesRooms_1.routerRooms);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next((0, http_errors_1.default)(404));

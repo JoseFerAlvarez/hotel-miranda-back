@@ -3,7 +3,10 @@ import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-import router from "./routes/routes";
+import passport from "passport";
+
+import { router } from "./routes/routes";
+import { routerRooms } from "./routes/routesRooms";
 
 import("./auth/auth");
 
@@ -20,6 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', router);
+app.use("/", passport.authenticate("jwt", { session: false }), routerRooms);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
