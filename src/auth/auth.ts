@@ -2,33 +2,30 @@ import passport from "passport";
 import passportLocal from "passport-local";
 import passportJwt from "passport-jwt";
 
-const localStrategy = passportLocal.Strategy;
+const LocalStrategy = passportLocal.Strategy;
 const JwtStrategy = passportJwt.Strategy;
 const ExtractJwt = passportJwt.ExtractJwt;
+
 
 /* Login with user and password */
 passport.use(
     "login",
-    new localStrategy({
-        usernameField: "email",
-        passwordField: "password"
-    },
+    new LocalStrategy(
+        {
+            usernameField: 'email',
+            passwordField: 'password'
+        },
         async (email, password, done) => {
             try {
-                /* const user = await UserModel.findOne({email}); */
-                const user = "";
-
-                /* const validate = await user.isValidPassword(password); */
-                let validate = "";
-
-                !user ? validate = "" : validate = "";
-
-
-                if (!user || !validate) {
+                if (email === "josefer@gmail.com" && password === "1234") {
+                    const user = {
+                        _id: 1,
+                        email: "josefer@gmail.com",
+                    }
+                    return done(null, user, { message: "Logged in successfully" });
+                } else {
                     return done(null, false, { message: "Invalid credentials" });
                 }
-
-                return done(null, user, { message: "Logged in successfully" });
             } catch (error) {
                 return done(error);
             }
@@ -39,7 +36,7 @@ passport.use(
 passport.use(
     new JwtStrategy(
         {
-            secretOrKey: "secret",
+            secretOrKey: "TOP_SECRET",
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
         },
         async (token, done) => {

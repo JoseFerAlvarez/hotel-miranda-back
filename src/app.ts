@@ -3,8 +3,9 @@ import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-
 import router from "./routes/routes";
+
+import("./auth/auth");
 
 const app = express();
 

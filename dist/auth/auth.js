@@ -15,24 +15,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const passport_1 = __importDefault(require("passport"));
 const passport_local_1 = __importDefault(require("passport-local"));
 const passport_jwt_1 = __importDefault(require("passport-jwt"));
-const localStrategy = passport_local_1.default.Strategy;
+const LocalStrategy = passport_local_1.default.Strategy;
 const JwtStrategy = passport_jwt_1.default.Strategy;
 const ExtractJwt = passport_jwt_1.default.ExtractJwt;
 /* Login with user and password */
-passport_1.default.use("login", new localStrategy({
-    usernameField: "email",
-    passwordField: "password"
+passport_1.default.use("login", new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password'
 }, (email, password, done) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        /* const user = await UserModel.findOne({email}); */
-        const user = "";
-        /* const validate = await user.isValidPassword(password); */
-        let validate = "";
-        !user ? validate = "" : validate = "";
-        if (!user || !validate) {
+        if (email === "josefer@gmail.com" && password === "1234") {
+            const user = {
+                _id: 1,
+                email: "josefer@gmail.com",
+            };
+            return done(null, user, { message: "Logged in successfully" });
+        }
+        else {
             return done(null, false, { message: "Invalid credentials" });
         }
-        return done(null, user, { message: "Logged in successfully" });
     }
     catch (error) {
         return done(error);
@@ -40,7 +41,7 @@ passport_1.default.use("login", new localStrategy({
 })));
 /* Login with header token */
 passport_1.default.use(new JwtStrategy({
-    secretOrKey: "secret",
+    secretOrKey: "TOP_SECRET",
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
 }, (token, done) => __awaiter(void 0, void 0, void 0, function* () {
     try {

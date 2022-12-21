@@ -16,17 +16,19 @@ const express_1 = __importDefault(require("express"));
 const passport_1 = __importDefault(require("passport"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const router = express_1.default.Router();
+/** Login */
 router.post("/login", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     passport_1.default.authenticate("login", (err, user, info) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             if (err || !user) {
+                res.send("hola " + user);
                 const error = new Error("An error ocurred.");
                 return next(error);
             }
             req.login(user, { session: false }, (error) => __awaiter(void 0, void 0, void 0, function* () {
                 if (error)
                     return next(error);
-                const body = { _id: user.id, email: user.email };
+                const body = { _id: user._id, email: user.email };
                 const token = jsonwebtoken_1.default.sign({ user: body }, "TOP_SECRET");
                 return res.json({ token });
             }));
@@ -43,7 +45,7 @@ router.get("/rooms", (req, res) => {
 });
 /* GET room */
 router.get(("/rooms/:idroom"), (req, res) => {
-    res.send("Room get" + req.params.idroom);
+    res.send("Room get");
 });
 /* POST a new room. */
 router.post("/rooms", (req, res) => {
