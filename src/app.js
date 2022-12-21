@@ -25,36 +25,36 @@ var __importStar = (this && this.__importStar) || function (mod) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const http_errors_1 = __importDefault(require("http-errors"));
-const express_1 = __importDefault(require("express"));
-const path_1 = __importDefault(require("path"));
-const cookie_parser_1 = __importDefault(require("cookie-parser"));
-const morgan_1 = __importDefault(require("morgan"));
-const passport_1 = __importDefault(require("passport"));
-const routesPublic_1 = require("./routes/routesPublic");
-const routesRooms_1 = require("./routes/routesRooms");
-const routesUsers_1 = require("./routes/routesUsers");
-const routesBookings_1 = require("./routes/routesBookings");
-const routesContacts_1 = require("./routes/routesContacts");
-Promise.resolve().then(() => __importStar(require("./auth/auth")));
-const app = (0, express_1.default)();
+exports.__esModule = true;
+var http_errors_1 = __importDefault(require("http-errors"));
+var express_1 = __importDefault(require("express"));
+var path_1 = __importDefault(require("path"));
+var cookie_parser_1 = __importDefault(require("cookie-parser"));
+var morgan_1 = __importDefault(require("morgan"));
+var passport_1 = __importDefault(require("passport"));
+var routesPublic_1 = require("./routes/routesPublic");
+var routesRooms_1 = require("./routes/routesRooms");
+var routesUsers_1 = require("./routes/routesUsers");
+var routesBookings_1 = require("./routes/routesBookings");
+var routesContacts_1 = require("./routes/routesContacts");
+Promise.resolve().then(function () { return __importStar(require("./auth/auth")); });
+var app = (0, express_1["default"])();
 // view engine setup
-app.set('views', path_1.default.join(__dirname, 'views'));
+app.set('views', path_1["default"].join(__dirname, 'views'));
 app.set('view engine', 'jade');
-app.use((0, morgan_1.default)('dev'));
-app.use(express_1.default.json());
-app.use(express_1.default.urlencoded({ extended: false }));
-app.use((0, cookie_parser_1.default)());
-app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));
+app.use((0, morgan_1["default"])('dev'));
+app.use(express_1["default"].json());
+app.use(express_1["default"].urlencoded({ extended: false }));
+app.use((0, cookie_parser_1["default"])());
+app.use(express_1["default"].static(path_1["default"].join(__dirname, 'public')));
 app.use('/', routesPublic_1.routerPublic);
-app.use("/", passport_1.default.authenticate("jwt", { session: false }), routesRooms_1.routerRooms);
-app.use("/", passport_1.default.authenticate("jwt", { session: false }), routesUsers_1.routerUsers);
-app.use("/", passport_1.default.authenticate("jwt", { session: false }), routesBookings_1.routerBookings);
-app.use("/", passport_1.default.authenticate("jwt", { session: false }), routesContacts_1.routerContacts);
+app.use("/", passport_1["default"].authenticate("jwt", { session: false }), routesRooms_1.routerRooms);
+app.use("/", passport_1["default"].authenticate("jwt", { session: false }), routesUsers_1.routerUsers);
+app.use("/", passport_1["default"].authenticate("jwt", { session: false }), routesBookings_1.routerBookings);
+app.use("/", passport_1["default"].authenticate("jwt", { session: false }), routesContacts_1.routerContacts);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    next((0, http_errors_1.default)(404));
+    next((0, http_errors_1["default"])(404));
 });
 // error handler
 app.use(function (err, req, res, next) {
@@ -65,5 +65,4 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
-exports.default = app;
-//# sourceMappingURL=app.js.map
+exports["default"] = app;

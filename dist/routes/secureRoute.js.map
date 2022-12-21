@@ -1,1 +1,0 @@
-{"version":3,"file":"secureRoute.js","sourceRoot":"","sources":["../../src/routes/secureRoute.ts"],"names":[],"mappings":";;;;;;AAAA,sDAA8B;AAE9B,MAAM,YAAY,GAAG,iBAAO,CAAC,MAAM,EAAE,CAAC;AAM7B,oCAAY;AAJrB,YAAY,CAAC,GAAG,CAAC,SAAS,EAAE,CAAC,GAAG,EAAE,GAAG,EAAE,IAAI,EAAE,EAAE;IAC3C,GAAG,CAAC,IAAI,CAAC,oBAAoB,CAAC,CAAC;AACnC,CAAC,CAAC,CAAC"}

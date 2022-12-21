@@ -1,50 +1,43 @@
 #!/usr/bin/env node
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+exports.__esModule = true;
 /** Module dependencies.*/
-import app from "./app";
-import debug from "debug";
-import http from "http";
-
+var app_1 = __importDefault(require("./app"));
+var debug_1 = __importDefault(require("debug"));
+var http_1 = __importDefault(require("http"));
 /** Get port from environment and store in Express.*/
-const port: string = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-
+var port = normalizePort(process.env.PORT || '3000');
+app_1["default"].set('port', port);
 /** Create HTTP server. */
-
-const server = http.createServer(app);
-
+var server = http_1["default"].createServer(app_1["default"]);
 /** Listen on provided port, on all network interfaces.*/
-
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-
 /** Normalize a port into a number, string, or false. */
 function normalizePort(val) {
-    const port: number = parseInt(val, 10);
-
+    var port = parseInt(val, 10);
     if (isNaN(port)) {
         // named pipe
         return val;
     }
-
     if (port >= 0) {
         // port number
         return port;
     }
-
     return false;
 }
-
 /** Event listener for HTTP server "error" event. */
 function onError(error) {
     if (error.syscall !== 'listen') {
         throw error;
     }
-
-    const bind: string = typeof port === 'string'
+    var bind = typeof port === 'string'
         ? 'Pipe ' + port
         : 'Port ' + port;
-
     // handle specific listen errors with friendly messages
     switch (error.code) {
         case 'EACCES':
@@ -59,14 +52,12 @@ function onError(error) {
             throw error;
     }
 }
-
 /** Event listener for HTTP server "listening" event. */
 function onListening() {
-    const addr = server.address();
-    const bind: string = typeof addr === 'string'
+    var addr = server.address();
+    var bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
-    debug('Listening on ' + bind);
+    (0, debug_1["default"])('Listening on ' + bind);
 }
-
-export default server;
+exports["default"] = server;

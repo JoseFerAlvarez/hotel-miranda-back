@@ -12,14 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.routerLogin = void 0;
+exports.routerPublic = void 0;
 const express_1 = __importDefault(require("express"));
 const passport_1 = __importDefault(require("passport"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const routerLogin = express_1.default.Router();
-exports.routerLogin = routerLogin;
+const routerPublic = express_1.default.Router();
+exports.routerPublic = routerPublic;
 /** Login */
-routerLogin.post("/login", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+routerPublic.post("/login", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     passport_1.default.authenticate("login", (err, user, info) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             if (err || !user) {
@@ -40,4 +40,4 @@ routerLogin.post("/login", (req, res, next) => __awaiter(void 0, void 0, void 0,
         }
     }))(req, res, next);
 }));
-//# sourceMappingURL=routerLogin.js.map
+//# sourceMappingURL=routesPublic.js.map

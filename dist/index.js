@@ -60,4 +60,5 @@ function onListening() {
         : 'port ' + addr.port;
     (0, debug_1.default)('Listening on ' + bind);
 }
+exports.default = server;
 //# sourceMappingURL=index.js.map
