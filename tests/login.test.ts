@@ -1,8 +1,8 @@
 import request from "supertest";
 import server from "../src/index";
 
-describe("Login route test", () => {
-    test("Correct login", async () => {
+describe("Login route test", (): void => {
+    test("Correct login", async (): Promise<void> => {
         const res = await request(server)
             .post("/login")
             .send({
@@ -13,7 +13,7 @@ describe("Login route test", () => {
         expect(res.statusCode).toBe(200);
     });
 
-    test("Incorrect login", async () => {
+    test("Incorrect login", async (): Promise<void> => {
         const res = await request(server)
             .post("/login")
             .send({

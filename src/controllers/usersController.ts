@@ -1,11 +1,12 @@
 import users from "../db/users.json";
+import { User } from "src/interfaces/User";
 
 const user_list = (req, res) => {
     res.send(users);
 }
 
 const user_detail = (req, res) => {
-    res.send(users.find(user => Number(user.id) === Number(req.params.iduser)));
+    res.send(users.find((user: User) => Number(user.id) === Number(req.params.iduser)));
 }
 
 const user_post = (req, res) => {

@@ -3,16 +3,17 @@ import server from "../src/index";
 import jwt from "jsonwebtoken";
 
 import users from "../src/db/users.json";
+import { User } from "src/interfaces/User";
 
-const token = jwt.sign({ user: { _id: 1, email: "josefer@gmail.com" } }, "TOP_SECRET");
+const token: string = jwt.sign({ user: { _id: 1, email: "josefer@gmail.com" } }, "TOP_SECRET");
 
-describe("Get users list", () => {
-    test("Get users without token", async () => {
+describe("Get users list", (): void => {
+    test("Get users without token", async (): Promise<void> => {
         const res = await request(server).get("/users");
         expect(res.statusCode).toBe(401);
     })
 
-    test("Get users with token", async () => {
+    test("Get users with token", async (): Promise<void> => {
         const res = await request(server)
             .get("/users")
             .set("Authorization", "Bearer " + token);
@@ -22,26 +23,26 @@ describe("Get users list", () => {
     })
 });
 
-describe("Get user details", () => {
-    test("Get user details without token", async () => {
+describe("Get user details", (): void => {
+    test("Get user details without token", async (): Promise<void> => {
         const res = await request(server).get("/users/3");
         expect(res.statusCode).toBe(401);
     });
 
-    test("Get user details with token", async () => {
+    test("Get user details with token", async (): Promise<void> => {
         const res = await request(server)
             .get("/users/3")
             .set("Authorization", "Bearer " + token);
 
-        const user = users.find(user => user.id === 3);
+        const user: User = users.find((user: User) => user.id === 3);
 
         expect(res.body).toEqual(user);
         expect(res.statusCode).toBe(200);
     })
 });
 
-describe("User post", () => {
-    test("User post without token", async () => {
+describe("User post", (): void => {
+    test("User post without token", async (): Promise<void> => {
         const res = await request(server)
             .post("/users")
             .send({});
@@ -49,7 +50,7 @@ describe("User post", () => {
         expect(res.statusCode).toBe(401);
     });
 
-    test("User post with token", async () => {
+    test("User post with token", async (): Promise<void> => {
         const res = await request(server)
             .get("/users")
             .set("Authorization", "Bearer " + token)
@@ -59,8 +60,8 @@ describe("User post", () => {
     })
 });
 
-describe("Put user", () => {
-    test("Put user without token", async () => {
+describe("Put user", (): void => {
+    test("Put user without token", async (): Promise<void> => {
         const res = await request(server)
             .put("/users/3")
             .send({});
@@ -68,7 +69,7 @@ describe("Put user", () => {
         expect(res.statusCode).toBe(401);
     });
 
-    test("Put user with token", async () => {
+    test("Put user with token", async (): Promise<void> => {
         const res = await request(server)
             .put("/users/3")
             .set("Authorization", "Bearer " + token)
@@ -78,15 +79,15 @@ describe("Put user", () => {
     })
 });
 
-describe("User delete", () => {
-    test("Delete user without token", async () => {
+describe("User delete", (): void => {
+    test("Delete user without token", async (): Promise<void> => {
         const res = await request(server)
             .delete("/users/3");
 
         expect(res.statusCode).toBe(401);
     });
 
-    test("Delete user with token", async () => {
+    test("Delete user with token", async (): Promise<void> => {
         const res = await request(server)
             .delete("/users/3")
             .set("Authorization", "Bearer " + token);

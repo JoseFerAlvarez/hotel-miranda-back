@@ -4,15 +4,15 @@ import jwt from "jsonwebtoken";
 
 import contacts from "../src/db/guest.json";
 
-const token = jwt.sign({ user: { _id: 1, email: "josefer@gmail.com" } }, "TOP_SECRET");
+const token: string = jwt.sign({ user: { _id: 1, email: "josefer@gmail.com" } }, "TOP_SECRET");
 
-describe("Get contact list", () => {
-    test("Get contacts without token", async () => {
+describe("Get contact list", (): void => {
+    test("Get contacts without token", async (): Promise<void> => {
         const res = await request(server).get("/contacts");
         expect(res.statusCode).toBe(401);
     })
 
-    test("Get contacts with token", async () => {
+    test("Get contacts with token", async (): Promise<void> => {
         const res = await request(server)
             .get("/contacts")
             .set("Authorization", "Bearer " + token);
@@ -22,13 +22,13 @@ describe("Get contact list", () => {
     })
 });
 
-describe("Get contact details", () => {
-    test("Get contact details without token", async () => {
+describe("Get contact details", (): void => {
+    test("Get contact details without token", async (): Promise<void> => {
         const res = await request(server).get("/contacts/3");
         expect(res.statusCode).toBe(401);
     });
 
-    test("Get contact details with token", async () => {
+    test("Get contact details with token", async (): Promise<void> => {
         const res = await request(server)
             .get("/contacts/3")
             .set("Authorization", "Bearer " + token);
@@ -40,8 +40,8 @@ describe("Get contact details", () => {
     })
 });
 
-describe("Post contact", () => {
-    test("Post contact without token", async () => {
+describe("Post contact", (): void => {
+    test("Post contact without token", async (): Promise<void> => {
         const res = await request(server)
             .post("/contacts")
             .send({});
@@ -49,7 +49,7 @@ describe("Post contact", () => {
         expect(res.statusCode).toBe(401);
     });
 
-    test("Post contact with token", async () => {
+    test("Post contact with token", async (): Promise<void> => {
         const res = await request(server)
             .get("/contacts")
             .set("Authorization", "Bearer " + token)
@@ -59,8 +59,8 @@ describe("Post contact", () => {
     })
 });
 
-describe("Put contact", () => {
-    test("Put contact without token", async () => {
+describe("Put contact", (): void => {
+    test("Put contact without token", async (): Promise<void> => {
         const res = await request(server)
             .put("/contacts/3")
             .send({});
@@ -68,7 +68,7 @@ describe("Put contact", () => {
         expect(res.statusCode).toBe(401);
     });
 
-    test("Put contact with token", async () => {
+    test("Put contact with token", async (): Promise<void> => {
         const res = await request(server)
             .put("/contacts/3")
             .set("Authorization", "Bearer " + token)
@@ -78,15 +78,15 @@ describe("Put contact", () => {
     })
 });
 
-describe("Delete contact", () => {
-    test("Delete contact without token", async () => {
+describe("Delete contact", (): void => {
+    test("Delete contact without token", async (): Promise<void> => {
         const res = await request(server)
             .delete("/contacts/3");
 
         expect(res.statusCode).toBe(401);
     });
 
-    test("Delete contact with token", async () => {
+    test("Delete contact with token", async (): Promise<void> => {
         const res = await request(server)
             .delete("/contacts/3")
             .set("Authorization", "Bearer " + token);

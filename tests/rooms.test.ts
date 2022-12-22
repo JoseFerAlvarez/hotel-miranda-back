@@ -3,16 +3,17 @@ import server from "../src/index";
 import jwt from "jsonwebtoken";
 
 import rooms from "../src/db/rooms.json";
+import { Room } from "src/interfaces/Room";
 
-const token = jwt.sign({ user: { _id: 1, email: "josefer@gmail.com" } }, "TOP_SECRET");
+const token: string = jwt.sign({ user: { _id: 1, email: "josefer@gmail.com" } }, "TOP_SECRET");
 
-describe("Get room list", () => {
-    test("Get rooms without token", async () => {
+describe("Get room list", (): void => {
+    test("Get rooms without token", async (): Promise<void> => {
         const res = await request(server).get("/rooms");
         expect(res.statusCode).toBe(401);
     })
 
-    test("Get rooms with token", async () => {
+    test("Get rooms with token", async (): Promise<void> => {
         const res = await request(server)
             .get("/rooms")
             .set("Authorization", "Bearer " + token);
@@ -22,26 +23,26 @@ describe("Get room list", () => {
     })
 });
 
-describe("Get room details", () => {
-    test("Get room details without token", async () => {
+describe("Get room details", (): void => {
+    test("Get room details without token", async (): Promise<void> => {
         const res = await request(server).get("/rooms/3");
         expect(res.statusCode).toBe(401);
     });
 
-    test("Get rooms with token", async () => {
+    test("Get rooms with token", async (): Promise<void> => {
         const res = await request(server)
             .get("/rooms/3")
             .set("Authorization", "Bearer " + token);
 
-        const room = rooms.find(room => room.id === 3);
+        const room: Room = rooms.find((room: Room) => room.id === 3);
 
         expect(res.body).toEqual(room);
         expect(res.statusCode).toBe(200);
     })
 });
 
-describe("Room post", () => {
-    test("Room post without token", async () => {
+describe("Room post", (): void => {
+    test("Room post without token", async (): Promise<void> => {
         const res = await request(server)
             .post("/rooms")
             .send({});
@@ -49,7 +50,7 @@ describe("Room post", () => {
         expect(res.statusCode).toBe(401);
     });
 
-    test("Get rooms with token", async () => {
+    test("Get rooms with token", async (): Promise<void> => {
         const res = await request(server)
             .get("/rooms")
             .set("Authorization", "Bearer " + token)
@@ -59,8 +60,8 @@ describe("Room post", () => {
     })
 });
 
-describe("Put room", () => {
-    test("Put room without token", async () => {
+describe("Put room", (): void => {
+    test("Put room without token", async (): Promise<void> => {
         const res = await request(server)
             .put("/rooms/3")
             .send({});
@@ -68,7 +69,7 @@ describe("Put room", () => {
         expect(res.statusCode).toBe(401);
     });
 
-    test("Put room with token", async () => {
+    test("Put room with token", async (): Promise<void> => {
         const res = await request(server)
             .put("/rooms/3")
             .set("Authorization", "Bearer " + token)
@@ -78,15 +79,15 @@ describe("Put room", () => {
     })
 });
 
-describe("Room delete", () => {
-    test("Delete room without token", async () => {
+describe("Room delete", (): void => {
+    test("Delete room without token", async (): Promise<void> => {
         const res = await request(server)
             .delete("/rooms/3");
 
         expect(res.statusCode).toBe(401);
     });
 
-    test("Delete room with token", async () => {
+    test("Delete room with token", async (): Promise<void> => {
         const res = await request(server)
             .delete("/rooms/3")
             .set("Authorization", "Bearer " + token);

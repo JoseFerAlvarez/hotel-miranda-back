@@ -5,7 +5,7 @@ const contact_list = (req, res) => {
 }
 
 const contact_detail = (req, res) => {
-    res.send(contacts.find(contact => Number(contact.id) === Number(req.params.idcontact)));
+    res.send(contacts.find((contact) => Number(contact.id) === Number(req.params.idcontact)));
 }
 
 const contact_post = (req, res) => {

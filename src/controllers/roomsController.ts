@@ -1,11 +1,12 @@
 import rooms from "../db/rooms.json";
+import { Room } from "src/interfaces/Room";
 
 const room_list = (req, res) => {
     res.send(rooms);
 }
 
 const room_detail = (req, res) => {
-    res.send(rooms.find(room => Number(room.id) === Number(req.params.idroom)));
+    res.send(rooms.find((room: Room) => Number(room.id) === Number(req.params.idroom)));
 }
 
 const room_post = (req, res) => {
