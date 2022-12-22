@@ -1,9 +1,12 @@
 import request from "supertest";
 import server from "../src/index";
+import jwt from "jsonwebtoken";
 
 import rooms from "../src/db/rooms.json";
+import users from "../src/db/users.json";
+import bookings from "../src/db/guest.json";
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6MSwiZW1haWwiOiJqb3NlZmVyQGdtYWlsLmNvbSJ9LCJpYXQiOjE2NzE2MjgyMDV9.wlGew9BUg28kRArvtm6rul_PbzHp6ndjjxC2wJx6eLI";
+const token = jwt.sign({ user: { _id: 1, email: "josefer@gmail.com" } }, "TOP_SECRET");
 
 describe("Login route test", () => {
     test("Correct login", async () => {
@@ -19,9 +22,13 @@ describe("Login route test", () => {
 
     test("Incorrect login", async () => {
         const res = await request(server)
-            .post("/login");
+            .post("/login")
+            .send({
+                email: "pepito@gmail.com",
+                password: "qwerty"
+            });
 
-        expect(res.statusCode).toBe(200);
+        expect(res.statusCode).toBe(500);
     });
 });
 
@@ -41,6 +48,75 @@ describe("Get room list", () => {
     })
 });
 
-/* describe("Get room details", () => {
+describe("Get room details", () => {
+    test("Get room details without token", async () => {
+        const res = await request(server).get("/rooms/3");
+        expect(res.statusCode).toBe(401);
+    });
 
-}); */
+    test("Get rooms with token", async () => {
+        const res = await request(server)
+            .get("/rooms/3")
+            .set("Authorization", "Bearer " + token);
+
+        const room = rooms.find(room => room.id === 3);
+
+        expect(res.body).toEqual(room);
+        expect(res.statusCode).toBe(200);
+    })
+});
+
+describe("Room post", () => {
+    test("Room post without token", async () => {
+        const res = await request(server)
+            .post("/rooms")
+            .send({});
+
+        expect(res.statusCode).toBe(401);
+    });
+
+    test("Get rooms with token", async () => {
+        const res = await request(server)
+            .get("/rooms")
+            .set("Authorization", "Bearer " + token)
+            .send({});
+
+        expect(res.statusCode).toBe(200);
+    })
+});
+
+describe("Put room", () => {
+    test("Put room without token", async () => {
+        const res = await request(server)
+            .put("/rooms/3")
+            .send({});
+
+        expect(res.statusCode).toBe(401);
+    });
+
+    test("Put room with token", async () => {
+        const res = await request(server)
+            .put("/rooms/3")
+            .set("Authorization", "Bearer " + token)
+            .send({});
+
+        expect(res.statusCode).toBe(200);
+    })
+});
+
+describe("Room delete", () => {
+    test("Delete room without token", async () => {
+        const res = await request(server)
+            .delete("/rooms/3");
+
+        expect(res.statusCode).toBe(401);
+    });
+
+    test("Delete room with token", async () => {
+        const res = await request(server)
+            .delete("/rooms/3")
+            .set("Authorization", "Bearer " + token);
+
+        expect(res.statusCode).toBe(200);
+    })
+});

@@ -15,7 +15,7 @@ routerRooms.get(("/rooms/:idroom"), roomsController_1.room_detail);
 /* POST a new room. */
 routerRooms.post("/rooms", roomsController_1.room_post);
 /* PUT an existing room. */
-routerRooms.put("/room/:idroom", roomsController_1.room_put);
+routerRooms.put("/rooms/:idroom", roomsController_1.room_put);
 /* DELETE an existing room. */
-routerRooms.delete("/room/:idroom", roomsController_1.room_delete);
+routerRooms.delete("/rooms/:idroom", roomsController_1.room_delete);
 //# sourceMappingURL=routesRooms.js.map

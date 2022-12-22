@@ -18,9 +18,9 @@ routerRooms.get(("/rooms/:idroom"), room_detail);
 routerRooms.post("/rooms", room_post);
 
 /* PUT an existing room. */
-routerRooms.put("/room/:idroom", room_put);
+routerRooms.put("/rooms/:idroom", room_put);
 
 /* DELETE an existing room. */
-routerRooms.delete("/room/:idroom", room_delete)
+routerRooms.delete("/rooms/:idroom", room_delete)
 
 export { routerRooms };

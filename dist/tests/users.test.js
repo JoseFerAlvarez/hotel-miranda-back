@@ -15,96 +15,76 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const index_1 = __importDefault(require("../src/index"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const rooms_json_1 = __importDefault(require("../src/db/rooms.json"));
+const users_json_1 = __importDefault(require("../src/db/users.json"));
 const token = jsonwebtoken_1.default.sign({ user: { _id: 1, email: "josefer@gmail.com" } }, "TOP_SECRET");
-describe("Login route test", () => {
-    test("Correct login", () => __awaiter(void 0, void 0, void 0, function* () {
-        const res = yield (0, supertest_1.default)(index_1.default)
-            .post("/login")
-            .send({
-            email: "josefer@gmail.com",
-            password: "1234"
-        });
-        expect(res.statusCode).toBe(200);
-    }));
-    test("Incorrect login", () => __awaiter(void 0, void 0, void 0, function* () {
-        const res = yield (0, supertest_1.default)(index_1.default)
-            .post("/login")
-            .send({
-            email: "pepito@gmail.com",
-            password: "qwerty"
-        });
-        expect(res.statusCode).toBe(500);
-    }));
-});
-describe("Get room list", () => {
-    test("Get rooms without token", () => __awaiter(void 0, void 0, void 0, function* () {
-        const res = yield (0, supertest_1.default)(index_1.default).get("/rooms");
+describe("Get users list", () => {
+    test("Get users without token", () => __awaiter(void 0, void 0, void 0, function* () {
+        const res = yield (0, supertest_1.default)(index_1.default).get("/users");
         expect(res.statusCode).toBe(401);
     }));
-    test("Get rooms with token", () => __awaiter(void 0, void 0, void 0, function* () {
+    test("Get users with token", () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(index_1.default)
-            .get("/rooms")
+            .get("/users")
             .set("Authorization", "Bearer " + token);
-        expect(res.body).toEqual(rooms_json_1.default);
+        expect(res.body).toEqual(users_json_1.default);
         expect(res.statusCode).toBe(200);
     }));
 });
-describe("Get room details", () => {
-    test("Get room details without token", () => __awaiter(void 0, void 0, void 0, function* () {
-        const res = yield (0, supertest_1.default)(index_1.default).get("/rooms/3");
+describe("Get user details", () => {
+    test("Get user details without token", () => __awaiter(void 0, void 0, void 0, function* () {
+        const res = yield (0, supertest_1.default)(index_1.default).get("/users/3");
         expect(res.statusCode).toBe(401);
     }));
-    test("Get rooms with token", () => __awaiter(void 0, void 0, void 0, function* () {
+    test("Get user details with token", () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(index_1.default)
-            .get("/rooms/3")
+            .get("/users/3")
             .set("Authorization", "Bearer " + token);
-        const room = rooms_json_1.default.find(room => room.id === 3);
-        expect(res.body).toEqual(room);
+        const user = users_json_1.default.find(user => user.id === 3);
+        expect(res.body).toEqual(user);
         expect(res.statusCode).toBe(200);
     }));
 });
-describe("Room post", () => {
-    test("Room post without token", () => __awaiter(void 0, void 0, void 0, function* () {
+describe("User post", () => {
+    test("User post without token", () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(index_1.default)
-            .post("/rooms")
+            .post("/users")
             .send({});
         expect(res.statusCode).toBe(401);
     }));
-    test("Get rooms with token", () => __awaiter(void 0, void 0, void 0, function* () {
+    test("User post with token", () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(index_1.default)
-            .get("/rooms")
+            .get("/users")
             .set("Authorization", "Bearer " + token)
             .send({});
         expect(res.statusCode).toBe(200);
     }));
 });
-describe("Put room", () => {
-    test("Put room without token", () => __awaiter(void 0, void 0, void 0, function* () {
+describe("Put user", () => {
+    test("Put user without token", () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(index_1.default)
-            .put("/rooms/3")
+            .put("/users/3")
             .send({});
         expect(res.statusCode).toBe(401);
     }));
-    test("Put room with token", () => __awaiter(void 0, void 0, void 0, function* () {
+    test("Put user with token", () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(index_1.default)
-            .put("/rooms/3")
+            .put("/users/3")
             .set("Authorization", "Bearer " + token)
             .send({});
         expect(res.statusCode).toBe(200);
     }));
 });
-describe("Room delete", () => {
-    test("Delete room without token", () => __awaiter(void 0, void 0, void 0, function* () {
+describe("User delete", () => {
+    test("Delete user without token", () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(index_1.default)
-            .delete("/rooms/3");
+            .delete("/users/3");
         expect(res.statusCode).toBe(401);
     }));
-    test("Delete room with token", () => __awaiter(void 0, void 0, void 0, function* () {
+    test("Delete user with token", () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(index_1.default)
-            .delete("/rooms/3")
+            .delete("/users/3")
             .set("Authorization", "Bearer " + token);
         expect(res.statusCode).toBe(200);
     }));
 });
-//# sourceMappingURL=routes.test.js.map
+//# sourceMappingURL=users.test.js.map
