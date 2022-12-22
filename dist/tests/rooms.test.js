@@ -39,7 +39,7 @@ describe("Get room details", () => {
         const res = yield (0, supertest_1.default)(index_1.default)
             .get("/rooms/3")
             .set("Authorization", "Bearer " + token);
-        const room = rooms_json_1.default.find(room => room.id === 3);
+        const room = rooms_json_1.default.find((room) => room.id === 3);
         expect(res.body).toEqual(room);
         expect(res.statusCode).toBe(200);
     }));

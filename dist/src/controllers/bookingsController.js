@@ -10,7 +10,7 @@ const bookings_list = (req, res) => {
 };
 exports.bookings_list = bookings_list;
 const bookings_detail = (req, res) => {
-    res.send(guest_json_1.default.find(booking => Number(booking.id) === Number(req.params.idbooking)));
+    res.send(guest_json_1.default.find((booking) => Number(booking.id) === Number(req.params.idbooking)));
 };
 exports.bookings_detail = bookings_detail;
 const bookings_post = (req, res) => {

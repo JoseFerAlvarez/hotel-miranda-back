@@ -39,7 +39,7 @@ describe("Get user details", () => {
         const res = yield (0, supertest_1.default)(index_1.default)
             .get("/users/3")
             .set("Authorization", "Bearer " + token);
-        const user = users_json_1.default.find(user => user.id === 3);
+        const user = users_json_1.default.find((user) => user.id === 3);
         expect(res.body).toEqual(user);
         expect(res.statusCode).toBe(200);
     }));

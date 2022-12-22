@@ -10,7 +10,7 @@ const user_list = (req, res) => {
 };
 exports.user_list = user_list;
 const user_detail = (req, res) => {
-    res.send(users_json_1.default.find(user => Number(user.id) === Number(req.params.iduser)));
+    res.send(users_json_1.default.find((user) => Number(user.id) === Number(req.params.iduser)));
 };
 exports.user_detail = user_detail;
 const user_post = (req, res) => {

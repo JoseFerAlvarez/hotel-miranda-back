@@ -10,7 +10,7 @@ const contact_list = (req, res) => {
 };
 exports.contact_list = contact_list;
 const contact_detail = (req, res) => {
-    res.send(guest_json_1.default.find(contact => Number(contact.id) === Number(req.params.idcontact)));
+    res.send(guest_json_1.default.find((contact) => Number(contact.id) === Number(req.params.idcontact)));
 };
 exports.contact_detail = contact_detail;
 const contact_post = (req, res) => {

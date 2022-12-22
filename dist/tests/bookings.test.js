@@ -39,7 +39,7 @@ describe("Get booking details", () => {
         const res = yield (0, supertest_1.default)(index_1.default)
             .get("/bookings/3")
             .set("Authorization", "Bearer " + token);
-        const booking = guest_json_1.default.find(booking => booking.id === 3);
+        const booking = guest_json_1.default.find((booking) => booking.id === 3);
         expect(res.body).toEqual(booking);
         expect(res.statusCode).toBe(200);
     }));

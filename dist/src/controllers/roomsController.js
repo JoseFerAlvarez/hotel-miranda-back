@@ -10,7 +10,7 @@ const room_list = (req, res) => {
 };
 exports.room_list = room_list;
 const room_detail = (req, res) => {
-    res.send(rooms_json_1.default.find(room => Number(room.id) === Number(req.params.idroom)));
+    res.send(rooms_json_1.default.find((room) => Number(room.id) === Number(req.params.idroom)));
 };
 exports.room_detail = room_detail;
 const room_post = (req, res) => {
