@@ -18,7 +18,7 @@ routerContacts.get(("/contacts/:idcontact"), contact_detail)
 routerContacts.post("/contacts", contact_post);
 
 /* PUT an existing contact. */
-routerContacts.put(("/contact/:idcontact"), contact_put)
+routerContacts.put(("/contacts/:idcontact"), contact_put)
 
 /* DELETE an existing contact. */
 routerContacts.delete(("/contacts/:idcontact"), contact_delete);

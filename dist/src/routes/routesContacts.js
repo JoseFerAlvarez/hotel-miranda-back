@@ -15,7 +15,7 @@ routerContacts.get(("/contacts/:idcontact"), contactsController_1.contact_detail
 /* POST a new contact. */
 routerContacts.post("/contacts", contactsController_1.contact_post);
 /* PUT an existing contact. */
-routerContacts.put(("/contact/:idcontact"), contactsController_1.contact_put);
+routerContacts.put(("/contacts/:idcontact"), contactsController_1.contact_put);
 /* DELETE an existing contact. */
 routerContacts.delete(("/contacts/:idcontact"), contactsController_1.contact_delete);
 //# sourceMappingURL=routesContacts.js.map
