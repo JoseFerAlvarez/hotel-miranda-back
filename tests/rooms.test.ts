@@ -3,34 +3,8 @@ import server from "../src/index";
 import jwt from "jsonwebtoken";
 
 import rooms from "../src/db/rooms.json";
-import users from "../src/db/users.json";
-import bookings from "../src/db/guest.json";
 
 const token = jwt.sign({ user: { _id: 1, email: "josefer@gmail.com" } }, "TOP_SECRET");
-
-describe("Login route test", () => {
-    test("Correct login", async () => {
-        const res = await request(server)
-            .post("/login")
-            .send({
-                email: "josefer@gmail.com",
-                password: "1234"
-            });
-
-        expect(res.statusCode).toBe(200);
-    });
-
-    test("Incorrect login", async () => {
-        const res = await request(server)
-            .post("/login")
-            .send({
-                email: "pepito@gmail.com",
-                password: "qwerty"
-            });
-
-        expect(res.statusCode).toBe(500);
-    });
-});
 
 describe("Get room list", () => {
     test("Get rooms without token", async () => {

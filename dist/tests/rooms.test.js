@@ -17,26 +17,6 @@ const index_1 = __importDefault(require("../src/index"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const rooms_json_1 = __importDefault(require("../src/db/rooms.json"));
 const token = jsonwebtoken_1.default.sign({ user: { _id: 1, email: "josefer@gmail.com" } }, "TOP_SECRET");
-describe("Login route test", () => {
-    test("Correct login", () => __awaiter(void 0, void 0, void 0, function* () {
-        const res = yield (0, supertest_1.default)(index_1.default)
-            .post("/login")
-            .send({
-            email: "josefer@gmail.com",
-            password: "1234"
-        });
-        expect(res.statusCode).toBe(200);
-    }));
-    test("Incorrect login", () => __awaiter(void 0, void 0, void 0, function* () {
-        const res = yield (0, supertest_1.default)(index_1.default)
-            .post("/login")
-            .send({
-            email: "pepito@gmail.com",
-            password: "qwerty"
-        });
-        expect(res.statusCode).toBe(500);
-    }));
-});
 describe("Get room list", () => {
     test("Get rooms without token", () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(index_1.default).get("/rooms");
@@ -107,4 +87,4 @@ describe("Room delete", () => {
         expect(res.statusCode).toBe(200);
     }));
 });
-//# sourceMappingURL=routes.test.js.map
+//# sourceMappingURL=rooms.test.js.map
