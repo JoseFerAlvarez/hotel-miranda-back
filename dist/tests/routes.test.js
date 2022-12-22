@@ -14,8 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const index_1 = __importDefault(require("../src/index"));
+const rooms_json_1 = __importDefault(require("../src/db/rooms.json"));
 const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6MSwiZW1haWwiOiJqb3NlZmVyQGdtYWlsLmNvbSJ9LCJpYXQiOjE2NzE2MjgyMDV9.wlGew9BUg28kRArvtm6rul_PbzHp6ndjjxC2wJx6eLI";
-describe("Login test", () => {
+describe("Login route test", () => {
     test("Correct login", () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(index_1.default)
             .post("/login")
@@ -25,17 +26,26 @@ describe("Login test", () => {
         });
         expect(res.statusCode).toBe(200);
     }));
-});
-describe("Get room", () => {
-    test("Get rooms", () => __awaiter(void 0, void 0, void 0, function* () {
-        const res = yield (0, supertest_1.default)(index_1.default).get("/rooms");
-        expect(res.statusCode).toBe(401);
-    }));
-    test("Get rooms true", () => __awaiter(void 0, void 0, void 0, function* () {
+    test("Incorrect login", () => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield (0, supertest_1.default)(index_1.default)
-            .get("/rooms")
-            .set("Authorization", "Bearer " + token);
+            .post("/login");
         expect(res.statusCode).toBe(200);
     }));
 });
+describe("Get room list", () => {
+    test("Get rooms without token", () => __awaiter(void 0, void 0, void 0, function* () {
+        const res = yield (0, supertest_1.default)(index_1.default).get("/rooms");
+        expect(res.statusCode).toBe(401);
+    }));
+    test("Get rooms with token", () => __awaiter(void 0, void 0, void 0, function* () {
+        const res = yield (0, supertest_1.default)(index_1.default)
+            .get("/rooms")
+            .set("Authorization", "Bearer " + token);
+        expect(res.body).toEqual(rooms_json_1.default);
+        expect(res.statusCode).toBe(200);
+    }));
+});
+/* describe("Get room details", () => {
+
+}); */
 //# sourceMappingURL=routes.test.js.map

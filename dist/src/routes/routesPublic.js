@@ -23,7 +23,6 @@ routerPublic.post("/login", (req, res, next) => __awaiter(void 0, void 0, void 0
     passport_1.default.authenticate("login", (err, user, info) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             if (err || !user) {
-                res.send("hola " + user);
                 const error = new Error("An error ocurred.");
                 return next(error);
             }

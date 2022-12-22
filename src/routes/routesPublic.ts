@@ -12,7 +12,6 @@ routerPublic.post(
             async (err, user, info) => {
                 try {
                     if (err || !user) {
-                        res.send("hola " + user)
                         const error = new Error("An error ocurred.");
 
                         return next(error);

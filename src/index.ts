@@ -5,8 +5,7 @@ import debug from "debug";
 import http from "http";
 
 /** Get port from environment and store in Express.*/
-/* const port: string = normalizePort(process.env.PORT || '3000'); */
-const port = "3000"
+const port: string = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /** Create HTTP server. */
@@ -16,11 +15,11 @@ const server = http.createServer(app);
 /** Listen on provided port, on all network interfaces.*/
 
 server.listen(port);
-/* server.on('error', onError);
-server.on('listening', onListening); */
+server.on('error', onError);
+server.on('listening', onListening);
 
 /** Normalize a port into a number, string, or false. */
-/* function normalizePort(val) {
+function normalizePort(val) {
     const port: number = parseInt(val, 10);
 
     if (isNaN(port)) {
@@ -34,14 +33,14 @@ server.on('listening', onListening); */
     }
 
     return false;
-} */
+}
 
 /** Event listener for HTTP server "error" event. */
-/* function onError(error) {
+function onError(error) {
     if (error.syscall !== 'listen') {
         throw error;
-    }server.on('error', onError);
-server.on('listening', onListening);
+    } server.on('error', onError);
+    server.on('listening', onListening);
 
     const bind: string = typeof port === 'string'
         ? 'Pipe ' + port
@@ -60,15 +59,15 @@ server.on('listening', onListening);
         default:
             throw error;
     }
-} */
+}
 
 /** Event listener for HTTP server "listening" event. */
-/* function onListening() {
+function onListening() {
     const addr = server.address();
     const bind: string = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
     debug('Listening on ' + bind);
-} */
+}
 
 export default server;
