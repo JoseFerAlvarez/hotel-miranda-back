@@ -16,4 +16,4 @@ interface Booking {
     state: string;
 }
 
-export { Booking }
+export default Booking;

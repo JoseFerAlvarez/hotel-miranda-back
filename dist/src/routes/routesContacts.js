@@ -3,19 +3,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.routerContacts = void 0;
 const express_1 = __importDefault(require("express"));
 const contactsController_1 = require("../controllers/contactsController");
 const routerContacts = express_1.default.Router();
-exports.routerContacts = routerContacts;
 /* GET contacts listing. */
-routerContacts.get("/contacts", contactsController_1.contact_list);
+routerContacts.get('/', contactsController_1.contactList);
 /* GET Contact */
-routerContacts.get(("/contacts/:idcontact"), contactsController_1.contact_detail);
+routerContacts.get(('/:idcontact'), contactsController_1.contactDetail);
 /* POST a new contact. */
-routerContacts.post("/contacts", contactsController_1.contact_post);
+routerContacts.post('/', contactsController_1.contactPost);
 /* PUT an existing contact. */
-routerContacts.put(("/contacts/:idcontact"), contactsController_1.contact_put);
+routerContacts.put(('/:idcontact'), contactsController_1.contactPut);
 /* DELETE an existing contact. */
-routerContacts.delete(("/contacts/:idcontact"), contactsController_1.contact_delete);
+routerContacts.delete(('/:idcontact'), contactsController_1.contactDelete);
+exports.default = routerContacts;
 //# sourceMappingURL=routesContacts.js.map

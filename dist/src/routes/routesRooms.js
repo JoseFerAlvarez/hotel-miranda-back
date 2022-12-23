@@ -3,19 +3,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.routerRooms = void 0;
 const express_1 = __importDefault(require("express"));
 const roomsController_1 = require("../controllers/roomsController");
 const routerRooms = express_1.default.Router();
-exports.routerRooms = routerRooms;
 /* GET rooms listing. */
-routerRooms.get("/rooms", roomsController_1.room_list);
+routerRooms.get('/', roomsController_1.roomList);
 /* GET room */
-routerRooms.get(("/rooms/:idroom"), roomsController_1.room_detail);
+routerRooms.get(('/:idroom'), roomsController_1.roomDetail);
 /* POST a new room. */
-routerRooms.post("/rooms", roomsController_1.room_post);
+routerRooms.post('/', roomsController_1.roomPost);
 /* PUT an existing room. */
-routerRooms.put("/rooms/:idroom", roomsController_1.room_put);
+routerRooms.put('/:idroom', roomsController_1.roomPut);
 /* DELETE an existing room. */
-routerRooms.delete("/rooms/:idroom", roomsController_1.room_delete);
+routerRooms.delete('/:idroom', roomsController_1.roomDelete);
+exports.default = routerRooms;
 //# sourceMappingURL=routesRooms.js.map

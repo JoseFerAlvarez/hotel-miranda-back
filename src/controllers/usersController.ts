@@ -1,30 +1,36 @@
 import users from "../db/users.json";
-import { User } from "src/interfaces/User";
+import { User } from "src/interfaces/interfaces";
 
-const user_list = (req, res) => {
-    res.send(users);
+const userList = (req, res) => {
+    res.json(users);
 }
 
-const user_detail = (req, res) => {
-    res.send(users.find((user: User) => Number(user.id) === Number(req.params.iduser)));
+const userDetail = (req, res) => {
+    res.json(users.find((user: User) => Number(user.id) === Number(req.params.iduser)));
 }
 
-const user_post = (req, res) => {
-    res.send("New user posted");
+const userPost = (req, res) => {
+    res.json({
+        message: "New user posted"
+    });
 }
 
-const user_put = (req, res) => {
-    res.send("User put");
+const userPut = (req, res) => {
+    res.json({
+        message: "User put"
+    });
 }
 
-const user_delete = (req, res) => {
-    res.send("User delete");
+const userDelete = (req, res) => {
+    res.json({
+        message: "User delete"
+    });
 }
 
 export {
-    user_list,
-    user_detail,
-    user_post,
-    user_put,
-    user_delete
+    userList,
+    userDetail,
+    userPost,
+    userPut,
+    userDelete
 }

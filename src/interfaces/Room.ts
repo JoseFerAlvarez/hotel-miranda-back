@@ -9,4 +9,4 @@ interface Room {
     status: boolean;
 }
 
-export { Room }
+export default Room;

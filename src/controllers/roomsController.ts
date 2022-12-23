@@ -1,30 +1,36 @@
 import rooms from "../db/rooms.json";
-import { Room } from "src/interfaces/Room";
+import { Room } from "src/interfaces/interfaces";
 
-const room_list = (req, res) => {
-    res.send(rooms);
+const roomList = (req, res) => {
+    res.json(rooms);
 }
 
-const room_detail = (req, res) => {
-    res.send(rooms.find((room: Room) => Number(room.id) === Number(req.params.idroom)));
+const roomDetail = (req, res) => {
+    res.json(rooms.find((room: Room) => Number(room.id) === Number(req.params.idroom)));
 }
 
-const room_post = (req, res) => {
-    res.send("New room posted");
+const roomPost = (req, res) => {
+    res.json({
+        message: "New room posted"
+    });
 }
 
-const room_put = (req, res) => {
-    res.send("Room put");
+const roomPut = (req, res) => {
+    res.json({
+        message: "Room put"
+    });
 }
 
-const room_delete = (req, res) => {
-    res.send("Room delete");
+const roomDelete = (req, res) => {
+    res.json({
+        message: "Room delete"
+    });
 }
 
 export {
-    room_list,
-    room_detail,
-    room_post,
-    room_put,
-    room_delete
+    roomList,
+    roomDetail,
+    roomPost,
+    roomPut,
+    roomDelete
 }

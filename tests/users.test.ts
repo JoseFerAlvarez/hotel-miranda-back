@@ -3,7 +3,7 @@ import server from "../src/index";
 import jwt from "jsonwebtoken";
 
 import users from "../src/db/users.json";
-import { User } from "src/interfaces/User";
+import { User } from "src/interfaces/interfaces";
 
 const token: string = jwt.sign({ user: { _id: 1, email: "josefer@gmail.com" } }, "TOP_SECRET");
 

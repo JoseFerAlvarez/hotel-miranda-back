@@ -5,11 +5,13 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import passport from "passport";
 
-import { routerPublic } from "./routes/routesPublic";
-import { routerRooms } from "./routes/routesRooms";
-import { routerUsers } from "./routes/routesUsers";
-import { routerBookings } from "./routes/routesBookings";
-import { routerContacts } from "./routes/routesContacts";
+import {
+    routerPublic,
+    routerRooms,
+    routerUsers,
+    routerBookings,
+    routerContacts
+} from "./routes/routes";
 
 import("./auth/auth");
 
@@ -26,10 +28,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routerPublic);
-app.use("/", passport.authenticate("jwt", { session: false }), routerRooms);
-app.use("/", passport.authenticate("jwt", { session: false }), routerUsers);
-app.use("/", passport.authenticate("jwt", { session: false }), routerBookings);
-app.use("/", passport.authenticate("jwt", { session: false }), routerContacts);
+app.use('/rooms', passport.authenticate("jwt", { session: false }), routerRooms);
+app.use('/users', passport.authenticate("jwt", { session: false }), routerUsers);
+app.use('/bookings', passport.authenticate("jwt", { session: false }), routerBookings);
+app.use('/contacts', passport.authenticate("jwt", { session: false }), routerContacts);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

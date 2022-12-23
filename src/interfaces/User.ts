@@ -11,4 +11,4 @@ interface User {
     pass: string;
 }
 
-export { User }
+export default User;

@@ -1,27 +1,27 @@
 import express from "express";
 import {
-    user_delete,
-    user_detail,
-    user_list,
-    user_post,
-    user_put
+    userDelete,
+    userDetail,
+    userList,
+    userPost,
+    userPut
 } from "../controllers/usersController";
 
 const routerUsers = express.Router();
 
 /* GET users listing. */
-routerUsers.get('/users', user_list);
+routerUsers.get('/', userList);
 
 /* GET user */
-routerUsers.get("/users/:iduser", user_detail)
+routerUsers.get('/:iduser', userDetail)
 
 /* POST a new user. */
-routerUsers.post("/users", user_post);
+routerUsers.post('/', userPost);
 
 /* PUT an existing user. */
-routerUsers.put("/users/:iduser", user_put)
+routerUsers.put('/:iduser', userPut)
 
 /* DELETE an existing user. */
-routerUsers.delete("/users/:iduser", user_delete);
+routerUsers.delete('/:iduser', userDelete);
 
-export { routerUsers };
+export default routerUsers;

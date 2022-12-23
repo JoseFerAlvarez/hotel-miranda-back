@@ -3,26 +3,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.bookings_delete = exports.bookings_put = exports.bookings_post = exports.bookings_detail = exports.bookings_list = void 0;
+exports.bookingsDelete = exports.bookingsPut = exports.bookingsPost = exports.bookingsDetail = exports.bookingsList = void 0;
 const guest_json_1 = __importDefault(require("../db/guest.json"));
-const bookings_list = (req, res) => {
-    res.send(guest_json_1.default);
+const bookingsList = (req, res) => {
+    res.json(guest_json_1.default);
 };
-exports.bookings_list = bookings_list;
-const bookings_detail = (req, res) => {
-    res.send(guest_json_1.default.find((booking) => Number(booking.id) === Number(req.params.idbooking)));
+exports.bookingsList = bookingsList;
+const bookingsDetail = (req, res) => {
+    res.json(guest_json_1.default.find((booking) => Number(booking.id) === Number(req.params.idbooking)));
 };
-exports.bookings_detail = bookings_detail;
-const bookings_post = (req, res) => {
-    res.send("New room posted");
+exports.bookingsDetail = bookingsDetail;
+const bookingsPost = (req, res) => {
+    res.json({
+        message: "New room posted"
+    });
 };
-exports.bookings_post = bookings_post;
-const bookings_put = (req, res) => {
-    res.send("Room put");
+exports.bookingsPost = bookingsPost;
+const bookingsPut = (req, res) => {
+    res.json({
+        message: "Room put"
+    });
 };
-exports.bookings_put = bookings_put;
-const bookings_delete = (req, res) => {
-    res.send("Room delete");
+exports.bookingsPut = bookingsPut;
+const bookingsDelete = (req, res) => {
+    res.json({
+        message: "Room delete"
+    });
 };
-exports.bookings_delete = bookings_delete;
+exports.bookingsDelete = bookingsDelete;
 //# sourceMappingURL=bookingsController.js.map

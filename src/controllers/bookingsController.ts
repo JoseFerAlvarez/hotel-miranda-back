@@ -1,30 +1,36 @@
 import bookings from "../db/guest.json";
-import { Booking } from "src/interfaces/Booking";
+import { Booking } from "../interfaces/interfaces";
 
-const bookings_list = (req, res) => {
-    res.send(bookings);
+const bookingsList = (req, res) => {
+    res.json(bookings);
 }
 
-const bookings_detail = (req, res) => {
-    res.send(bookings.find((booking: Booking) => Number(booking.id) === Number(req.params.idbooking)));
+const bookingsDetail = (req, res) => {
+    res.json(bookings.find((booking: Booking) => Number(booking.id) === Number(req.params.idbooking)));
 }
 
-const bookings_post = (req, res) => {
-    res.send("New room posted");
+const bookingsPost = (req, res) => {
+    res.json({
+        message: "New room posted"
+    });
 }
 
-const bookings_put = (req, res) => {
-    res.send("Room put");
+const bookingsPut = (req, res) => {
+    res.json({
+        message: "Room put"
+    });
 }
 
-const bookings_delete = (req, res) => {
-    res.send("Room delete");
+const bookingsDelete = (req, res) => {
+    res.json({
+        message: "Room delete"
+    });
 }
 
 export {
-    bookings_list,
-    bookings_detail,
-    bookings_post,
-    bookings_put,
-    bookings_delete
+    bookingsList,
+    bookingsDetail,
+    bookingsPost,
+    bookingsPut,
+    bookingsDelete
 }

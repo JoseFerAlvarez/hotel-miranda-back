@@ -3,26 +3,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.user_delete = exports.user_put = exports.user_post = exports.user_detail = exports.user_list = void 0;
+exports.userDelete = exports.userPut = exports.userPost = exports.userDetail = exports.userList = void 0;
 const users_json_1 = __importDefault(require("../db/users.json"));
-const user_list = (req, res) => {
-    res.send(users_json_1.default);
+const userList = (req, res) => {
+    res.json(users_json_1.default);
 };
-exports.user_list = user_list;
-const user_detail = (req, res) => {
-    res.send(users_json_1.default.find((user) => Number(user.id) === Number(req.params.iduser)));
+exports.userList = userList;
+const userDetail = (req, res) => {
+    res.json(users_json_1.default.find((user) => Number(user.id) === Number(req.params.iduser)));
 };
-exports.user_detail = user_detail;
-const user_post = (req, res) => {
-    res.send("New user posted");
+exports.userDetail = userDetail;
+const userPost = (req, res) => {
+    res.json({
+        message: "New user posted"
+    });
 };
-exports.user_post = user_post;
-const user_put = (req, res) => {
-    res.send("User put");
+exports.userPost = userPost;
+const userPut = (req, res) => {
+    res.json({
+        message: "User put"
+    });
 };
-exports.user_put = user_put;
-const user_delete = (req, res) => {
-    res.send("User delete");
+exports.userPut = userPut;
+const userDelete = (req, res) => {
+    res.json({
+        message: "User delete"
+    });
 };
-exports.user_delete = user_delete;
+exports.userDelete = userDelete;
 //# sourceMappingURL=usersController.js.map

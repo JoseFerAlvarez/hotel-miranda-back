@@ -32,11 +32,7 @@ const path_1 = __importDefault(require("path"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const morgan_1 = __importDefault(require("morgan"));
 const passport_1 = __importDefault(require("passport"));
-const routesPublic_1 = require("./routes/routesPublic");
-const routesRooms_1 = require("./routes/routesRooms");
-const routesUsers_1 = require("./routes/routesUsers");
-const routesBookings_1 = require("./routes/routesBookings");
-const routesContacts_1 = require("./routes/routesContacts");
+const routes_1 = require("./routes/routes");
 Promise.resolve().then(() => __importStar(require("./auth/auth")));
 const app = (0, express_1.default)();
 // view engine setup
@@ -47,11 +43,11 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));
-app.use('/', routesPublic_1.routerPublic);
-app.use("/", passport_1.default.authenticate("jwt", { session: false }), routesRooms_1.routerRooms);
-app.use("/", passport_1.default.authenticate("jwt", { session: false }), routesUsers_1.routerUsers);
-app.use("/", passport_1.default.authenticate("jwt", { session: false }), routesBookings_1.routerBookings);
-app.use("/", passport_1.default.authenticate("jwt", { session: false }), routesContacts_1.routerContacts);
+app.use('/', routes_1.routerPublic);
+app.use('/rooms', passport_1.default.authenticate("jwt", { session: false }), routes_1.routerRooms);
+app.use('/users', passport_1.default.authenticate("jwt", { session: false }), routes_1.routerUsers);
+app.use('/bookings', passport_1.default.authenticate("jwt", { session: false }), routes_1.routerBookings);
+app.use('/contacts', passport_1.default.authenticate("jwt", { session: false }), routes_1.routerContacts);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next((0, http_errors_1.default)(404));
