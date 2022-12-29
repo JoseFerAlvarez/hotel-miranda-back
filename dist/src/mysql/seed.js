@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const connection_1 = require("./connection");
 const connection_2 = __importDefault(require("./connection"));
 const faker_1 = require("@faker-js/faker");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const rooms = [];
 const users = [];
 const bookings = [];
@@ -54,7 +55,7 @@ function createContactsTable() {
 function insertRooms(number) {
     return __awaiter(this, void 0, void 0, function* () {
         for (let i = 0; i < number; i++) {
-            const room = setRandomRoom();
+            const room = yield setRandomRoom();
             rooms.push(room);
             yield (0, connection_1.dbQuery)("INSERT INTO rooms SET ?", room);
         }
@@ -63,7 +64,7 @@ function insertRooms(number) {
 function insertUsers(number) {
     return __awaiter(this, void 0, void 0, function* () {
         for (let i = 0; i < number; i++) {
-            const user = setRandomUser();
+            const user = yield setRandomUser();
             users.push(user);
             yield (0, connection_1.dbQuery)("INSERT INTO users SET ?", user);
         }
@@ -72,7 +73,7 @@ function insertUsers(number) {
 function insertBookings(number) {
     return __awaiter(this, void 0, void 0, function* () {
         for (let i = 0; i < number; i++) {
-            const booking = setRandomBooking();
+            const booking = yield setRandomBooking();
             bookings.push(booking);
             yield (0, connection_1.dbQuery)("INSERT INTO bookings SET ?", booking);
         }
@@ -81,67 +82,81 @@ function insertBookings(number) {
 function insertContacts(number) {
     return __awaiter(this, void 0, void 0, function* () {
         for (let i = 0; i < number; i++) {
-            const contact = setRandomContact();
+            const contact = yield setRandomContact();
             contacts.push(contact);
             yield (0, connection_1.dbQuery)("INSERT INTO contacts SET ?", contact);
         }
     });
 }
 function setRandomRoom() {
-    return {
-        idroom: faker_1.faker.datatype.uuid(),
-        number: faker_1.faker.datatype.number({ max: 1000 }),
-        photo: faker_1.faker.image.city(),
-        type: faker_1.faker.random.words(3),
-        amenities: String(faker_1.faker.random.words(10)),
-        price: faker_1.faker.datatype.number({ max: 100000 }),
-        offer: faker_1.faker.datatype.number({ max: 100 }),
-        status: String(faker_1.faker.datatype.boolean())
-    };
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield {
+            idroom: faker_1.faker.datatype.uuid(),
+            number: faker_1.faker.datatype.number({ max: 1000 }),
+            photo: faker_1.faker.image.city(),
+            type: faker_1.faker.random.words(3),
+            amenities: String(faker_1.faker.random.words(10)),
+            price: faker_1.faker.datatype.number({ max: 100000 }),
+            offer: faker_1.faker.datatype.number({ max: 100 }),
+            status: String(faker_1.faker.datatype.boolean())
+        };
+    });
 }
 function setRandomUser() {
-    return {
-        iduser: faker_1.faker.datatype.uuid(),
-        name: faker_1.faker.name.fullName(),
-        photo: faker_1.faker.image.avatar(),
-        position: faker_1.faker.commerce.department(),
-        email: faker_1.faker.internet.email(),
-        phone: faker_1.faker.phone.number(),
-        date: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
-        description: faker_1.faker.random.words(30),
-        state: String(faker_1.faker.datatype.boolean()),
-        pass: faker_1.faker.internet.password()
-    };
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield {
+            iduser: faker_1.faker.datatype.uuid(),
+            name: faker_1.faker.name.fullName(),
+            photo: faker_1.faker.image.avatar(),
+            position: faker_1.faker.commerce.department(),
+            email: faker_1.faker.internet.email(),
+            phone: faker_1.faker.phone.number(),
+            date: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
+            description: faker_1.faker.random.words(30),
+            state: String(faker_1.faker.datatype.boolean()),
+            pass: yield getHashPass(faker_1.faker.internet.password())
+        };
+    });
+}
+function getHashPass(pass) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield bcrypt_1.default.hash(pass, 10)
+            .then((result) => result);
+    });
 }
 function setRandomBooking() {
-    const room = rooms[Math.round(Math.random() * rooms.length - 1)];
-    const user = users[Math.round(Math.random() * rooms.length - 1)];
-    return {
-        idbooking: faker_1.faker.datatype.uuid(),
-        name: user.name,
-        bookingorder: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
-        checkin: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
-        checkout: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
-        typeroom: room.type,
-        numroom: room.number,
-        price: room.price,
-        request: faker_1.faker.random.words(3),
-        amenities: room.amenities,
-        photos: room.photo,
-        type: faker_1.faker.random.words(3),
-        description: faker_1.faker.random.words(30),
-        state: String(faker_1.faker.datatype.boolean())
-    };
+    return __awaiter(this, void 0, void 0, function* () {
+        const room = rooms[Math.round(Math.random() * rooms.length - 1)];
+        const user = users[Math.round(Math.random() * rooms.length - 1)];
+        return yield {
+            idbooking: faker_1.faker.datatype.uuid(),
+            name: user.name,
+            bookingorder: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
+            checkin: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
+            checkout: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
+            typeroom: room.type,
+            numroom: room.number,
+            price: room.price,
+            request: faker_1.faker.random.words(3),
+            amenities: room.amenities,
+            photos: room.photo,
+            type: faker_1.faker.random.words(3),
+            description: faker_1.faker.random.words(30),
+            state: String(faker_1.faker.datatype.boolean())
+        };
+    });
 }
 function setRandomContact() {
-    return {
-        idcontact: faker_1.faker.datatype.uuid(),
-        date: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
-        customer: faker_1.faker.name.fullName(),
-        email: faker_1.faker.internet.email(),
-        phone: faker_1.faker.phone.number(),
-        header: faker_1.faker.random.words(5),
-        comment: faker_1.faker.random.words(30)
-    };
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield {
+            idcontact: faker_1.faker.datatype.uuid(),
+            date: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
+            customer: faker_1.faker.name.fullName(),
+            email: faker_1.faker.internet.email(),
+            phone: faker_1.faker.phone.number(),
+            header: faker_1.faker.random.words(5),
+            comment: faker_1.faker.random.words(30)
+        };
+    });
 }
 //# sourceMappingURL=seed.js.map

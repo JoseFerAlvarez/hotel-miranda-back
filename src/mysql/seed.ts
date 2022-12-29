@@ -1,6 +1,7 @@
 import { dbQuery } from './connection';
 import connection from './connection';
 import { faker } from '@faker-js/faker';
+import bcrypt from "bcrypt";
 
 
 const rooms = [];
@@ -37,7 +38,7 @@ async function createContactsTable() {
 
 async function insertRooms(number: number): Promise<void> {
     for (let i = 0; i < number; i++) {
-        const room = setRandomRoom();
+        const room = await setRandomRoom();
         rooms.push(room);
         await dbQuery("INSERT INTO rooms SET ?", room);
     }
@@ -45,7 +46,7 @@ async function insertRooms(number: number): Promise<void> {
 
 async function insertUsers(number: number): Promise<void> {
     for (let i = 0; i < number; i++) {
-        const user = setRandomUser();
+        const user = await setRandomUser();
         users.push(user);
         await dbQuery("INSERT INTO users SET ?", user);
     }
@@ -53,7 +54,7 @@ async function insertUsers(number: number): Promise<void> {
 
 async function insertBookings(number: number): Promise<void> {
     for (let i = 0; i < number; i++) {
-        const booking = setRandomBooking();
+        const booking = await setRandomBooking();
         bookings.push(booking);
         await dbQuery("INSERT INTO bookings SET ?", booking);
     }
@@ -61,14 +62,14 @@ async function insertBookings(number: number): Promise<void> {
 
 async function insertContacts(number: number): Promise<void> {
     for (let i = 0; i < number; i++) {
-        const contact = setRandomContact();
+        const contact = await setRandomContact();
         contacts.push(contact);
         await dbQuery("INSERT INTO contacts SET ?", contact);
     }
 }
 
-function setRandomRoom() {
-    return {
+async function setRandomRoom() {
+    return await {
         idroom: faker.datatype.uuid(),
         number: faker.datatype.number({ max: 1000 }),
         photo: faker.image.city(),
@@ -80,8 +81,8 @@ function setRandomRoom() {
     }
 }
 
-function setRandomUser() {
-    return {
+async function setRandomUser() {
+    return await {
         iduser: faker.datatype.uuid(),
         name: faker.name.fullName(),
         photo: faker.image.avatar(),
@@ -91,16 +92,21 @@ function setRandomUser() {
         date: String(faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
         description: faker.random.words(30),
         state: String(faker.datatype.boolean()),
-        pass: faker.internet.password()
+        pass: await getHashPass(faker.internet.password())
     }
 }
 
-function setRandomBooking() {
+async function getHashPass(pass: string) {
+    return await bcrypt.hash(pass, 10)
+        .then((result) => result);
+}
+
+async function setRandomBooking() {
 
     const room = rooms[Math.round(Math.random() * rooms.length - 1)];
     const user = users[Math.round(Math.random() * rooms.length - 1)];
 
-    return {
+    return await {
         idbooking: faker.datatype.uuid(),
         name: user.name,
         bookingorder: String(faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
@@ -118,8 +124,8 @@ function setRandomBooking() {
     }
 }
 
-function setRandomContact() {
-    return {
+async function setRandomContact() {
+    return await {
         idcontact: faker.datatype.uuid(),
         date: String(faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
         customer: faker.name.fullName(),
