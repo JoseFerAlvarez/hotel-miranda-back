@@ -1,30 +1,42 @@
-import bookings from "../db/guest.json";
-import { Booking } from "../interfaces/interfaces";
+import { dbQuery } from "../mysql/connection";
 
 const bookingsList = (req, res) => {
-    res.json(bookings);
+    dbQuery("SELECT * FROM bookings;", null)
+        .then((bookings) => res.json(bookings));
 }
 
 const bookingsDetail = (req, res) => {
-    res.json(bookings.find((booking: Booking) => Number(booking.id) === Number(req.params.idbooking)));
+    dbQuery("SELECT * FROM bookings WHERE idbooking = ?;", [req.params.idbooking])
+        .then((booking) => res.json(booking));
 }
 
 const bookingsPost = (req, res) => {
-    res.json({
-        message: "New room posted"
-    });
+    dbQuery("INSERT INTO bookings SET ?", req.body.booking)
+        .then(() => {
+            res.json({
+                message: "Booking added to database",
+                room: req.body.booking
+            })
+        });
 }
 
 const bookingsPut = (req, res) => {
-    res.json({
-        message: "Room put"
-    });
+    dbQuery("UPDATE bookings SET ? WHERE idbooking = ?;", [req.body.booking, req.params.idbooking])
+        .then(() => {
+            res.json({
+                message: "Booking updated",
+                room: req.body.booking
+            })
+        })
 }
 
 const bookingsDelete = (req, res) => {
-    res.json({
-        message: "Room delete"
-    });
+    dbQuery("DELETE FROM bookings WHERE idbooking = ?;", [req.params.idbooking])
+        .then(() => {
+            res.json({
+                message: "Booking deleted",
+            })
+        })
 }
 
 export {
