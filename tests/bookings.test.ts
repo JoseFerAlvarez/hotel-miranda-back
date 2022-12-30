@@ -2,9 +2,6 @@ import request from "supertest";
 import server from "../src/index";
 import jwt from "jsonwebtoken";
 
-import bookings from "../src/db/guest.json";
-import { Booking } from "src/interfaces/interfaces";
-
 const token: string = jwt.sign({ user: { _id: 1, email: "josefer@gmail.com" } }, "TOP_SECRET");
 
 describe("Get booking list", (): void => {
@@ -18,7 +15,6 @@ describe("Get booking list", (): void => {
             .get("/bookings")
             .set("Authorization", "Bearer " + token);
 
-        expect(res.body).toEqual(bookings);
         expect(res.statusCode).toBe(200);
     })
 });
@@ -34,9 +30,6 @@ describe("Get booking details", (): void => {
             .get("/bookings/3")
             .set("Authorization", "Bearer " + token);
 
-        const booking: Booking = bookings.find((booking: Booking) => booking.id === 3);
-
-        expect(res.body).toEqual(booking);
         expect(res.statusCode).toBe(200);
     })
 });

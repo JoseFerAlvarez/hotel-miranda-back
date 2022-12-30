@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const connection_1 = __importStar(require("./connection"));
+const connection_1 = __importStar(require("./src/db/connection"));
 const faker_1 = require("@faker-js/faker");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 run();
@@ -59,22 +59,64 @@ function run() {
 }
 function createRoomsTable() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0, connection_1.dbQuery)("CREATE OR REPLACE TABLE rooms (idroom INT NOT NULL AUTO_INCREMENT, number SMALLINT, photo VARCHAR(500), type VARCHAR(255), amenities VARCHAR(500), price INT, offer INT, status VARCHAR(5), PRIMARY KEY(idroom));", null);
+        yield (0, connection_1.dbQuery)(/*SQL*/ `CREATE OR REPLACE TABLE rooms (
+            idroom INT NOT NULL AUTO_INCREMENT,
+            numroom SMALLINT,
+            photo VARCHAR(500),
+            type TINYINT,
+            amenities VARCHAR(500),
+            price INT,
+            offer INT,
+            status TINYINT,
+            PRIMARY KEY (idroom));`, null);
     });
 }
 function createUsersTable() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0, connection_1.dbQuery)("CREATE OR REPLACE TABLE users (iduser INT NOT NULL AUTO_INCREMENT, name VARCHAR(255), photo VARCHAR(500), position VARCHAR(255), email VARCHAR(255), phone VARCHAR(50), date VARCHAR(100), description VARCHAR(500), state VARCHAR(5), pass VARCHAR(255), PRIMARY KEY(iduser));", null);
+        yield (0, connection_1.dbQuery)(/*SQL*/ `CREATE OR REPLACE TABLE users (
+            iduser INT NOT NULL AUTO_INCREMENT,
+            name VARCHAR(255),
+            photo VARCHAR(500),
+            position VARCHAR(255),
+            email VARCHAR(255),
+            phone VARCHAR(50),
+            date VARCHAR(100),
+            description VARCHAR(500),
+            state TINYINT,
+            pass VARCHAR(255),
+            PRIMARY KEY (iduser));`, null);
     });
 }
 function createBookingsTable() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0, connection_1.dbQuery)("CREATE OR REPLACE TABLE bookings (idbooking INT NOT NULL AUTO_INCREMENT, name VARCHAR(255), bookingorder VARCHAR(100), checkin VARCHAR(100), checkout VARCHAR(100), typeroom VARCHAR(255), numroom INT, price INT, request VARCHAR(255), amenities VARCHAR(255), photos VARCHAR(500), type VARCHAR(255), description VARCHAR(500), state VARCHAR(10), PRIMARY KEY(idbooking));", null);
+        yield (0, connection_1.dbQuery)(/*SQL*/ `CREATE OR REPLACE TABLE bookings (
+            idbooking INT NOT NULL AUTO_INCREMENT,
+            name VARCHAR(255),
+            bookingorder VARCHAR(100),
+            checkin VARCHAR(100),
+            checkout VARCHAR(100),
+            type TINYINT,
+            numroom SMALLINT,
+            price INT,
+            request VARCHAR(255),
+            amenities VARCHAR(500),
+            photos VARCHAR(500),
+            description VARCHAR(500),
+            state TINYINT,
+            PRIMARY KEY (idbooking));`, null);
     });
 }
 function createContactsTable() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0, connection_1.dbQuery)("CREATE OR REPLACE TABLE contacts (idcontact INT NOT NULL AUTO_INCREMENT, date VARCHAR(255), customer VARCHAR(255), email VARCHAR(255), phone VARCHAR(50), header VARCHAR(255), comment VARCHAR(500), PRIMARY KEY(idcontact));", null);
+        yield (0, connection_1.dbQuery)(/*SQL*/ `CREATE OR REPLACE TABLE contacts (
+            idcontact INT NOT NULL AUTO_INCREMENT,
+            date VARCHAR(255),
+            customer VARCHAR(255),
+            email VARCHAR(255),
+            phone VARCHAR(50),
+            header VARCHAR(255),
+            comment VARCHAR(500),
+            PRIMARY KEY (idcontact));`, null);
     });
 }
 function insertRooms(number) {
@@ -118,13 +160,13 @@ function insertContacts(number) {
 function setRandomRoom() {
     return __awaiter(this, void 0, void 0, function* () {
         return yield {
-            number: faker_1.faker.datatype.number({ max: 1000 }),
-            photo: faker_1.faker.image.city(),
-            type: faker_1.faker.random.words(3),
+            numroom: faker_1.faker.datatype.number({ max: 1000 }),
+            photo: faker_1.faker.image.imageUrl(1920, 1080, "room"),
+            type: faker_1.faker.datatype.number({ min: 0, max: 3 }),
             amenities: String(faker_1.faker.random.words(10)),
             price: faker_1.faker.datatype.number({ max: 100000 }),
             offer: faker_1.faker.datatype.number({ max: 100 }),
-            status: String(faker_1.faker.datatype.boolean())
+            status: faker_1.faker.datatype.number({ min: 0, max: 1 })
         };
     });
 }
@@ -132,13 +174,13 @@ function setRandomUser() {
     return __awaiter(this, void 0, void 0, function* () {
         return yield {
             name: faker_1.faker.name.fullName(),
-            photo: faker_1.faker.image.avatar(),
-            position: faker_1.faker.commerce.department(),
+            photo: faker_1.faker.image.imageUrl(1920, 1080, "human"),
+            position: faker_1.faker.datatype.number({ min: 0, max: 2 }),
             email: faker_1.faker.internet.email(),
             phone: faker_1.faker.phone.number(),
             date: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
             description: faker_1.faker.random.words(30),
-            state: String(faker_1.faker.datatype.boolean()),
+            state: faker_1.faker.datatype.number({ min: 0, max: 1 }),
             pass: yield getHashPass(faker_1.faker.internet.password())
         };
     });
@@ -156,15 +198,14 @@ function setRandomBooking(room, user) {
             bookingorder: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
             checkin: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
             checkout: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
-            typeroom: room.type,
-            numroom: room.number,
+            type: room.type,
+            numroom: room.numroom,
             price: room.price,
             request: faker_1.faker.random.words(3),
             amenities: room.amenities,
             photos: room.photo,
-            type: faker_1.faker.random.words(3),
             description: faker_1.faker.random.words(30),
-            state: String(faker_1.faker.datatype.boolean())
+            state: faker_1.faker.datatype.number({ min: 0, max: 2 }),
         };
     });
 }

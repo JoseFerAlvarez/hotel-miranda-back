@@ -1,4 +1,4 @@
-import connection, { dbQuery } from './connection';
+import connection, { dbQuery } from './src/db/connection';
 import { faker } from '@faker-js/faker';
 import bcrypt from "bcrypt";
 
@@ -24,16 +24,66 @@ async function run() {
 }
 
 async function createRoomsTable() {
-    await dbQuery("CREATE OR REPLACE TABLE rooms (idroom INT NOT NULL AUTO_INCREMENT, number SMALLINT, photo VARCHAR(500), type VARCHAR(255), amenities VARCHAR(500), price INT, offer INT, status VARCHAR(5), PRIMARY KEY(idroom));", null);
+    await dbQuery(/*SQL*/
+        `CREATE OR REPLACE TABLE rooms (
+            idroom INT NOT NULL AUTO_INCREMENT,
+            numroom SMALLINT,
+            photo VARCHAR(500),
+            type TINYINT,
+            amenities VARCHAR(500),
+            price INT,
+            offer INT,
+            status TINYINT,
+            PRIMARY KEY (idroom));`,
+        null);
 }
 async function createUsersTable() {
-    await dbQuery("CREATE OR REPLACE TABLE users (iduser INT NOT NULL AUTO_INCREMENT, name VARCHAR(255), photo VARCHAR(500), position VARCHAR(255), email VARCHAR(255), phone VARCHAR(50), date VARCHAR(100), description VARCHAR(500), state VARCHAR(5), pass VARCHAR(255), PRIMARY KEY(iduser));", null);
+    await dbQuery(/*SQL*/
+        `CREATE OR REPLACE TABLE users (
+            iduser INT NOT NULL AUTO_INCREMENT,
+            name VARCHAR(255),
+            photo VARCHAR(500),
+            position VARCHAR(255),
+            email VARCHAR(255),
+            phone VARCHAR(50),
+            date VARCHAR(100),
+            description VARCHAR(500),
+            state TINYINT,
+            pass VARCHAR(255),
+            PRIMARY KEY (iduser));`,
+        null);
 }
 async function createBookingsTable() {
-    await dbQuery("CREATE OR REPLACE TABLE bookings (idbooking INT NOT NULL AUTO_INCREMENT, name VARCHAR(255), bookingorder VARCHAR(100), checkin VARCHAR(100), checkout VARCHAR(100), typeroom VARCHAR(255), numroom INT, price INT, request VARCHAR(255), amenities VARCHAR(255), photos VARCHAR(500), type VARCHAR(255), description VARCHAR(500), state VARCHAR(10), PRIMARY KEY(idbooking));", null);
+    await dbQuery(/*SQL*/
+        `CREATE OR REPLACE TABLE bookings (
+            idbooking INT NOT NULL AUTO_INCREMENT,
+            name VARCHAR(255),
+            bookingorder VARCHAR(100),
+            checkin VARCHAR(100),
+            checkout VARCHAR(100),
+            type TINYINT,
+            numroom SMALLINT,
+            price INT,
+            request VARCHAR(255),
+            amenities VARCHAR(500),
+            photos VARCHAR(500),
+            description VARCHAR(500),
+            state TINYINT,
+            PRIMARY KEY (idbooking));`,
+        null);
 }
 async function createContactsTable() {
-    await dbQuery("CREATE OR REPLACE TABLE contacts (idcontact INT NOT NULL AUTO_INCREMENT, date VARCHAR(255), customer VARCHAR(255), email VARCHAR(255), phone VARCHAR(50), header VARCHAR(255), comment VARCHAR(500), PRIMARY KEY(idcontact));", null);
+    await dbQuery(/*SQL*/
+        `CREATE OR REPLACE TABLE contacts (
+            idcontact INT NOT NULL AUTO_INCREMENT,
+            date VARCHAR(255),
+            customer VARCHAR(255),
+            email VARCHAR(255),
+            phone VARCHAR(50),
+            header VARCHAR(255),
+            comment VARCHAR(500),
+            PRIMARY KEY (idcontact));`,
+        null);
 }
 
 
@@ -73,26 +123,26 @@ async function insertContacts(number: number): Promise<void> {
 
 async function setRandomRoom() {
     return await {
-        number: faker.datatype.number({ max: 1000 }),
-        photo: faker.image.city(),
-        type: faker.random.words(3),
+        numroom: faker.datatype.number({ max: 1000 }),
+        photo: faker.image.imageUrl(1920, 1080, "room"),
+        type: faker.datatype.number({ min: 0, max: 3 }),
         amenities: String(faker.random.words(10)),
         price: faker.datatype.number({ max: 100000 }),
         offer: faker.datatype.number({ max: 100 }),
-        status: String(faker.datatype.boolean())
+        status: faker.datatype.number({ min: 0, max: 1 })
     }
 }
 
 async function setRandomUser() {
     return await {
         name: faker.name.fullName(),
-        photo: faker.image.avatar(),
-        position: faker.commerce.department(),
+        photo: faker.image.imageUrl(1920, 1080, "human"),
+        position: faker.datatype.number({ min: 0, max: 2 }),
         email: faker.internet.email(),
         phone: faker.phone.number(),
         date: String(faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
         description: faker.random.words(30),
-        state: String(faker.datatype.boolean()),
+        state: faker.datatype.number({ min: 0, max: 1 }),
         pass: await getHashPass(faker.internet.password())
     }
 }
@@ -109,15 +159,14 @@ async function setRandomBooking(room, user) {
         bookingorder: String(faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
         checkin: String(faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
         checkout: String(faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
-        typeroom: room.type,
-        numroom: room.number,
+        type: room.type,
+        numroom: room.numroom,
         price: room.price,
         request: faker.random.words(3),
         amenities: room.amenities,
         photos: room.photo,
-        type: faker.random.words(3),
         description: faker.random.words(30),
-        state: String(faker.datatype.boolean())
+        state: faker.datatype.number({ min: 0, max: 2 }),
     }
 }
 

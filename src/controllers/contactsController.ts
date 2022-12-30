@@ -1,4 +1,4 @@
-import { dbQuery } from "../mysql/connection";
+import { dbQuery } from "../db/connection";
 
 const contactList = (req, res) => {
     dbQuery("SELECT * FROM contacts;", null)

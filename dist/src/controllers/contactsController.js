@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.contactDelete = exports.contactPut = exports.contactPost = exports.contactDetail = exports.contactList = void 0;
-const connection_1 = require("../mysql/connection");
+const connection_1 = require("../db/connection");
 const contactList = (req, res) => {
     (0, connection_1.dbQuery)("SELECT * FROM contacts;", null)
         .then((contacts) => res.json(contacts));

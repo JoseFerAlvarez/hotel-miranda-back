@@ -2,14 +2,12 @@ import request from "supertest";
 import server from "../src/index";
 import jwt from "jsonwebtoken";
 
-import users from "../src/db/users.json";
-import { User } from "src/interfaces/interfaces";
-
 const token: string = jwt.sign({ user: { _id: 1, email: "josefer@gmail.com" } }, "TOP_SECRET");
 
 describe("Get users list", (): void => {
     test("Get users without token", async (): Promise<void> => {
         const res = await request(server).get("/users");
+
         expect(res.statusCode).toBe(401);
     })
 
@@ -18,7 +16,6 @@ describe("Get users list", (): void => {
             .get("/users")
             .set("Authorization", "Bearer " + token);
 
-        expect(res.body).toEqual(users);
         expect(res.statusCode).toBe(200);
     })
 });
@@ -26,6 +23,7 @@ describe("Get users list", (): void => {
 describe("Get user details", (): void => {
     test("Get user details without token", async (): Promise<void> => {
         const res = await request(server).get("/users/3");
+
         expect(res.statusCode).toBe(401);
     });
 
@@ -34,9 +32,6 @@ describe("Get user details", (): void => {
             .get("/users/3")
             .set("Authorization", "Bearer " + token);
 
-        const user: User = users.find((user: User) => user.id === 3);
-
-        expect(res.body).toEqual(user);
         expect(res.statusCode).toBe(200);
     })
 });
