@@ -1,29 +1,42 @@
-import contacts from "../db/guest.json";
+import { dbQuery } from "../mysql/connection";
 
 const contactList = (req, res) => {
-    res.json(contacts);
+    dbQuery("SELECT * FROM contacts;", null)
+        .then((contacts) => res.json(contacts));
 }
 
 const contactDetail = (req, res) => {
-    res.json(contacts.find((contact) => Number(contact.id) === Number(req.params.idcontact)));
+    dbQuery("SELECT * FROM contacts WHERE idcontact = ?;", [req.params.idcontact])
+        .then((contact) => res.json(contact));
 }
 
 const contactPost = (req, res) => {
-    res.json({
-        message: "New room posted"
-    });
+    dbQuery("INSERT INTO contacts SET ?", req.body.contact)
+        .then(() => {
+            res.json({
+                message: "Contact added to database",
+                room: req.body.contact
+            })
+        });
 }
 
 const contactPut = (req, res) => {
-    res.json({
-        message: "Room put"
-    });
+    dbQuery("UPDATE contacts SET ? WHERE idcontact = ?;", [req.body.contact, req.params.idcontact])
+        .then(() => {
+            res.json({
+                message: "Contact updated",
+                room: req.body.contact
+            })
+        })
 }
 
 const contactDelete = (req, res) => {
-    res.json({
-        message: "Room delete"
-    });
+    dbQuery("DELETE FROM contacts WHERE idcontact = ?;", [req.params.idcontact])
+        .then(() => {
+            res.json({
+                message: "Contact deleted",
+            })
+        })
 }
 
 export {

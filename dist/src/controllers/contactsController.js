@@ -1,33 +1,43 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.contactDelete = exports.contactPut = exports.contactPost = exports.contactDetail = exports.contactList = void 0;
-const guest_json_1 = __importDefault(require("../db/guest.json"));
+const connection_1 = require("../mysql/connection");
 const contactList = (req, res) => {
-    res.json(guest_json_1.default);
+    (0, connection_1.dbQuery)("SELECT * FROM contacts;", null)
+        .then((contacts) => res.json(contacts));
 };
 exports.contactList = contactList;
 const contactDetail = (req, res) => {
-    res.json(guest_json_1.default.find((contact) => Number(contact.id) === Number(req.params.idcontact)));
+    (0, connection_1.dbQuery)("SELECT * FROM contacts WHERE idcontact = ?;", [req.params.idcontact])
+        .then((contact) => res.json(contact));
 };
 exports.contactDetail = contactDetail;
 const contactPost = (req, res) => {
-    res.json({
-        message: "New room posted"
+    (0, connection_1.dbQuery)("INSERT INTO contacts SET ?", req.body.contact)
+        .then(() => {
+        res.json({
+            message: "Contact added to database",
+            room: req.body.contact
+        });
     });
 };
 exports.contactPost = contactPost;
 const contactPut = (req, res) => {
-    res.json({
-        message: "Room put"
+    (0, connection_1.dbQuery)("UPDATE contacts SET ? WHERE idcontact = ?;", [req.body.contact, req.params.idcontact])
+        .then(() => {
+        res.json({
+            message: "Contact updated",
+            room: req.body.contact
+        });
     });
 };
 exports.contactPut = contactPut;
 const contactDelete = (req, res) => {
-    res.json({
-        message: "Room delete"
+    (0, connection_1.dbQuery)("DELETE FROM contacts WHERE idcontact = ?;", [req.params.idcontact])
+        .then(() => {
+        res.json({
+            message: "Contact deleted",
+        });
     });
 };
 exports.contactDelete = contactDelete;
