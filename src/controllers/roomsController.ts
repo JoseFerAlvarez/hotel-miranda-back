@@ -1,30 +1,42 @@
-import rooms from "../db/rooms.json";
-import { Room } from "src/interfaces/interfaces";
+import { dbQuery } from "../mysql/connection";
 
-const roomList = (req, res) => {
-    res.json(rooms);
+const roomList = async (req, res) => {
+    dbQuery("SELECT * FROM rooms;", null)
+        .then((rooms) => res.json(rooms));
 }
 
 const roomDetail = (req, res) => {
-    res.json(rooms.find((room: Room) => Number(room.id) === Number(req.params.idroom)));
+    dbQuery("SELECT * FROM rooms WHERE idroom = ?;", [req.params.idroom])
+        .then((rooms) => res.json(rooms));
 }
 
-const roomPost = (req, res) => {
-    res.json({
-        message: "New room posted"
-    });
+const roomPost = async (req, res) => {
+    dbQuery("INSERT INTO rooms SET ?", req.body.room)
+        .then(() => {
+            res.json({
+                message: "Room added to database",
+                room: req.body.room
+            })
+        });
 }
 
 const roomPut = (req, res) => {
-    res.json({
-        message: "Room put"
-    });
+    dbQuery("UPDATE rooms SET ? WHERE idroom = ?;", [req.body.room, req.params.idroom])
+        .then(() => {
+            res.json({
+                message: "Room updated",
+                room: req.body.room
+            })
+        })
 }
 
 const roomDelete = (req, res) => {
-    res.json({
-        message: "Room delete"
-    });
+    dbQuery("DELETE FROM rooms WHERE idroom = ?;", [req.params.idroom])
+        .then(() => {
+            res.json({
+                message: "Room deleted",
+            })
+        })
 }
 
 export {

@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -12,44 +35,46 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const connection_1 = require("./connection");
-const connection_2 = __importDefault(require("./connection"));
+const connection_1 = __importStar(require("./connection"));
 const faker_1 = require("@faker-js/faker");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+run();
 const rooms = [];
 const users = [];
 const bookings = [];
 const contacts = [];
-connection_2.default.connect();
-Promise.all([
-    createRoomsTable(),
-    createUsersTable(),
-    createBookingsTable(),
-    createContactsTable()
-])
-    .then(() => insertRooms(20))
-    .then(() => insertUsers(20))
-    .then(() => insertBookings(20))
-    .then(() => insertContacts(20))
-    .then(() => connection_2.default.end());
+function run() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield connection_1.default.connect();
+        yield createRoomsTable();
+        yield createUsersTable();
+        yield createBookingsTable();
+        yield createContactsTable();
+        yield insertRooms(20);
+        yield insertUsers(20);
+        yield insertBookings(20);
+        yield insertContacts(20);
+        yield connection_1.default.end();
+    });
+}
 function createRoomsTable() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0, connection_1.dbQuery)("CREATE OR REPLACE TABLE rooms ( idroom VARCHAR(255), number SMALLINT, photo VARCHAR(500), type VARCHAR(255), amenities VARCHAR(500), price INT, offer INT, status VARCHAR(5), PRIMARY KEY(idroom));", null);
+        yield (0, connection_1.dbQuery)("CREATE OR REPLACE TABLE rooms (idroom INT NOT NULL AUTO_INCREMENT, number SMALLINT, photo VARCHAR(500), type VARCHAR(255), amenities VARCHAR(500), price INT, offer INT, status VARCHAR(5), PRIMARY KEY(idroom));", null);
     });
 }
 function createUsersTable() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0, connection_1.dbQuery)("CREATE OR REPLACE TABLE users (iduser VARCHAR(255), name VARCHAR(255), photo VARCHAR(500), position VARCHAR(255), email VARCHAR(255), phone VARCHAR(50), date VARCHAR(100), description VARCHAR(500), state VARCHAR(5), pass VARCHAR(255), PRIMARY KEY(iduser));", null);
+        yield (0, connection_1.dbQuery)("CREATE OR REPLACE TABLE users (iduser INT NOT NULL AUTO_INCREMENT, name VARCHAR(255), photo VARCHAR(500), position VARCHAR(255), email VARCHAR(255), phone VARCHAR(50), date VARCHAR(100), description VARCHAR(500), state VARCHAR(5), pass VARCHAR(255), PRIMARY KEY(iduser));", null);
     });
 }
 function createBookingsTable() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0, connection_1.dbQuery)("CREATE OR REPLACE TABLE bookings (idbooking VARCHAR(255), name VARCHAR(255), bookingorder VARCHAR(100), checkin VARCHAR(100), checkout VARCHAR(100), typeroom VARCHAR(255), numroom INT, price INT, request VARCHAR(255), amenities VARCHAR(255), photos VARCHAR(500), type VARCHAR(255), description VARCHAR(500), state VARCHAR(10), PRIMARY KEY(idbooking));", null);
+        yield (0, connection_1.dbQuery)("CREATE OR REPLACE TABLE bookings (idbooking INT NOT NULL AUTO_INCREMENT, name VARCHAR(255), bookingorder VARCHAR(100), checkin VARCHAR(100), checkout VARCHAR(100), typeroom VARCHAR(255), numroom INT, price INT, request VARCHAR(255), amenities VARCHAR(255), photos VARCHAR(500), type VARCHAR(255), description VARCHAR(500), state VARCHAR(10), PRIMARY KEY(idbooking));", null);
     });
 }
 function createContactsTable() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0, connection_1.dbQuery)("CREATE OR REPLACE TABLE contacts (idcontact VARCHAR(255), date VARCHAR(255), customer VARCHAR(255), email VARCHAR(255), phone VARCHAR(50), header VARCHAR(255), comment VARCHAR(500), PRIMARY KEY(idcontact));", null);
+        yield (0, connection_1.dbQuery)("CREATE OR REPLACE TABLE contacts (idcontact INT NOT NULL AUTO_INCREMENT, date VARCHAR(255), customer VARCHAR(255), email VARCHAR(255), phone VARCHAR(50), header VARCHAR(255), comment VARCHAR(500), PRIMARY KEY(idcontact));", null);
     });
 }
 function insertRooms(number) {
@@ -73,7 +98,9 @@ function insertUsers(number) {
 function insertBookings(number) {
     return __awaiter(this, void 0, void 0, function* () {
         for (let i = 0; i < number; i++) {
-            const booking = yield setRandomBooking();
+            const room = rooms[Math.round(Math.random() * rooms.length - 1)];
+            const user = users[Math.round(Math.random() * rooms.length - 1)];
+            const booking = yield setRandomBooking(room, user);
             bookings.push(booking);
             yield (0, connection_1.dbQuery)("INSERT INTO bookings SET ?", booking);
         }
@@ -91,7 +118,6 @@ function insertContacts(number) {
 function setRandomRoom() {
     return __awaiter(this, void 0, void 0, function* () {
         return yield {
-            idroom: faker_1.faker.datatype.uuid(),
             number: faker_1.faker.datatype.number({ max: 1000 }),
             photo: faker_1.faker.image.city(),
             type: faker_1.faker.random.words(3),
@@ -105,7 +131,6 @@ function setRandomRoom() {
 function setRandomUser() {
     return __awaiter(this, void 0, void 0, function* () {
         return yield {
-            iduser: faker_1.faker.datatype.uuid(),
             name: faker_1.faker.name.fullName(),
             photo: faker_1.faker.image.avatar(),
             position: faker_1.faker.commerce.department(),
@@ -124,12 +149,9 @@ function getHashPass(pass) {
             .then((result) => result);
     });
 }
-function setRandomBooking() {
+function setRandomBooking(room, user) {
     return __awaiter(this, void 0, void 0, function* () {
-        const room = rooms[Math.round(Math.random() * rooms.length - 1)];
-        const user = users[Math.round(Math.random() * rooms.length - 1)];
         return yield {
-            idbooking: faker_1.faker.datatype.uuid(),
             name: user.name,
             bookingorder: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
             checkin: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
@@ -149,7 +171,6 @@ function setRandomBooking() {
 function setRandomContact() {
     return __awaiter(this, void 0, void 0, function* () {
         return yield {
-            idcontact: faker_1.faker.datatype.uuid(),
             date: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
             customer: faker_1.faker.name.fullName(),
             email: faker_1.faker.internet.email(),
