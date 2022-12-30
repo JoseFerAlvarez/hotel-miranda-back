@@ -1,33 +1,43 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userDelete = exports.userPut = exports.userPost = exports.userDetail = exports.userList = void 0;
-const users_json_1 = __importDefault(require("../db/users.json"));
+const connection_1 = require("../mysql/connection");
 const userList = (req, res) => {
-    res.json(users_json_1.default);
+    (0, connection_1.dbQuery)("SELECT * FROM users;", null)
+        .then((users) => res.json(users));
 };
 exports.userList = userList;
 const userDetail = (req, res) => {
-    res.json(users_json_1.default.find((user) => Number(user.id) === Number(req.params.iduser)));
+    (0, connection_1.dbQuery)("SELECT * FROM users WHERE iduser = ?;", [req.params.iduser])
+        .then((user) => res.json(user));
 };
 exports.userDetail = userDetail;
 const userPost = (req, res) => {
-    res.json({
-        message: "New user posted"
+    (0, connection_1.dbQuery)("INSERT INTO users SET ?", req.body.user)
+        .then(() => {
+        res.json({
+            message: "User added to database",
+            room: req.body.user
+        });
     });
 };
 exports.userPost = userPost;
 const userPut = (req, res) => {
-    res.json({
-        message: "User put"
+    (0, connection_1.dbQuery)("UPDATE users SET ? WHERE iduser = ?;", [req.body.user, req.params.iduser])
+        .then(() => {
+        res.json({
+            message: "User updated",
+            room: req.body.user
+        });
     });
 };
 exports.userPut = userPut;
 const userDelete = (req, res) => {
-    res.json({
-        message: "User delete"
+    (0, connection_1.dbQuery)("DELETE FROM users WHERE iduser = ?;", [req.params.iduser])
+        .then(() => {
+        res.json({
+            message: "User deleted",
+        });
     });
 };
 exports.userDelete = userDelete;

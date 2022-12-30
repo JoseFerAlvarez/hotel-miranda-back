@@ -1,16 +1,16 @@
 import { dbQuery } from "../mysql/connection";
 
-const roomList = async (req, res) => {
+const roomList = (req, res) => {
     dbQuery("SELECT * FROM rooms;", null)
         .then((rooms) => res.json(rooms));
 }
 
 const roomDetail = (req, res) => {
     dbQuery("SELECT * FROM rooms WHERE idroom = ?;", [req.params.idroom])
-        .then((rooms) => res.json(rooms));
+        .then((room) => res.json(room));
 }
 
-const roomPost = async (req, res) => {
+const roomPost = (req, res) => {
     dbQuery("INSERT INTO rooms SET ?", req.body.room)
         .then(() => {
             res.json({

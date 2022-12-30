@@ -1,30 +1,42 @@
-import users from "../db/users.json";
-import { User } from "src/interfaces/interfaces";
+import { dbQuery } from "../mysql/connection";
 
 const userList = (req, res) => {
-    res.json(users);
+    dbQuery("SELECT * FROM users;", null)
+        .then((users) => res.json(users));
 }
 
 const userDetail = (req, res) => {
-    res.json(users.find((user: User) => Number(user.id) === Number(req.params.iduser)));
+    dbQuery("SELECT * FROM users WHERE iduser = ?;", [req.params.iduser])
+        .then((user) => res.json(user));
 }
 
 const userPost = (req, res) => {
-    res.json({
-        message: "New user posted"
-    });
+    dbQuery("INSERT INTO users SET ?", req.body.user)
+        .then(() => {
+            res.json({
+                message: "User added to database",
+                room: req.body.user
+            })
+        });
 }
 
 const userPut = (req, res) => {
-    res.json({
-        message: "User put"
-    });
+    dbQuery("UPDATE users SET ? WHERE iduser = ?;", [req.body.user, req.params.iduser])
+        .then(() => {
+            res.json({
+                message: "User updated",
+                room: req.body.user
+            })
+        })
 }
 
 const userDelete = (req, res) => {
-    res.json({
-        message: "User delete"
-    });
+    dbQuery("DELETE FROM users WHERE iduser = ?;", [req.params.iduser])
+        .then(() => {
+            res.json({
+                message: "User deleted",
+            })
+        })
 }
 
 export {
