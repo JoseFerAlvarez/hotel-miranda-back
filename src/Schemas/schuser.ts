@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-    _id: mongoose.Types.ObjectId,
     name: String,
     photo: String,
     position: String,

@@ -11,7 +11,7 @@ const bookingSchema = new Schema({
     order: Date,
     checkin: Date,
     checkout: Date,
-    type: Number,
+    type: String,
     numroom: Number,
     price: Number,
     request: String,

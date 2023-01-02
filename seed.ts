@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { connect, disconnect } from "./src/db/connection";
+import { connect } from "./src/db/connection";
 import bcrypt from "bcrypt";
 import {
     Room,
@@ -14,17 +14,15 @@ const userList: typeof User[] = [];
 const bookingList: typeof Booking[] = [];
 const contactList: typeof Contact[] = [];
 
-/* connect(null); */
-
 run();
 
 async function run() {
+    await connect(null);
+
     await insertRooms(20);
     await insertUsers(20);
-    await insertBookings(20);
     await insertContacts(20);
-    console.log(bookingList);
-    /* await disconnect(); */
+    await insertBookings(20);
 }
 
 /* Puts in an array the number of rooms given by a parameter */
@@ -32,6 +30,8 @@ async function insertRooms(number: number): Promise<void> {
     for (let i = 0; i < number; i++) {
         const room = await generateRandomRoom();
         roomList.push(room);
+
+        room.save();
     }
 }
 
@@ -40,6 +40,8 @@ async function insertUsers(number: number): Promise<void> {
     for (let i = 0; i < number; i++) {
         const user = await generateRandomUser();
         userList.push(user);
+
+        user.save();
     }
 }
 
@@ -49,8 +51,9 @@ async function insertBookings(number: number): Promise<void> {
         const room = roomList[Math.round(Math.random() * roomList.length - 1)];
         const user = userList[Math.round(Math.random() * roomList.length - 1)];
         const booking = await generateRandomBooking(room, user);
-
         bookingList.push(booking);
+
+        booking.save();
     }
 }
 
@@ -59,12 +62,14 @@ async function insertContacts(number: number): Promise<void> {
     for (let i = 0; i < number; i++) {
         const contact = await generateRandomContact();
         contactList.push(contact);
+
+        contact.save();
     }
 }
 
 /* Generate a random room */
 async function generateRandomRoom(): Promise<any> {
-    return await {
+    return await new Room({
         numroom: faker.datatype.number({ max: 1000 }),
         photos: generateRandomPhotos(),
         type: generateRandomType(),
@@ -73,12 +78,12 @@ async function generateRandomRoom(): Promise<any> {
         offer: faker.datatype.number({ max: 100 }),
         status: faker.datatype.number({ min: 0, max: 1 }),
         cancellation: faker.lorem.lines()
-    }
+    });
 }
 
 /* Generate a random user */
 async function generateRandomUser(): Promise<any> {
-    return await {
+    return await new User({
         name: faker.name.fullName(),
         photo: faker.image.imageUrl(1920, 1080, "face"),
         position: generateRandomPosition(),
@@ -88,7 +93,7 @@ async function generateRandomUser(): Promise<any> {
         description: faker.random.words(30),
         state: faker.datatype.number({ min: 0, max: 1 }),
         pass: await getHashPass(faker.internet.password())
-    }
+    });
 }
 
 /* Generate a random booking from a room and a user */
@@ -97,7 +102,7 @@ async function generateRandomBooking(room, user): Promise<any> {
     const bookingCheckIn: Date = generateRandomDate(bookingOrder);
     const bookingCheckOut: Date = generateRandomDate(bookingCheckIn);
 
-    return await {
+    return await new Booking({
         name: user.name,
         order: bookingOrder,
         checkin: bookingCheckIn,
@@ -110,19 +115,19 @@ async function generateRandomBooking(room, user): Promise<any> {
         photos: room.photos,
         description: faker.lorem.lines(),
         status: faker.datatype.number({ min: 0, max: 2 }),
-    }
+    });
 }
 
 /* Generate a random contact */
 async function generateRandomContact(): Promise<any> {
-    return await {
+    return await new Contact({
         date: generateRandomDate(null),
         customer: faker.name.fullName(),
         email: faker.internet.email(),
         phone: faker.phone.number('+34 6## ## ## ##'),
         header: faker.lorem.lines(1),
         comment: faker.lorem.lines()
-    }
+    });
 }
 
 /* Function helpers to generate a random room */

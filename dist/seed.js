@@ -13,21 +13,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const faker_1 = require("@faker-js/faker");
+const connection_1 = require("./src/db/connection");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const schemas_1 = require("./src/Schemas/schemas");
 const roomList = [];
 const userList = [];
 const bookingList = [];
 const contactList = [];
-/* connect(null); */
-run();
+run().then(() => insertBookings(20));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
+        yield (0, connection_1.connect)(null);
         yield insertRooms(20);
         yield insertUsers(20);
-        yield insertBookings(20);
         yield insertContacts(20);
-        console.log(bookingList);
-        /* await disconnect(); */
     });
 }
 /* Puts in an array the number of rooms given by a parameter */
@@ -36,6 +35,7 @@ function insertRooms(number) {
         for (let i = 0; i < number; i++) {
             const room = yield generateRandomRoom();
             roomList.push(room);
+            room.save();
         }
     });
 }
@@ -45,6 +45,7 @@ function insertUsers(number) {
         for (let i = 0; i < number; i++) {
             const user = yield generateRandomUser();
             userList.push(user);
+            user.save();
         }
     });
 }
@@ -56,6 +57,7 @@ function insertBookings(number) {
             const user = userList[Math.round(Math.random() * roomList.length - 1)];
             const booking = yield generateRandomBooking(room, user);
             bookingList.push(booking);
+            booking.save();
         }
     });
 }
@@ -65,13 +67,14 @@ function insertContacts(number) {
         for (let i = 0; i < number; i++) {
             const contact = yield generateRandomContact();
             contactList.push(contact);
+            contact.save();
         }
     });
 }
 /* Generate a random room */
 function generateRandomRoom() {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield {
+        return yield new schemas_1.Room({
             numroom: faker_1.faker.datatype.number({ max: 1000 }),
             photos: generateRandomPhotos(),
             type: generateRandomType(),
@@ -80,13 +83,13 @@ function generateRandomRoom() {
             offer: faker_1.faker.datatype.number({ max: 100 }),
             status: faker_1.faker.datatype.number({ min: 0, max: 1 }),
             cancellation: faker_1.faker.lorem.lines()
-        };
+        });
     });
 }
 /* Generate a random user */
 function generateRandomUser() {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield {
+        return yield new schemas_1.User({
             name: faker_1.faker.name.fullName(),
             photo: faker_1.faker.image.imageUrl(1920, 1080, "face"),
             position: generateRandomPosition(),
@@ -96,7 +99,7 @@ function generateRandomUser() {
             description: faker_1.faker.random.words(30),
             state: faker_1.faker.datatype.number({ min: 0, max: 1 }),
             pass: yield getHashPass(faker_1.faker.internet.password())
-        };
+        });
     });
 }
 /* Generate a random booking from a room and a user */
@@ -105,7 +108,7 @@ function generateRandomBooking(room, user) {
         const bookingOrder = generateRandomDate(null);
         const bookingCheckIn = generateRandomDate(bookingOrder);
         const bookingCheckOut = generateRandomDate(bookingCheckIn);
-        return yield {
+        return yield new schemas_1.Booking({
             name: user.name,
             order: bookingOrder,
             checkin: bookingCheckIn,
@@ -118,20 +121,20 @@ function generateRandomBooking(room, user) {
             photos: room.photos,
             description: faker_1.faker.lorem.lines(),
             status: faker_1.faker.datatype.number({ min: 0, max: 2 }),
-        };
+        });
     });
 }
 /* Generate a random contact */
 function generateRandomContact() {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield {
+        return yield new schemas_1.Contact({
             date: generateRandomDate(null),
             customer: faker_1.faker.name.fullName(),
             email: faker_1.faker.internet.email(),
             phone: faker_1.faker.phone.number('+34 6## ## ## ##'),
             header: faker_1.faker.lorem.lines(1),
             comment: faker_1.faker.lorem.lines()
-        };
+        });
     });
 }
 /* Function helpers to generate a random room */
