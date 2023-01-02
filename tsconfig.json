@@ -95,6 +95,7 @@
   "include": [
     "src/**/*",
     "tests/*",
+    "*.ts",
     "dist/routes/routes.js"
   ]
 }
