@@ -20,13 +20,14 @@ const roomList = [];
 const userList = [];
 const bookingList = [];
 const contactList = [];
-run().then(() => insertBookings(20));
+run();
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         yield (0, connection_1.connect)(null);
         yield insertRooms(20);
         yield insertUsers(20);
         yield insertContacts(20);
+        yield insertBookings(20);
     });
 }
 /* Puts in an array the number of rooms given by a parameter */

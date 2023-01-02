@@ -1,12 +1,9 @@
-import bookings from "../db/guest.json";
-import { Booking } from "../interfaces/interfaces";
-
 const bookingsList = (req, res) => {
-    res.json(bookings);
+    res.json({});
 }
 
 const bookingsDetail = (req, res) => {
-    res.json(bookings.find((booking: Booking) => Number(booking.id) === Number(req.params.idbooking)));
+    res.json({});
 }
 
 const bookingsPost = (req, res) => {

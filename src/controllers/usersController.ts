@@ -1,12 +1,9 @@
-import users from "../db/users.json";
-import { User } from "src/interfaces/interfaces";
-
 const userList = (req, res) => {
-    res.json(users);
+    res.json({});
 }
 
 const userDetail = (req, res) => {
-    res.json(users.find((user: User) => Number(user.id) === Number(req.params.iduser)));
+    res.json({});
 }
 
 const userPost = (req, res) => {

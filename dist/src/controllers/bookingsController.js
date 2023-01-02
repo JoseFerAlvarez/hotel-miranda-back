@@ -1,16 +1,12 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.bookingsDelete = exports.bookingsPut = exports.bookingsPost = exports.bookingsDetail = exports.bookingsList = void 0;
-const guest_json_1 = __importDefault(require("../db/guest.json"));
 const bookingsList = (req, res) => {
-    res.json(guest_json_1.default);
+    res.json({});
 };
 exports.bookingsList = bookingsList;
 const bookingsDetail = (req, res) => {
-    res.json(guest_json_1.default.find((booking) => Number(booking.id) === Number(req.params.idbooking)));
+    res.json({});
 };
 exports.bookingsDetail = bookingsDetail;
 const bookingsPost = (req, res) => {

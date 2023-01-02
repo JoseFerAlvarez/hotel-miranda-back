@@ -1,11 +1,9 @@
-import contacts from "../db/guest.json";
-
 const contactList = (req, res) => {
-    res.json(contacts);
+    res.json({});
 }
 
 const contactDetail = (req, res) => {
-    res.json(contacts.find((contact) => Number(contact.id) === Number(req.params.idcontact)));
+    res.json({});
 }
 
 const contactPost = (req, res) => {

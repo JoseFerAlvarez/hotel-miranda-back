@@ -1,16 +1,12 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userDelete = exports.userPut = exports.userPost = exports.userDetail = exports.userList = void 0;
-const users_json_1 = __importDefault(require("../db/users.json"));
 const userList = (req, res) => {
-    res.json(users_json_1.default);
+    res.json({});
 };
 exports.userList = userList;
 const userDetail = (req, res) => {
-    res.json(users_json_1.default.find((user) => Number(user.id) === Number(req.params.iduser)));
+    res.json({});
 };
 exports.userDetail = userDetail;
 const userPost = (req, res) => {

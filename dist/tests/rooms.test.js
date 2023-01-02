@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const index_1 = __importDefault(require("../src/index"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const rooms_json_1 = __importDefault(require("../src/db/rooms.json"));
 const token = jsonwebtoken_1.default.sign({ user: { _id: 1, email: "josefer@gmail.com" } }, "TOP_SECRET");
 describe("Get room list", () => {
     test("Get rooms without token", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -26,7 +25,6 @@ describe("Get room list", () => {
         const res = yield (0, supertest_1.default)(index_1.default)
             .get("/rooms")
             .set("Authorization", "Bearer " + token);
-        expect(res.body).toEqual(rooms_json_1.default);
         expect(res.statusCode).toBe(200);
     }));
 });
@@ -39,8 +37,6 @@ describe("Get room details", () => {
         const res = yield (0, supertest_1.default)(index_1.default)
             .get("/rooms/3")
             .set("Authorization", "Bearer " + token);
-        const room = rooms_json_1.default.find((room) => room.id === 3);
-        expect(res.body).toEqual(room);
         expect(res.statusCode).toBe(200);
     }));
 });

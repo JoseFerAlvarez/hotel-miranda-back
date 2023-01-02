@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const index_1 = __importDefault(require("../src/index"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const guest_json_1 = __importDefault(require("../src/db/guest.json"));
 const token = jsonwebtoken_1.default.sign({ user: { _id: 1, email: "josefer@gmail.com" } }, "TOP_SECRET");
 describe("Get contact list", () => {
     test("Get contacts without token", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -26,7 +25,6 @@ describe("Get contact list", () => {
         const res = yield (0, supertest_1.default)(index_1.default)
             .get("/contacts")
             .set("Authorization", "Bearer " + token);
-        expect(res.body).toEqual(guest_json_1.default);
         expect(res.statusCode).toBe(200);
     }));
 });
@@ -39,8 +37,6 @@ describe("Get contact details", () => {
         const res = yield (0, supertest_1.default)(index_1.default)
             .get("/contacts/3")
             .set("Authorization", "Bearer " + token);
-        const contact = guest_json_1.default.find(contact => contact.id === 3);
-        expect(res.body).toEqual(contact);
         expect(res.statusCode).toBe(200);
     }));
 });

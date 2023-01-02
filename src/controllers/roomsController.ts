@@ -1,30 +1,63 @@
-import rooms from "../db/rooms.json";
-import { Room } from "src/interfaces/interfaces";
+import { connect } from "../db/connection";
+import { Room } from "../Schemas/schroom";
 
-const roomList = (req, res) => {
-    res.json(rooms);
-}
+const roomList = async (req, res, next) => {
+    connect(null);
 
-const roomDetail = (req, res) => {
-    res.json(rooms.find((room: Room) => Number(room.id) === Number(req.params.idroom)));
-}
+    const query = Room.find();
 
-const roomPost = (req, res) => {
-    res.json({
-        message: "New room posted"
+    await query.exec((err, rooms) => {
+        if (err) return next(err);
+        res.json(rooms);
     });
 }
 
-const roomPut = (req, res) => {
-    res.json({
-        message: "Room put"
+const roomDetail = async (req, res, next) => {
+    connect(null);
+
+    const query = Room.findOne({ "_id": req.params.idroom });
+
+    await query.exec((err, room) => {
+        if (err) return next(err);
+        res.json(room)
     });
 }
 
-const roomDelete = (req, res) => {
+const roomPost = async (req, res) => {
+    connect(null);
+
+    await Room.create(req.body.room);
+
     res.json({
-        message: "Room delete"
+        message: "New room posted",
     });
+}
+
+const roomPut = async (req, res, next) => {
+    connect(null);
+
+    const query = Room.findOneAndUpdate({ "_id": req.params.idroom }, req.body.room);
+
+    await query.exec((err, room) => {
+        if (err) return next(err);
+
+        res.json({
+            message: "Room put",
+            room: room
+        });
+    });
+}
+
+const roomDelete = async (req, res, next) => {
+    const query = Room.findOneAndDelete({ "_id": req.params.idroom });
+    await query.exec((err, room) => {
+        if (err) return next(err);
+
+        res.json({
+            message: "Room delete",
+            room: room
+        });
+    })
 }
 
 export {
