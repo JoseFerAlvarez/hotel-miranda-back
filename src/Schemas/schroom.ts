@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const roomSchema = new Schema({
-    numroom: Number,
+    numroom: { type: Number, required: true },
     photos: Array,
     type: String,
     amenities: Array,

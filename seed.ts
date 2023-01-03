@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { connect, disconnect } from "./src/db/connection";
+import { IntRoom, IntBooking, IntContact, IntUser } from "./src/interfaces/interfaces";
 import bcrypt from "bcrypt";
 import {
     Room,
@@ -9,10 +10,8 @@ import {
 } from "./src/Schemas/schemas";
 
 
-const roomList: typeof Room[] = [];
-const userList: typeof User[] = [];
-const bookingList: typeof Booking[] = [];
-const contactList: typeof Contact[] = [];
+const roomList: IntRoom[] = [];
+const userList: IntUser[] = [];
 
 run();
 
@@ -31,7 +30,7 @@ async function run() {
 /* Puts in an array the number of rooms given by a parameter */
 async function insertRooms(number: number): Promise<void> {
     for (let i = 0; i < number; i++) {
-        const room = await generateRandomRoom();
+        const room: IntRoom = await generateRandomRoom();
         roomList.push(room);
 
         await Room.create(room);
@@ -41,7 +40,7 @@ async function insertRooms(number: number): Promise<void> {
 /* Puts in an array the number of users given by a parameter */
 async function insertUsers(number: number): Promise<void> {
     for (let i = 0; i < number; i++) {
-        const user = await generateRandomUser();
+        const user: IntUser = await generateRandomUser();
         userList.push(user);
 
         await User.create(user);
@@ -51,11 +50,9 @@ async function insertUsers(number: number): Promise<void> {
 /* Puts in an array the number of bookings given by a parameter */
 async function insertBookings(number: number): Promise<void> {
     for (let i = 0; i < number; i++) {
-        const room = roomList[Math.round(Math.random() * roomList.length - 1)];
-        const user = userList[Math.round(Math.random() * roomList.length - 1)];
-
+        const room: IntRoom = roomList[Math.round(Math.random() * roomList.length - 1)];
+        const user: IntUser = userList[Math.round(Math.random() * roomList.length - 1)];
         const booking = await generateRandomBooking(await getRandomRoom(room), await getRandomUser(user));
-        bookingList.push(booking);
 
         await Booking.create(booking);
     }
@@ -64,16 +61,15 @@ async function insertBookings(number: number): Promise<void> {
 /* Puts in an array the number of contacts given by a parameter */
 async function insertContacts(number: number): Promise<void> {
     for (let i = 0; i < number; i++) {
-        const contact = await generateRandomContact();
-        contactList.push(contact);
+        const contact: IntContact = await generateRandomContact();
 
         await Contact.create(contact);
     }
 }
 
 /* Generate a random room */
-async function generateRandomRoom(): Promise<any> {
-    return await new Room({
+function generateRandomRoom(): IntRoom {
+    return new Room({
         numroom: faker.datatype.number({ max: 1000 }),
         photos: generateRandomPhotos(),
         type: generateRandomType(),
@@ -86,7 +82,7 @@ async function generateRandomRoom(): Promise<any> {
 }
 
 /* Generate a random user */
-async function generateRandomUser(): Promise<any> {
+async function generateRandomUser() {
     return await new User({
         name: faker.name.fullName(),
         photo: faker.image.imageUrl(1920, 1080, "face"),
@@ -101,7 +97,7 @@ async function generateRandomUser(): Promise<any> {
 }
 
 /* Generate a random booking from a room and a user */
-async function generateRandomBooking(room, user): Promise<any> {
+async function generateRandomBooking(room: IntRoom, user: IntUser) {
     const bookingOrder: Date = generateRandomDate(null);
     const bookingCheckIn: Date = generateRandomDate(bookingOrder);
     const bookingCheckOut: Date = generateRandomDate(bookingCheckIn);
@@ -125,7 +121,7 @@ async function generateRandomBooking(room, user): Promise<any> {
 }
 
 /* Generate a random contact */
-async function generateRandomContact(): Promise<any> {
+async function generateRandomContact() {
     return await new Contact({
         date: generateRandomDate(null),
         customer: faker.name.fullName(),
@@ -151,7 +147,7 @@ function generateRandomAmenities(): string[] {
 
 function generateRandomPhotos(): string[] {
     const number: number = Math.round(Math.random() * (5 - 3) + 3);
-    const photos = [];
+    const photos: string[] = [];
     for (let i = 0; i < number; i++) {
         photos.push(faker.image.imageUrl(1920, 1080, "room"));
     }

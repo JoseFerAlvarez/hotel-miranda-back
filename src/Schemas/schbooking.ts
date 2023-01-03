@@ -2,14 +2,14 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const bookingSchema = new Schema({
-    user_id: mongoose.Types.ObjectId,
-    room_id: mongoose.Types.ObjectId,
-    name: String,
-    order: Date,
-    checkin: Date,
-    checkout: Date,
+    user_id: { type: mongoose.Types.ObjectId, required: true },
+    room_id: { type: mongoose.Types.ObjectId, required: true },
+    name: { type: String, required: true },
+    order: { type: Date, required: true },
+    checkin: { type: Date, required: true },
+    checkout: { type: Date, required: true },
     type: String,
-    numroom: Number,
+    numroom: { type: Number, required: true },
     price: Number,
     request: String,
     amenities: Array,

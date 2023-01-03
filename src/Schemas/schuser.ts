@@ -2,15 +2,15 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-    name: String,
+    name: { type: String, required: true },
     photo: String,
     position: String,
-    email: String,
+    email: { type: String, required: true },
     phone: String,
     date: Date,
     description: String,
     status: Number,
-    pass: String,
+    pass: { type: String, required: true },
 });
 
 export const User = mongoose.model("user", userSchema);
