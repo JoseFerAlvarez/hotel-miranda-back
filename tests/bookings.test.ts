@@ -2,7 +2,7 @@ import request from "supertest";
 import server from "../src/index";
 import jwt from "jsonwebtoken";
 
-const token: string = jwt.sign({ user: { _id: 1, email: "josefer@gmail.com" } }, "TOP_SECRET");
+const token: string = jwt.sign({ user: { _id: 1, email: process.env.DEFAULT_USER } }, process.env.SECRET_TOKEN);
 
 describe("Get booking list", (): void => {
     test("Get bookings without token", async (): Promise<void> => {
