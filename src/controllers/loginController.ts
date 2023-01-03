@@ -19,7 +19,7 @@ const loginAuth = async (req: any, res, next) => {
                         if (error) return next(error);
 
                         const body = { _id: user._id, email: user.email };
-                        const token = jwt.sign({ user: body }, "TOP_SECRET");
+                        const token = jwt.sign({ user: body }, process.env.SECRET_TOKEN);
 
                         return res.json({ token });
                     });

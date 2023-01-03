@@ -30,32 +30,20 @@ passport.use(
 
                 await query.exec((err, user) => {
 
-                    if (err) {
-                        if (email === "josefer@gmail.com" && password === "1234") {
+                    if (err || !user) {
+                        if (email === process.env.DEFAULT_USER && password === process.env.DEFAULT_PASSWORD) {
                             const user = {
                                 _id: 1,
-                                email: "josefer@gmail.com",
+                                email: process.env.DEFAULT_USER,
                             }
                             return done(null, user, { message: "Logged in successfully" });
                         } else {
                             return done(null, false, { message: "Invalid credentials" });
                         }
+                    } else {
+                        return done(null, { _id: user._id, email: user.email }, { message: "Logged in successfully" });
                     }
-
-                    return done(null, { _id: user._id, email: user.email }, { message: "Logged in successfully" });
                 });
-
-
-
-                if (email === "josefer@gmail.com" && password === "1234") {
-                    const user = {
-                        _id: 1,
-                        email: "josefer@gmail.com",
-                    }
-                    return done(null, user, { message: "Logged in successfully" });
-                } else {
-                    return done(null, false, { message: "Invalid credentials" });
-                }
             } catch (error) {
                 return done(error);
             }
@@ -66,7 +54,7 @@ passport.use(
 passport.use(
     new JwtStrategy(
         {
-            secretOrKey: "TOP_SECRET",
+            secretOrKey: process.env.SECRET_TOKEN,
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
         },
         async (token, done) => {

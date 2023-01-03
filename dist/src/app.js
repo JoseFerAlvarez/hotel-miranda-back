@@ -32,6 +32,8 @@ const path_1 = __importDefault(require("path"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const morgan_1 = __importDefault(require("morgan"));
 const passport_1 = __importDefault(require("passport"));
+const dotenv = __importStar(require("dotenv"));
+dotenv.config();
 const routes_1 = require("./routes/routes");
 Promise.resolve().then(() => __importStar(require("./auth/auth")));
 const app = (0, express_1.default)();
