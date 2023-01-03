@@ -30,6 +30,7 @@ const roomPost = async (req, res) => {
 
     res.json({
         message: "New room posted",
+        newroom: req.body.room
     });
 }
 
@@ -43,19 +44,21 @@ const roomPut = async (req, res, next) => {
 
         res.json({
             message: "Room put",
-            room: room
+            oldroom: room,
+            newroom: req.body.room
         });
     });
 }
 
 const roomDelete = async (req, res, next) => {
     const query = Room.findOneAndDelete({ "_id": req.params.idroom });
+
     await query.exec((err, room) => {
         if (err) return next(err);
 
         res.json({
-            message: "Room delete",
-            room: room
+            message: "Room deleted",
+            oldroom: room
         });
     })
 }

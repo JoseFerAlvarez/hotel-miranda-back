@@ -1,27 +1,66 @@
-const contactList = (req, res) => {
-    res.json({});
-}
+import { connect } from "../db/connection";
+import { Contact } from "../Schemas/schcontact";
 
-const contactDetail = (req, res) => {
-    res.json({});
-}
+const contactList = async (req, res, next) => {
+    connect(null);
 
-const contactPost = (req, res) => {
-    res.json({
-        message: "New room posted"
+    const query = Contact.find();
+
+    await query.exec((err, contacts) => {
+        if (err) return next(err);
+        res.json(contacts);
     });
 }
 
-const contactPut = (req, res) => {
-    res.json({
-        message: "Room put"
+const contactDetail = async (req, res, next) => {
+    connect(null);
+
+    const query = Contact.findOne({ "_id": req.params.idcontact });
+
+    await query.exec((err, contact) => {
+        if (err) return next(err);
+        res.json(contact)
     });
 }
 
-const contactDelete = (req, res) => {
+const contactPost = async (req, res) => {
+    connect(null);
+
+    await Contact.create(req.body.contact);
+
     res.json({
-        message: "Room delete"
+        message: "New contact posted",
+        newcontact: req.body.contact
     });
+}
+
+const contactPut = async (req, res, next) => {
+    connect(null);
+
+    const query = Contact.findOneAndUpdate({ "_id": req.params.idcontact }, req.body.contact);
+
+    await query.exec((err, contact) => {
+        if (err) return next(err);
+
+        res.json({
+            message: "Contact put",
+            oldcontact: contact,
+            newcontact: req.body.contact
+        });
+    });
+}
+
+const contactDelete = async (req, res, next) => {
+    const query = Contact.findOneAndDelete({ "_id": req.params.idcontact });
+
+    await query.exec((err, contact) => {
+        if (err) return next(err);
+
+        res.json({
+            message: "Contact deleted",
+            oldcontact: contact
+        });
+    })
 }
 
 export {
