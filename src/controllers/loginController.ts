@@ -1,7 +1,7 @@
 import passport from "passport";
 import jwt from "jsonwebtoken";
 
-const loginAuth = async (req: any, res, next) => {
+const loginAuth = async (req, res, next) => {
     passport.authenticate(
         "login",
         async (err, user, info) => {
@@ -15,7 +15,7 @@ const loginAuth = async (req: any, res, next) => {
                 req.login(
                     user,
                     { session: false },
-                    async (error) => {
+                    async (error: Error) => {
                         if (error) return next(error);
 
                         const body = { _id: user._id, email: user.email };

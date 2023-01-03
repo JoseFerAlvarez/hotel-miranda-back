@@ -9,7 +9,7 @@ interface IntUser {
     phone?: string,
     date?: Date,
     description?: string,
-    status?: number,
+    status: number,
     pass: string,
 }
 

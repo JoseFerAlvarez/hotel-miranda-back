@@ -12,19 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.disconnect = exports.connect = void 0;
-const mongoose_1 = __importDefault(require("mongoose"));
-const mongoDB = process.env.MONGO_LOCAL_CONNECTION;
-function connect(database) {
+exports.getHashPass = void 0;
+const bcrypt_1 = __importDefault(require("bcrypt"));
+function getHashPass(pass) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield mongoose_1.default.connect(database || mongoDB);
+        return yield bcrypt_1.default.hash(pass, 10)
+            .then((result) => result);
     });
 }
-exports.connect = connect;
-function disconnect() {
-    return __awaiter(this, void 0, void 0, function* () {
-        yield mongoose_1.default.disconnect();
-    });
-}
-exports.disconnect = disconnect;
-//# sourceMappingURL=connection.js.map
+exports.getHashPass = getHashPass;
+//# sourceMappingURL=helpers.js.map

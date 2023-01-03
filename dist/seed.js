@@ -8,18 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const faker_1 = require("@faker-js/faker");
 const connection_1 = require("./src/db/connection");
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const helpers_1 = require("./src/helpers/helpers");
 const schemas_1 = require("./src/Schemas/schemas");
 const roomList = [];
 const userList = [];
-const bookingList = [];
-const contactList = [];
 run();
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -58,7 +53,6 @@ function insertBookings(number) {
             const room = roomList[Math.round(Math.random() * roomList.length - 1)];
             const user = userList[Math.round(Math.random() * roomList.length - 1)];
             const booking = yield generateRandomBooking(yield getRandomRoom(room), yield getRandomUser(user));
-            bookingList.push(booking);
             yield schemas_1.Booking.create(booking);
         }
     });
@@ -68,7 +62,6 @@ function insertContacts(number) {
     return __awaiter(this, void 0, void 0, function* () {
         for (let i = 0; i < number; i++) {
             const contact = yield generateRandomContact();
-            contactList.push(contact);
             yield schemas_1.Contact.create(contact);
         }
     });
@@ -99,8 +92,8 @@ function generateRandomUser() {
             phone: faker_1.faker.phone.number('+34 6## ## ## ##'),
             date: generateRandomDate(null),
             description: faker_1.faker.random.words(30),
-            state: faker_1.faker.datatype.number({ min: 0, max: 1 }),
-            pass: yield getHashPass(faker_1.faker.internet.password())
+            status: faker_1.faker.datatype.number({ min: 0, max: 1 }),
+            pass: yield (0, helpers_1.getHashPass)(faker_1.faker.internet.password())
         });
     });
 }
@@ -163,12 +156,6 @@ function generateRandomPhotos() {
 function generateRandomPosition() {
     const userposition = ["Manager", "Room service", "Reception"];
     return faker_1.faker.helpers.arrayElement(userposition);
-}
-function getHashPass(pass) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return yield bcrypt_1.default.hash(pass, 10)
-            .then((result) => result);
-    });
 }
 /* Function helpers to generate a random booking */
 function getRandomUser(user) {

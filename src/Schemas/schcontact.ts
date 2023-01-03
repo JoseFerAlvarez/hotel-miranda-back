@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
+import IntContact from "../interfaces/intcontact";
+
 const { Schema } = mongoose;
 
-const contactSchema = new Schema({
+const contactSchema = new Schema<IntContact>({
     date: { type: Date, required: true },
     customer: String,
     email: { type: String, required: true },

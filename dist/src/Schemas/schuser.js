@@ -7,15 +7,15 @@ exports.User = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const { Schema } = mongoose_1.default;
 const userSchema = new Schema({
-    name: String,
+    name: { type: String, required: true },
     photo: String,
     position: String,
-    email: String,
+    email: { type: String, required: true },
     phone: String,
     date: Date,
     description: String,
-    status: Number,
-    pass: String,
+    status: { type: Number, required: true },
+    pass: { type: String, required: true },
 });
 exports.User = mongoose_1.default.model("user", userSchema);
 //# sourceMappingURL=schuser.js.map

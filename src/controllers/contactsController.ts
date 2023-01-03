@@ -1,12 +1,13 @@
 import { connect } from "../db/connection";
 import { Contact } from "../Schemas/schcontact";
+import { IntContact } from "../interfaces/interfaces";
 
 const contactList = async (req, res, next) => {
     connect(null);
 
     const query = Contact.find();
 
-    await query.exec((err, contacts) => {
+    await query.exec((err: Error, contacts: IntContact[]) => {
         if (err) return next(err);
         res.json(contacts);
     });
@@ -17,7 +18,7 @@ const contactDetail = async (req, res, next) => {
 
     const query = Contact.findOne({ "_id": req.params.idcontact });
 
-    await query.exec((err, contact) => {
+    await query.exec((err: Error, contact: IntContact) => {
         if (err) return next(err);
         res.json(contact)
     });
@@ -39,7 +40,7 @@ const contactPut = async (req, res, next) => {
 
     const query = Contact.findOneAndUpdate({ "_id": req.params.idcontact }, req.body.contact);
 
-    await query.exec((err, contact) => {
+    await query.exec((err: Error, contact: IntContact) => {
         if (err) return next(err);
 
         res.json({
@@ -53,7 +54,7 @@ const contactPut = async (req, res, next) => {
 const contactDelete = async (req, res, next) => {
     const query = Contact.findOneAndDelete({ "_id": req.params.idcontact });
 
-    await query.exec((err, contact) => {
+    await query.exec((err: Error, contact: IntContact) => {
         if (err) return next(err);
 
         res.json({

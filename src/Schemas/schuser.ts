@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
+import IntUser from "../interfaces/intuser";
+
 const { Schema } = mongoose;
 
-const userSchema = new Schema({
+const userSchema = new Schema<IntUser>({
     name: { type: String, required: true },
     photo: String,
     position: String,
@@ -9,7 +11,7 @@ const userSchema = new Schema({
     phone: String,
     date: Date,
     description: String,
-    status: Number,
+    status: { type: Number, required: true },
     pass: { type: String, required: true },
 });
 

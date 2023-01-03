@@ -1,12 +1,13 @@
 import { connect } from "../db/connection";
 import { Room } from "../Schemas/schroom";
+import { IntRoom } from "../interfaces/interfaces";
 
 const roomList = async (req, res, next) => {
     connect(null);
 
     const query = Room.find();
 
-    await query.exec((err, rooms) => {
+    await query.exec((err: Error, rooms: IntRoom[]) => {
         if (err) return next(err);
         res.json(rooms);
     });
@@ -17,7 +18,7 @@ const roomDetail = async (req, res, next) => {
 
     const query = Room.findOne({ "_id": req.params.idroom });
 
-    await query.exec((err, room) => {
+    await query.exec((err: Error, room: IntRoom) => {
         if (err) return next(err);
         res.json(room)
     });
@@ -39,7 +40,7 @@ const roomPut = async (req, res, next) => {
 
     const query = Room.findOneAndUpdate({ "_id": req.params.idroom }, req.body.room);
 
-    await query.exec((err, room) => {
+    await query.exec((err: Error, room: IntRoom) => {
         if (err) return next(err);
 
         res.json({
@@ -53,7 +54,7 @@ const roomPut = async (req, res, next) => {
 const roomDelete = async (req, res, next) => {
     const query = Room.findOneAndDelete({ "_id": req.params.idroom });
 
-    await query.exec((err, room) => {
+    await query.exec((err: Error, room: IntRoom) => {
         if (err) return next(err);
 
         res.json({

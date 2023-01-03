@@ -1,12 +1,13 @@
 import { connect } from "../db/connection";
 import { User } from "../Schemas/schuser";
+import { IntUser } from "../interfaces/interfaces";
 
 const userList = async (req, res, next) => {
     connect(null);
 
     const query = User.find();
 
-    await query.exec((err, users) => {
+    await query.exec((err: Error, users: IntUser[]) => {
         if (err) return next(err);
         res.json(users);
     });
@@ -17,7 +18,7 @@ const userDetail = async (req, res, next) => {
 
     const query = User.findOne({ "_id": req.params.iduser });
 
-    await query.exec((err, user) => {
+    await query.exec((err: Error, user: IntUser) => {
         if (err) return next(err);
         res.json(user);
     });
@@ -39,7 +40,7 @@ const userPut = async (req, res, next) => {
 
     const query = User.findOneAndUpdate({ "_id": req.params.iduser }, req.body.user);
 
-    await query.exec((err, user) => {
+    await query.exec((err: Error, user: IntUser) => {
         if (err) return next(err);
 
         res.json({
@@ -53,7 +54,7 @@ const userPut = async (req, res, next) => {
 const userDelete = async (req, res, next) => {
     const query = User.findOneAndDelete({ "_id": req.params.iduser });
 
-    await query.exec((err, user) => {
+    await query.exec((err: Error, user: IntUser) => {
         if (err) return next(err);
 
         res.json({

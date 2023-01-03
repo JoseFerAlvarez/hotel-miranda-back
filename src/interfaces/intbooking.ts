@@ -1,21 +1,21 @@
 import { Types } from "mongoose"
 
 interface IntBooking {
-    _id?: Types.ObjectId,
-    user_id: Types.ObjectId,
-    room_id: Types.ObjectId,
+    _id?: typeof Types.ObjectId,
+    user_id: typeof Types.ObjectId,
+    room_id: typeof Types.ObjectId,
     name: string,
     order: Date,
     checkin: Date,
     checkout: Date,
-    type?: string,
+    type: string,
     numroom: number,
-    price?: number,
+    price: number,
     request?: string,
     amenities?: string[],
     photos?: string[],
     description?: string,
-    status?: number
+    status: number
 }
 
 export default IntBooking;

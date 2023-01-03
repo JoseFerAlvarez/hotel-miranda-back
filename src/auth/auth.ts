@@ -1,10 +1,11 @@
 import { connect } from "../db/connection";
 import { User } from "../Schemas/schuser";
-import bcrypt from "bcrypt";
+import { getHashPass } from "../helpers/helpers";
 
 import passport from "passport";
 import passportLocal from "passport-local";
 import passportJwt from "passport-jwt";
+import { IntUser } from "../interfaces/interfaces";
 
 const LocalStrategy = passportLocal.Strategy;
 const JwtStrategy = passportJwt.Strategy;
@@ -19,16 +20,16 @@ passport.use(
             usernameField: 'email',
             passwordField: 'password'
         },
-        async (email, password, done) => {
+        async (email: string, password: string, done) => {
             connect(null);
 
             try {
 
-                const pass = await getHashPass(password);
+                const pass: string = await getHashPass(password);
 
                 const query = User.findOne({ "email": email, "pass": pass });
 
-                await query.exec((err, user) => {
+                await query.exec((err: Error, user: IntUser) => {
 
                     if (err || !user) {
                         if (email === process.env.DEFAULT_USER && password === process.env.DEFAULT_PASSWORD) {
@@ -65,9 +66,3 @@ passport.use(
             }
         })
 );
-
-/** Function helper to get the hash password */
-async function getHashPass(pass: string): Promise<string> {
-    return await bcrypt.hash(pass, 10)
-        .then((result) => result);
-}

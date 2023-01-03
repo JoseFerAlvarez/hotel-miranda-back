@@ -7,12 +7,12 @@ exports.Contact = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const { Schema } = mongoose_1.default;
 const contactSchema = new Schema({
-    date: Date,
+    date: { type: Date, required: true },
     customer: String,
-    email: String,
+    email: { type: String, required: true },
     phone: String,
-    header: String,
-    comment: String
+    header: { type: String, required: true },
+    comment: { type: String, required: true },
 });
 exports.Contact = mongoose_1.default.model("contact", contactSchema);
 //# sourceMappingURL=schcontact.js.map
