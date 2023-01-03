@@ -7,6 +7,8 @@ exports.Booking = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const { Schema } = mongoose_1.default;
 const bookingSchema = new Schema({
+    user_id: mongoose_1.default.Types.ObjectId,
+    room_id: mongoose_1.default.Types.ObjectId,
     name: String,
     order: Date,
     checkin: Date,

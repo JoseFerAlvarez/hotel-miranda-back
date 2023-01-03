@@ -28,6 +28,7 @@ function run() {
         yield insertUsers(20);
         yield insertContacts(20);
         yield insertBookings(20);
+        yield (0, connection_1.disconnect)();
     });
 }
 /* Puts in an array the number of rooms given by a parameter */
@@ -36,7 +37,7 @@ function insertRooms(number) {
         for (let i = 0; i < number; i++) {
             const room = yield generateRandomRoom();
             roomList.push(room);
-            room.save();
+            yield schemas_1.Room.create(room);
         }
     });
 }
@@ -46,7 +47,7 @@ function insertUsers(number) {
         for (let i = 0; i < number; i++) {
             const user = yield generateRandomUser();
             userList.push(user);
-            user.save();
+            yield schemas_1.User.create(user);
         }
     });
 }
@@ -56,9 +57,9 @@ function insertBookings(number) {
         for (let i = 0; i < number; i++) {
             const room = roomList[Math.round(Math.random() * roomList.length - 1)];
             const user = userList[Math.round(Math.random() * roomList.length - 1)];
-            const booking = yield generateRandomBooking(room, user);
+            const booking = yield generateRandomBooking(yield getRandomRoom(room), yield getRandomUser(user));
             bookingList.push(booking);
-            booking.save();
+            yield schemas_1.Booking.create(booking);
         }
     });
 }
@@ -68,7 +69,7 @@ function insertContacts(number) {
         for (let i = 0; i < number; i++) {
             const contact = yield generateRandomContact();
             contactList.push(contact);
-            contact.save();
+            yield schemas_1.Contact.create(contact);
         }
     });
 }
@@ -110,6 +111,8 @@ function generateRandomBooking(room, user) {
         const bookingCheckIn = generateRandomDate(bookingOrder);
         const bookingCheckOut = generateRandomDate(bookingCheckIn);
         return yield new schemas_1.Booking({
+            user_id: user._id,
+            room_id: room._id,
             name: user.name,
             order: bookingOrder,
             checkin: bookingCheckIn,
@@ -164,6 +167,21 @@ function generateRandomPosition() {
 function getHashPass(pass) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield bcrypt_1.default.hash(pass, 10)
+            .then((result) => result);
+    });
+}
+/* Function helpers to generate a random booking */
+function getRandomUser(user) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const userQuery = schemas_1.User.findOne({ user });
+        return yield userQuery.exec()
+            .then((result) => result);
+    });
+}
+function getRandomRoom(room) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const roomQuery = schemas_1.Room.findOne({ room });
+        return yield roomQuery.exec()
             .then((result) => result);
     });
 }

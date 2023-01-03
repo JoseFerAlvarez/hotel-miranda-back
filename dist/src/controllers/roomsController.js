@@ -37,6 +37,7 @@ const roomPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield schroom_1.Room.create(req.body.room);
     res.json({
         message: "New room posted",
+        newroom: req.body.room
     });
 });
 exports.roomPost = roomPost;
@@ -48,7 +49,8 @@ const roomPut = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
             return next(err);
         res.json({
             message: "Room put",
-            room: room
+            oldroom: room,
+            newroom: req.body.room
         });
     });
 });
@@ -59,8 +61,8 @@ const roomDelete = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         if (err)
             return next(err);
         res.json({
-            message: "Room delete",
-            room: room
+            message: "Room deleted",
+            oldroom: room
         });
     });
 });

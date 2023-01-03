@@ -48,7 +48,7 @@ const userPut = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
         if (err)
             return next(err);
         res.json({
-            message: "Room put",
+            message: "User put",
             olduser: user,
             newuser: req.body.user
         });
@@ -61,7 +61,7 @@ const userDelete = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         if (err)
             return next(err);
         res.json({
-            message: "Room delete",
+            message: "User deleted",
             olduser: user
         });
     });

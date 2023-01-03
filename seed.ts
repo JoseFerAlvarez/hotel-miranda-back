@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { connect } from "./src/db/connection";
+import { connect, disconnect } from "./src/db/connection";
 import bcrypt from "bcrypt";
 import {
     Room,
@@ -21,8 +21,11 @@ async function run() {
 
     await insertRooms(20);
     await insertUsers(20);
+
     await insertContacts(20);
     await insertBookings(20);
+
+    await disconnect();
 }
 
 /* Puts in an array the number of rooms given by a parameter */
@@ -31,7 +34,7 @@ async function insertRooms(number: number): Promise<void> {
         const room = await generateRandomRoom();
         roomList.push(room);
 
-        room.save();
+        await Room.create(room);
     }
 }
 
@@ -41,7 +44,7 @@ async function insertUsers(number: number): Promise<void> {
         const user = await generateRandomUser();
         userList.push(user);
 
-        user.save();
+        await User.create(user);
     }
 }
 
@@ -50,10 +53,11 @@ async function insertBookings(number: number): Promise<void> {
     for (let i = 0; i < number; i++) {
         const room = roomList[Math.round(Math.random() * roomList.length - 1)];
         const user = userList[Math.round(Math.random() * roomList.length - 1)];
-        const booking = await generateRandomBooking(room, user);
+
+        const booking = await generateRandomBooking(await getRandomRoom(room), await getRandomUser(user));
         bookingList.push(booking);
 
-        booking.save();
+        await Booking.create(booking);
     }
 }
 
@@ -63,7 +67,7 @@ async function insertContacts(number: number): Promise<void> {
         const contact = await generateRandomContact();
         contactList.push(contact);
 
-        contact.save();
+        await Contact.create(contact);
     }
 }
 
@@ -103,6 +107,8 @@ async function generateRandomBooking(room, user): Promise<any> {
     const bookingCheckOut: Date = generateRandomDate(bookingCheckIn);
 
     return await new Booking({
+        user_id: user._id,
+        room_id: room._id,
         name: user.name,
         order: bookingOrder,
         checkin: bookingCheckIn,
@@ -165,6 +171,20 @@ async function getHashPass(pass: string): Promise<string> {
         .then((result) => result);
 }
 
+/* Function helpers to generate a random booking */
+async function getRandomUser(user) {
+    const userQuery = User.findOne({ user });
+
+    return await userQuery.exec()
+        .then((result) => result);
+}
+
+async function getRandomRoom(room) {
+    const roomQuery = Room.findOne({ room });
+
+    return await roomQuery.exec()
+        .then((result) => result);
+}
 
 /* Function helpers to generate a random date */
 function generateRandomDate(date: Date | null): Date {

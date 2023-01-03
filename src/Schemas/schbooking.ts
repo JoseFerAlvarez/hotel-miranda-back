@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const bookingSchema = new Schema({
+    user_id: mongoose.Types.ObjectId,
+    room_id: mongoose.Types.ObjectId,
     name: String,
     order: Date,
     checkin: Date,
