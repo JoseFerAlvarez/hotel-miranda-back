@@ -1,39 +1,44 @@
-import { connect } from "../db/connection";
+import { connect, disconnect } from "../db/connection";
 import { Booking, User, Room } from "../Schemas/schemas";
 import { IntRoom, IntUser, IntBooking } from "../interfaces/interfaces";
 import { Types } from "mongoose";
 
 const bookingsList = async (req, res, next) => {
-    connect(null);
+    await connect();
 
-    const query = Booking.find();
+    const bookings: IntBooking[] = await Booking
+        .find()
+        .exec()
+        .catch((e: Error) => next(e));
 
-    await query.exec((err: Error, bookings: IntBooking[]) => {
-        if (err) return next(err);
-        res.json(bookings);
-    });
+    res.json(bookings);
+
+    await disconnect();
 }
 
 const bookingsDetail = async (req, res, next) => {
-    connect(null);
+    await connect();
 
-    const query = Booking.findOne({ "_id": req.params.idbooking });
+    const booking = await Booking
+        .findOne({ "_id": req.params.idbooking })
+        .exec()
+        .catch((e: Error) => next(e));
 
-    await query.exec((err: Error, booking: IntBooking) => {
-        if (err) return next(err);
-        res.json(booking)
-    });
+    res.json(booking);
+
+    await disconnect();
 }
 
-const bookingsPost = async (req, res) => {
-    connect(null);
+const bookingsPost = async (req, res, next) => {
+    await connect();
 
     const booking: IntBooking = req.body.booking;
     const userid: typeof Types.ObjectId = booking.user_id;
     const roomid: typeof Types.ObjectId = booking.room_id;
 
     if (await userExists(userid) && await roomExists(roomid)) {
-        await Booking.create(booking);
+        await Booking.create(booking)
+            .catch((e: Error) => next(e));
 
         res.json({
             message: "New booking posted",
@@ -44,59 +49,65 @@ const bookingsPost = async (req, res) => {
             message: "Invalid data"
         });
     }
+
+    await disconnect();
 }
 
 const bookingsPut = async (req, res, next) => {
-    connect(null);
+    await connect();
 
     const booking: IntBooking = req.body.booking;
     const userid: typeof Types.ObjectId = booking.user_id;
     const roomid: typeof Types.ObjectId = booking.room_id;
 
     if (await userExists(userid) && await roomExists(roomid)) {
-        const query = Booking.findOneAndUpdate({ "_id": req.params.idbooking }, req.body.booking);
+        const booking: IntBooking = await Booking
+            .findOneAndUpdate({ "_id": req.params.idbooking }, req.body.booking)
+            .exec()
+            .catch((e: Error) => next(e));
 
-        await query.exec((err: Error, room: IntRoom) => {
-            if (err) return next(err);
-
-            res.json({
-                message: "Booking put",
-                oldbooking: room,
-                newbooking: req.body.booking
-            });
+        res.json({
+            message: "Booking put",
+            oldbooking: booking,
+            newbooking: req.body.booking
         });
     } else {
         res.json({
             message: "Invalid data"
         });
     }
+
+    await disconnect();
 }
 
 const bookingsDelete = async (req, res, next) => {
-    const query = Booking.findOneAndDelete({ "_id": req.params.idbooking });
+    await connect();
 
-    await query.exec((err: Error, booking: IntBooking) => {
-        if (err) return next(err);
+    const booking: IntBooking = await Booking
+        .findOneAndDelete({ "_id": req.params.idbooking })
+        .exec()
+        .catch((e: Error) => next(e));
 
-        res.json({
-            message: "Room deleted",
-            oldbooking: booking
-        });
-    })
+    res.json({
+        message: "Room deleted",
+        oldbooking: booking
+    });
+
+    await disconnect();
 }
 
 /* Function helpers to check the user and room ids */
 async function userExists(userid: typeof Types.ObjectId): Promise<boolean> {
-    const userQuery = User.findOne({ "_id": userid });
-
-    return await userQuery.exec()
+    return await User
+        .findOne({ "_id": userid })
+        .exec()
         .then((result: IntUser) => result ? true : false);
 }
 
 async function roomExists(roomid: typeof Types.ObjectId): Promise<boolean> {
-    const roomQuery = Room.findOne({ "_id": roomid });
-
-    return await roomQuery.exec()
+    return await Room
+        .findOne({ "_id": roomid })
+        .exec()
         .then((result: IntRoom) => result ? true : false);
 }
 

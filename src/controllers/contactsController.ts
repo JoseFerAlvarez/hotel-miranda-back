@@ -1,67 +1,79 @@
-import { connect } from "../db/connection";
+import { connect, disconnect } from "../db/connection";
 import { Contact } from "../Schemas/schcontact";
 import { IntContact } from "../interfaces/interfaces";
 
 const contactList = async (req, res, next) => {
-    connect(null);
+    await connect();
 
-    const query = Contact.find();
+    const contacts: IntContact = await Contact
+        .find()
+        .exec()
+        .catch((e: Error) => next(e));
 
-    await query.exec((err: Error, contacts: IntContact[]) => {
-        if (err) return next(err);
-        res.json(contacts);
-    });
+    res.json(contacts);
+
+    await disconnect();
 }
 
 const contactDetail = async (req, res, next) => {
-    connect(null);
+    await connect();
 
-    const query = Contact.findOne({ "_id": req.params.idcontact });
+    const contact: IntContact = await Contact
+        .findOne({ "_id": req.params.idcontact })
+        .exec()
+        .catch((e: Error) => next(e));
 
-    await query.exec((err: Error, contact: IntContact) => {
-        if (err) return next(err);
-        res.json(contact)
-    });
+    res.json(contact);
+
+    await disconnect();
 }
 
-const contactPost = async (req, res) => {
-    connect(null);
+const contactPost = async (req, res, next) => {
+    await connect();
 
-    await Contact.create(req.body.contact);
+    await Contact
+        .create(req.body.contact)
+        .catch((e: Error) => next(e));
 
     res.json({
         message: "New contact posted",
         newcontact: req.body.contact
     });
+
+    await disconnect();
 }
 
 const contactPut = async (req, res, next) => {
-    connect(null);
+    await connect();
 
-    const query = Contact.findOneAndUpdate({ "_id": req.params.idcontact }, req.body.contact);
+    const contact: IntContact = await Contact
+        .findOneAndUpdate({ "_id": req.params.idcontact }, req.body.contact)
+        .exec()
+        .catch((e: Error) => next(e));
 
-    await query.exec((err: Error, contact: IntContact) => {
-        if (err) return next(err);
-
-        res.json({
-            message: "Contact put",
-            oldcontact: contact,
-            newcontact: req.body.contact
-        });
+    res.json({
+        message: "Contact put",
+        oldcontact: contact,
+        newcontact: req.body.contact
     });
+
+    await disconnect();
 }
 
 const contactDelete = async (req, res, next) => {
-    const query = Contact.findOneAndDelete({ "_id": req.params.idcontact });
+    await connect();
 
-    await query.exec((err: Error, contact: IntContact) => {
-        if (err) return next(err);
+    const contact: IntContact = await Contact
+        .findOneAndDelete({ "_id": req.params.idcontact })
+        .exec()
+        .catch((e: Error) => next(e));
 
-        res.json({
-            message: "Contact deleted",
-            oldcontact: contact
-        });
-    })
+    res.json({
+        message: "Contact deleted",
+        oldcontact: contact
+    });
+
+    await disconnect();
 }
 
 export {

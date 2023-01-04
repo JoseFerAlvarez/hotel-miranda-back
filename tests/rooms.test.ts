@@ -75,7 +75,7 @@ describe("Get room list", (): void => {
     })
 }); */
 
-/* describe("Room post", (): void => {
+describe("Room post", (): void => {
     test("Room post without token", async (): Promise<void> => {
         await request(server)
             .post("/rooms")
@@ -86,9 +86,12 @@ describe("Get room list", (): void => {
         await request(server)
             .post("/rooms")
             .set("Authorization", "Bearer " + token)
+            .send({
+                room: room
+            })
             .expect(200);
     })
-}); */
+});
 
 /*describe("Put room", (): void => {
     const id = "63b3f69d8622c23daeb2bbeb";

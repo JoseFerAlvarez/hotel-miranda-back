@@ -1,67 +1,77 @@
-import { connect } from "../db/connection";
+import { connect, disconnect } from "../db/connection";
 import { Room } from "../Schemas/schroom";
 import { IntRoom } from "../interfaces/interfaces";
 
 const roomList = async (req, res, next) => {
-    connect(null);
+    await connect();
 
-    const query = Room.find();
+    const rooms: IntRoom[] = await Room
+        .find()
+        .exec()
+        .catch((e) => next(e));
 
-    await query.exec((err: Error, rooms: IntRoom[]) => {
-        if (err) return next(err);
-        res.json(rooms);
-    });
-}
+    res.json(rooms);
+
+    await disconnect();
+};
 
 const roomDetail = async (req, res, next) => {
-    connect(null);
+    await connect();
 
-    const query = Room.findOne({ "_id": req.params.idroom });
+    const room: IntRoom = await Room
+        .findOne({ "_id": req.params.idroom })
+        .exec()
+        .catch((e) => next(e));
 
-    await query.exec((err: Error, room: IntRoom) => {
-        if (err) return next(err);
-        res.json(room)
-    });
-}
+    res.json(room);
 
-const roomPost = async (req, res) => {
-    connect(null);
+    await disconnect();
+};
 
-    await Room.create(req.body.room);
+const roomPost = async (req, res, next) => {
+    await connect();
+
+    await Room.create(req.body.room)
+        .catch((e) => next(e));
 
     res.json({
         message: "New room posted",
         newroom: req.body.room
     });
+
+    await disconnect();
 }
 
 const roomPut = async (req, res, next) => {
-    connect(null);
+    await connect();
 
-    const query = Room.findOneAndUpdate({ "_id": req.params.idroom }, req.body.room);
+    const room: IntRoom = await Room
+        .findOneAndUpdate({ "_id": req.params.idroom }, req.body.room)
+        .exec()
+        .catch((e) => next(e));
 
-    await query.exec((err: Error, room: IntRoom) => {
-        if (err) return next(err);
-
-        res.json({
-            message: "Room put",
-            oldroom: room,
-            newroom: req.body.room
-        });
+    res.json({
+        message: "Room put",
+        oldroom: room,
+        newroom: req.body.room
     });
+
+    await disconnect();
 }
 
 const roomDelete = async (req, res, next) => {
-    const query = Room.findOneAndDelete({ "_id": req.params.idroom });
+    await connect();
+    const room: IntRoom = await Room
+        .findOneAndDelete({ "_id": req.params.idroom })
+        .exec()
+        .catch((e) => next(e));
 
-    await query.exec((err: Error, room: IntRoom) => {
-        if (err) return next(err);
+    res.json({
+        message: "Room deleted",
+        oldroom: room
+    });
 
-        res.json({
-            message: "Room deleted",
-            oldroom: room
-        });
-    })
+    await disconnect();
 }
 
 export {

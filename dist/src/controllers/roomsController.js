@@ -13,58 +13,61 @@ exports.roomDelete = exports.roomPut = exports.roomPost = exports.roomDetail = e
 const connection_1 = require("../db/connection");
 const schroom_1 = require("../Schemas/schroom");
 const roomList = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    (0, connection_1.connect)(null);
-    const query = schroom_1.Room.find();
-    yield query.exec((err, rooms) => {
-        if (err)
-            return next(err);
-        res.json(rooms);
-    });
+    yield (0, connection_1.connect)(null);
+    const rooms = yield schroom_1.Room
+        .find()
+        .exec()
+        .catch((e) => next(e));
+    res.json(rooms);
+    yield (0, connection_1.disconnect)();
 });
 exports.roomList = roomList;
 const roomDetail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    (0, connection_1.connect)(null);
-    const query = schroom_1.Room.findOne({ "_id": req.params.idroom });
-    yield query.exec((err, room) => {
-        if (err)
-            return next(err);
-        res.json(room);
-    });
+    yield (0, connection_1.connect)(null);
+    const room = yield schroom_1.Room
+        .findOne({ "_id": req.params.idroom })
+        .exec()
+        .catch((e) => next(e));
+    res.json(room);
+    yield (0, connection_1.disconnect)();
 });
 exports.roomDetail = roomDetail;
-const roomPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    (0, connection_1.connect)(null);
-    yield schroom_1.Room.create(req.body.room);
+const roomPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    yield (0, connection_1.connect)(null);
+    yield schroom_1.Room.create(req.body.room)
+        .catch((e) => next(e));
     res.json({
         message: "New room posted",
         newroom: req.body.room
     });
+    yield (0, connection_1.disconnect)();
 });
 exports.roomPost = roomPost;
 const roomPut = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    (0, connection_1.connect)(null);
-    const query = schroom_1.Room.findOneAndUpdate({ "_id": req.params.idroom }, req.body.room);
-    yield query.exec((err, room) => {
-        if (err)
-            return next(err);
-        res.json({
-            message: "Room put",
-            oldroom: room,
-            newroom: req.body.room
-        });
+    yield (0, connection_1.connect)(null);
+    const room = yield schroom_1.Room
+        .findOneAndUpdate({ "_id": req.params.idroom }, req.body.room)
+        .exec()
+        .catch((e) => next(e));
+    res.json({
+        message: "Room put",
+        oldroom: room,
+        newroom: req.body.room
     });
+    yield (0, connection_1.disconnect)();
 });
 exports.roomPut = roomPut;
 const roomDelete = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const query = schroom_1.Room.findOneAndDelete({ "_id": req.params.idroom });
-    yield query.exec((err, room) => {
-        if (err)
-            return next(err);
-        res.json({
-            message: "Room deleted",
-            oldroom: room
-        });
+    yield (0, connection_1.connect)(null);
+    const room = yield schroom_1.Room
+        .findOneAndDelete({ "_id": req.params.idroom })
+        .exec()
+        .catch((e) => next(e));
+    res.json({
+        message: "Room deleted",
+        oldroom: room
     });
+    yield (0, connection_1.disconnect)();
 });
 exports.roomDelete = roomDelete;
 //# sourceMappingURL=roomsController.js.map

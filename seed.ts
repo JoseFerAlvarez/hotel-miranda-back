@@ -23,7 +23,7 @@ const userList: IntUser[] = [];
 run();
 
 async function run() {
-    await connect(null);
+    await connect();
 
     await insertRooms(20);
     await insertUsers(20);

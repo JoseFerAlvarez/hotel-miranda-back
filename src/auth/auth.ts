@@ -1,4 +1,4 @@
-import { connect } from "../db/connection";
+import { connect, disconnect } from "../db/connection";
 import { User } from "../Schemas/schuser";
 import { getHashPass } from "../helpers/helpers";
 
@@ -21,30 +21,28 @@ passport.use(
             passwordField: 'password'
         },
         async (email: string, password: string, done) => {
-            connect(null);
+            await connect();
 
             try {
 
                 const pass: string = await getHashPass(password);
+                const user: IntUser = await User.findOne({ "email": email, "pass": pass });
 
-                const query = User.findOne({ "email": email, "pass": pass });
+                await disconnect();
 
-                await query.exec((err: Error, user: IntUser) => {
-
-                    if (err || !user) {
-                        if (email === process.env.DEFAULT_USER && password === process.env.DEFAULT_PASSWORD) {
-                            const user = {
-                                _id: 1,
-                                email: process.env.DEFAULT_USER,
-                            }
-                            return done(null, user, { message: "Logged in successfully" });
-                        } else {
-                            return done(null, false, { message: "Invalid credentials" });
+                if (!user) {
+                    if (email === process.env.DEFAULT_USER && password === process.env.DEFAULT_PASSWORD) {
+                        const user = {
+                            _id: 1,
+                            email: process.env.DEFAULT_USER,
                         }
+                        return done(null, user, { message: "Logged in successfully" });
                     } else {
-                        return done(null, { _id: user._id, email: user.email }, { message: "Logged in successfully" });
+                        return done(null, false, { message: "Invalid credentials" });
                     }
-                });
+                } else {
+                    return done(null, { _id: user._id, email: user.email }, { message: "Logged in successfully" });
+                }
             } catch (error) {
                 return done(error);
             }

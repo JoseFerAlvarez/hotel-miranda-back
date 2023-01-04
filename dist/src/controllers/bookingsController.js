@@ -13,32 +13,33 @@ exports.bookingsDelete = exports.bookingsPut = exports.bookingsPost = exports.bo
 const connection_1 = require("../db/connection");
 const schemas_1 = require("../Schemas/schemas");
 const bookingsList = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    (0, connection_1.connect)(null);
-    const query = schemas_1.Booking.find();
-    yield query.exec((err, bookings) => {
-        if (err)
-            return next(err);
-        res.json(bookings);
-    });
+    yield (0, connection_1.connect)(null);
+    const bookings = yield schemas_1.Booking
+        .find()
+        .exec()
+        .catch((e) => next(e));
+    res.json(bookings);
+    yield (0, connection_1.disconnect)();
 });
 exports.bookingsList = bookingsList;
 const bookingsDetail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    (0, connection_1.connect)(null);
-    const query = schemas_1.Booking.findOne({ "_id": req.params.idbooking });
-    yield query.exec((err, booking) => {
-        if (err)
-            return next(err);
-        res.json(booking);
-    });
+    yield (0, connection_1.connect)(null);
+    const booking = yield schemas_1.Booking
+        .findOne({ "_id": req.params.idbooking })
+        .exec()
+        .catch((e) => next(e));
+    res.json(booking);
+    yield (0, connection_1.disconnect)();
 });
 exports.bookingsDetail = bookingsDetail;
-const bookingsPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    (0, connection_1.connect)(null);
+const bookingsPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    yield (0, connection_1.connect)(null);
     const booking = req.body.booking;
     const userid = booking.user_id;
     const roomid = booking.room_id;
     if ((yield userExists(userid)) && (yield roomExists(roomid))) {
-        yield schemas_1.Booking.create(booking);
+        yield schemas_1.Booking.create(booking)
+            .catch((e) => next(e));
         res.json({
             message: "New booking posted",
             newbooking: booking
@@ -49,23 +50,23 @@ const bookingsPost = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             message: "Invalid data"
         });
     }
+    yield (0, connection_1.disconnect)();
 });
 exports.bookingsPost = bookingsPost;
 const bookingsPut = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)(null);
     const booking = req.body.booking;
     const userid = booking.user_id;
     const roomid = booking.room_id;
     if ((yield userExists(userid)) && (yield roomExists(roomid))) {
-        const query = schemas_1.Booking.findOneAndUpdate({ "_id": req.params.idbooking }, req.body.booking);
-        yield query.exec((err, room) => {
-            if (err)
-                return next(err);
-            res.json({
-                message: "Booking put",
-                oldbooking: room,
-                newbooking: req.body.booking
-            });
+        const booking = yield schemas_1.Booking
+            .findOneAndUpdate({ "_id": req.params.idbooking }, req.body.booking)
+            .exec()
+            .catch((e) => next(e));
+        res.json({
+            message: "Booking put",
+            oldbooking: booking,
+            newbooking: req.body.booking
         });
     }
     else {
@@ -73,32 +74,36 @@ const bookingsPut = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             message: "Invalid data"
         });
     }
+    yield (0, connection_1.disconnect)();
 });
 exports.bookingsPut = bookingsPut;
 const bookingsDelete = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const query = schemas_1.Booking.findOneAndDelete({ "_id": req.params.idbooking });
-    yield query.exec((err, booking) => {
-        if (err)
-            return next(err);
-        res.json({
-            message: "Room deleted",
-            oldbooking: booking
-        });
+    yield (0, connection_1.connect)(null);
+    const booking = yield schemas_1.Booking
+        .findOneAndDelete({ "_id": req.params.idbooking })
+        .exec()
+        .catch((e) => next(e));
+    res.json({
+        message: "Room deleted",
+        oldbooking: booking
     });
+    yield (0, connection_1.disconnect)();
 });
 exports.bookingsDelete = bookingsDelete;
 /* Function helpers to check the user and room ids */
 function userExists(userid) {
     return __awaiter(this, void 0, void 0, function* () {
-        const userQuery = schemas_1.User.findOne({ "_id": userid });
-        return yield userQuery.exec()
+        return yield schemas_1.User
+            .findOne({ "_id": userid })
+            .exec()
             .then((result) => result ? true : false);
     });
 }
 function roomExists(roomid) {
     return __awaiter(this, void 0, void 0, function* () {
-        const roomQuery = schemas_1.Room.findOne({ "_id": roomid });
-        return yield roomQuery.exec()
+        return yield schemas_1.Room
+            .findOne({ "_id": roomid })
+            .exec()
             .then((result) => result ? true : false);
     });
 }

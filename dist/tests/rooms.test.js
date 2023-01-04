@@ -76,20 +76,22 @@ describe("Get room list", () => {
         expect(res.statusCode).toBe(200);
     })
 }); */
-/* describe("Room post", (): void => {
-    test("Room post without token", async (): Promise<void> => {
-        await request(server)
+describe("Room post", () => {
+    test("Room post without token", () => __awaiter(void 0, void 0, void 0, function* () {
+        yield (0, supertest_1.default)(index_1.default)
             .post("/rooms")
             .expect(401);
-    });
-
-    test("Room post with token", async (): Promise<void> => {
-        await request(server)
+    }));
+    test("Room post with token", () => __awaiter(void 0, void 0, void 0, function* () {
+        yield (0, supertest_1.default)(index_1.default)
             .post("/rooms")
             .set("Authorization", "Bearer " + token)
+            .send({
+            room: room
+        })
             .expect(200);
-    })
-}); */
+    }));
+});
 /*describe("Put room", (): void => {
     const id = "63b3f69d8622c23daeb2bbeb";
     const room = {

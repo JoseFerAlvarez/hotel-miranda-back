@@ -26,27 +26,26 @@ passport_1.default.use("login", new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
 }, (email, password, done) => __awaiter(void 0, void 0, void 0, function* () {
-    (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)(null);
     try {
         const pass = yield (0, helpers_1.getHashPass)(password);
-        const query = schuser_1.User.findOne({ "email": email, "pass": pass });
-        yield query.exec((err, user) => {
-            if (err || !user) {
-                if (email === process.env.DEFAULT_USER && password === process.env.DEFAULT_PASSWORD) {
-                    const user = {
-                        _id: 1,
-                        email: process.env.DEFAULT_USER,
-                    };
-                    return done(null, user, { message: "Logged in successfully" });
-                }
-                else {
-                    return done(null, false, { message: "Invalid credentials" });
-                }
+        const user = yield schuser_1.User.findOne({ "email": email, "pass": pass });
+        yield (0, connection_1.disconnect)();
+        if (!user) {
+            if (email === process.env.DEFAULT_USER && password === process.env.DEFAULT_PASSWORD) {
+                const user = {
+                    _id: 1,
+                    email: process.env.DEFAULT_USER,
+                };
+                return done(null, user, { message: "Logged in successfully" });
             }
             else {
-                return done(null, { _id: user._id, email: user.email }, { message: "Logged in successfully" });
+                return done(null, false, { message: "Invalid credentials" });
             }
-        });
+        }
+        else {
+            return done(null, { _id: user._id, email: user.email }, { message: "Logged in successfully" });
+        }
     }
     catch (error) {
         return done(error);

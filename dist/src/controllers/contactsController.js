@@ -13,58 +13,62 @@ exports.contactDelete = exports.contactPut = exports.contactPost = exports.conta
 const connection_1 = require("../db/connection");
 const schcontact_1 = require("../Schemas/schcontact");
 const contactList = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    (0, connection_1.connect)(null);
-    const query = schcontact_1.Contact.find();
-    yield query.exec((err, contacts) => {
-        if (err)
-            return next(err);
-        res.json(contacts);
-    });
+    yield (0, connection_1.connect)(null);
+    const contacts = yield schcontact_1.Contact
+        .find()
+        .exec()
+        .catch((e) => next(e));
+    res.json(contacts);
+    yield (0, connection_1.disconnect)();
 });
 exports.contactList = contactList;
 const contactDetail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    (0, connection_1.connect)(null);
-    const query = schcontact_1.Contact.findOne({ "_id": req.params.idcontact });
-    yield query.exec((err, contact) => {
-        if (err)
-            return next(err);
-        res.json(contact);
-    });
+    yield (0, connection_1.connect)(null);
+    const contact = yield schcontact_1.Contact
+        .findOne({ "_id": req.params.idcontact })
+        .exec()
+        .catch((e) => next(e));
+    res.json(contact);
+    yield (0, connection_1.disconnect)();
 });
 exports.contactDetail = contactDetail;
-const contactPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    (0, connection_1.connect)(null);
-    yield schcontact_1.Contact.create(req.body.contact);
+const contactPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    yield (0, connection_1.connect)(null);
+    yield schcontact_1.Contact
+        .create(req.body.contact)
+        .catch((e) => next(e));
     res.json({
         message: "New contact posted",
         newcontact: req.body.contact
     });
+    yield (0, connection_1.disconnect)();
 });
 exports.contactPost = contactPost;
 const contactPut = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    (0, connection_1.connect)(null);
-    const query = schcontact_1.Contact.findOneAndUpdate({ "_id": req.params.idcontact }, req.body.contact);
-    yield query.exec((err, contact) => {
-        if (err)
-            return next(err);
-        res.json({
-            message: "Contact put",
-            oldcontact: contact,
-            newcontact: req.body.contact
-        });
+    yield (0, connection_1.connect)(null);
+    const contact = yield schcontact_1.Contact
+        .findOneAndUpdate({ "_id": req.params.idcontact }, req.body.contact)
+        .exec()
+        .catch((e) => next(e));
+    res.json({
+        message: "Contact put",
+        oldcontact: contact,
+        newcontact: req.body.contact
     });
+    yield (0, connection_1.disconnect)();
 });
 exports.contactPut = contactPut;
 const contactDelete = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const query = schcontact_1.Contact.findOneAndDelete({ "_id": req.params.idcontact });
-    yield query.exec((err, contact) => {
-        if (err)
-            return next(err);
-        res.json({
-            message: "Contact deleted",
-            oldcontact: contact
-        });
+    yield (0, connection_1.connect)(null);
+    const contact = yield schcontact_1.Contact
+        .findOneAndDelete({ "_id": req.params.idcontact })
+        .exec()
+        .catch((e) => next(e));
+    res.json({
+        message: "Contact deleted",
+        oldcontact: contact
     });
+    yield (0, connection_1.disconnect)();
 });
 exports.contactDelete = contactDelete;
 //# sourceMappingURL=contactsController.js.map
