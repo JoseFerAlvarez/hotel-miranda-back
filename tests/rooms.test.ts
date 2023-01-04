@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 
 const token: string = jwt.sign({ user: { _id: 1, email: process.env.DEFAULT_USER } }, process.env.SECRET_TOKEN);
 
-const idRoom = "888888888888888888888888";
+const id = "888888888888888888888888";
 const room = {
     _id: new mongoose.mongo.ObjectId("888888888888888888888888"),
     numroom: 334,
@@ -20,32 +20,34 @@ const room = {
     cancellation: 'Ea quibusdam doloremque accusamus eum eos praesentium'
 };
 
-beforeAll(async () => {
-    await connect(null);
-});
-
-afterAll(async () => {
-    await disconnect();
-});
 
 describe("Get room list", (): void => {
+
+    beforeAll(async () => {
+        await connect();
+    });
+
+    afterAll(async () => {
+        await disconnect();
+    });
+
     test("Get rooms without token", async (): Promise<void> => {
         await request(server)
             .get("/rooms")
             .expect(401);
-    });
+    })
 
     test("Get rooms with token", async (): Promise<void> => {
+        const rooms = await Room.find().exec();
+        const roomDbIds = rooms.map((room) => {
+            return room._id.toString();
+        });
+
         const res = await request(server)
             .get("/rooms")
             .set("Authorization", "Bearer " + token);
 
-        const rooms = await Room.find();
-
-        const roomDbIds = rooms.map((room) => {
-            return room._id.toString();
-        });
-        const roomRequestIds = rooms.map((room) => {
+        const roomRequestIds = res.body.map((room) => {
             return room._id.toString();
         });
 
@@ -55,27 +57,16 @@ describe("Get room list", (): void => {
     })
 });
 
+describe("Room post", (): void => {
 
-/* describe("Get room details", (): void => {
-    const id = "63b3f69d8622c23daeb2bbeb";
-    test("Get room details without token", async (): Promise<void> => {
-        const res = await request(server).get(`/rooms/${id}`);
-        expect(res.statusCode).toBe(401);
+    beforeAll(async () => {
+        await connect();
     });
 
-    test("Get rooms with token", async (): Promise<void> => {
-        const res = await request(server)
-            .get(`/rooms/${id}`)
-            .set("Authorization", "Bearer " + token);
+    afterAll(async () => {
+        await disconnect();
+    });
 
-        const idRequest = res.body._id.toString();
-
-        expect(idRequest).toEqual(id);
-        expect(res.statusCode).toBe(200);
-    })
-}); */
-
-describe("Room post", (): void => {
     test("Room post without token", async (): Promise<void> => {
         await request(server)
             .post("/rooms")
@@ -93,18 +84,42 @@ describe("Room post", (): void => {
     })
 });
 
-/*describe("Put room", (): void => {
-    const id = "63b3f69d8622c23daeb2bbeb";
-    const room = {
-        numroom: 334,
-        photos: ['https://loremflickr.com/1920/1080/room'],
-        type: 'Double Bed',
-        amenities: ['Breakfast', 'Grocery', 'Single bed'],
-        price: 64897,
-        offer: 4,
-        status: 0,
-        cancellation: 'Ea quibusdam doloremque'
-    }
+
+describe("Get room details", (): void => {
+
+    beforeAll(async () => {
+        await connect();
+    });
+
+    afterAll(async () => {
+        await disconnect();
+    });
+
+    test("Get room details without token", async (): Promise<void> => {
+        await request(server)
+            .get(`/rooms/${id}`)
+            .expect(401);
+    });
+
+    test("Get rooms with token", async (): Promise<void> => {
+        const res = await request(server)
+            .get(`/rooms/${id}`)
+            .set("Authorization", "Bearer " + token)
+            .expect(200);
+
+        expect(res.body._id).toEqual(id);
+    })
+});
+
+describe("Put room", (): void => {
+
+    beforeAll(async () => {
+        await connect();
+    });
+
+    afterAll(async () => {
+        await disconnect();
+    });
 
     test("Put room without token", async (): Promise<void> => {
         const res = await request(server)
@@ -117,6 +132,8 @@ describe("Room post", (): void => {
     });
 
     test("Put room with token", async (): Promise<void> => {
+        room.type = "Testing type";
+
         const res = await request(server)
             .put(`/rooms/${id}`)
             .set("Authorization", "Bearer " + token)
@@ -124,24 +141,33 @@ describe("Room post", (): void => {
                 room: room
             });
 
-        expect(res.body).toEqual("");
+        expect(res.body.oldroom.type).not.toEqual(res.body.newroom.type);
         expect(res.statusCode).toBe(200);
     })
 });
 
 describe("Room delete", (): void => {
-    test("Delete room without token", async (): Promise<void> => {
-        const res = await request(server)
-            .delete("/rooms/3");
 
-        expect(res.statusCode).toBe(401);
+    beforeAll(async () => {
+        await connect();
+    });
+
+    afterAll(async () => {
+        await disconnect();
+    });
+
+    test("Delete room without token", async (): Promise<void> => {
+        await request(server)
+            .delete("/rooms/3")
+            .expect(401);
     });
 
     test("Delete room with token", async (): Promise<void> => {
         const res = await request(server)
-            .delete("/rooms/3")
-            .set("Authorization", "Bearer " + token);
+            .delete(`/rooms/${id}`)
+            .set("Authorization", "Bearer " + token)
+            .expect(200);
 
-        expect(res.statusCode).toBe(200);
+        expect(res.body.oldroom._id).toEqual(id);
     })
-});*/
+});

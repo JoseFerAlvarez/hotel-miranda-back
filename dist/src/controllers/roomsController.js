@@ -13,7 +13,7 @@ exports.roomDelete = exports.roomPut = exports.roomPost = exports.roomDetail = e
 const connection_1 = require("../db/connection");
 const schroom_1 = require("../Schemas/schroom");
 const roomList = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const rooms = yield schroom_1.Room
         .find()
         .exec()
@@ -23,7 +23,7 @@ const roomList = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.roomList = roomList;
 const roomDetail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const room = yield schroom_1.Room
         .findOne({ "_id": req.params.idroom })
         .exec()
@@ -33,7 +33,7 @@ const roomDetail = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.roomDetail = roomDetail;
 const roomPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     yield schroom_1.Room.create(req.body.room)
         .catch((e) => next(e));
     res.json({
@@ -44,7 +44,7 @@ const roomPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.roomPost = roomPost;
 const roomPut = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const room = yield schroom_1.Room
         .findOneAndUpdate({ "_id": req.params.idroom }, req.body.room)
         .exec()
@@ -58,7 +58,7 @@ const roomPut = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.roomPut = roomPut;
 const roomDelete = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const room = yield schroom_1.Room
         .findOneAndDelete({ "_id": req.params.idroom })
         .exec()

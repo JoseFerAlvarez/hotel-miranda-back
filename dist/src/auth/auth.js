@@ -26,7 +26,7 @@ passport_1.default.use("login", new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
 }, (email, password, done) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     try {
         const pass = yield (0, helpers_1.getHashPass)(password);
         const user = yield schuser_1.User.findOne({ "email": email, "pass": pass });

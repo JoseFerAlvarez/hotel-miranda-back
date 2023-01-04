@@ -13,7 +13,7 @@ exports.contactDelete = exports.contactPut = exports.contactPost = exports.conta
 const connection_1 = require("../db/connection");
 const schcontact_1 = require("../Schemas/schcontact");
 const contactList = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const contacts = yield schcontact_1.Contact
         .find()
         .exec()
@@ -23,7 +23,7 @@ const contactList = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.contactList = contactList;
 const contactDetail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const contact = yield schcontact_1.Contact
         .findOne({ "_id": req.params.idcontact })
         .exec()
@@ -33,7 +33,7 @@ const contactDetail = (req, res, next) => __awaiter(void 0, void 0, void 0, func
 });
 exports.contactDetail = contactDetail;
 const contactPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     yield schcontact_1.Contact
         .create(req.body.contact)
         .catch((e) => next(e));
@@ -45,7 +45,7 @@ const contactPost = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.contactPost = contactPost;
 const contactPut = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const contact = yield schcontact_1.Contact
         .findOneAndUpdate({ "_id": req.params.idcontact }, req.body.contact)
         .exec()
@@ -59,7 +59,7 @@ const contactPut = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.contactPut = contactPut;
 const contactDelete = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const contact = yield schcontact_1.Contact
         .findOneAndDelete({ "_id": req.params.idcontact })
         .exec()

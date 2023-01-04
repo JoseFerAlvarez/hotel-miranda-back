@@ -13,7 +13,7 @@ exports.bookingsDelete = exports.bookingsPut = exports.bookingsPost = exports.bo
 const connection_1 = require("../db/connection");
 const schemas_1 = require("../Schemas/schemas");
 const bookingsList = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const bookings = yield schemas_1.Booking
         .find()
         .exec()
@@ -23,7 +23,7 @@ const bookingsList = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
 });
 exports.bookingsList = bookingsList;
 const bookingsDetail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const booking = yield schemas_1.Booking
         .findOne({ "_id": req.params.idbooking })
         .exec()
@@ -33,7 +33,7 @@ const bookingsDetail = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.bookingsDetail = bookingsDetail;
 const bookingsPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const booking = req.body.booking;
     const userid = booking.user_id;
     const roomid = booking.room_id;
@@ -54,7 +54,7 @@ const bookingsPost = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
 });
 exports.bookingsPost = bookingsPost;
 const bookingsPut = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const booking = req.body.booking;
     const userid = booking.user_id;
     const roomid = booking.room_id;
@@ -78,7 +78,7 @@ const bookingsPut = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.bookingsPut = bookingsPut;
 const bookingsDelete = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const booking = yield schemas_1.Booking
         .findOneAndDelete({ "_id": req.params.idbooking })
         .exec()

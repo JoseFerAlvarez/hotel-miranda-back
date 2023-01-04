@@ -13,7 +13,7 @@ exports.userDelete = exports.userPut = exports.userPost = exports.userDetail = e
 const connection_1 = require("../db/connection");
 const schuser_1 = require("../Schemas/schuser");
 const userList = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const users = yield schuser_1.User
         .find()
         .exec()
@@ -23,7 +23,7 @@ const userList = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.userList = userList;
 const userDetail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const user = yield schuser_1.User
         .findOne({ "_id": req.params.iduser })
         .exec()
@@ -33,7 +33,7 @@ const userDetail = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.userDetail = userDetail;
 const userPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     yield schuser_1.User
         .create(req.body.user)
         .catch((e) => next(e));
@@ -45,7 +45,7 @@ const userPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.userPost = userPost;
 const userPut = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const user = yield schuser_1.User
         .findOneAndUpdate({ "_id": req.params.iduser }, req.body.user)
         .exec()
@@ -59,7 +59,7 @@ const userPut = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.userPut = userPut;
 const userDelete = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)(null);
+    yield (0, connection_1.connect)();
     const user = yield schuser_1.User
         .findOneAndDelete({ "_id": req.params.iduser })
         .exec()
