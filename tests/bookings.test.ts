@@ -54,14 +54,14 @@ const booking = {
 
 
 beforeAll(async () => {
-    await connect();
+    await connect(process.env.MONGO_LOCAL_CONNECTION);
 
     await User.create(user);
     await Room.create(room);
 });
 
 afterAll(async () => {
-    await connect();
+    await connect(process.env.MONGO_LOCAL_CONNECTION);
     await User.findOneAndDelete({ "_id": id }).exec();
     await Room.findOneAndDelete({ "_id": id }).exec();
 

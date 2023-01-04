@@ -61,12 +61,12 @@ const booking = {
     status: 2
 };
 beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)();
+    yield (0, connection_1.connect)(process.env.MONGO_LOCAL_CONNECTION);
     yield schemas_1.User.create(user);
     yield schemas_1.Room.create(room);
 }));
 afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)();
+    yield (0, connection_1.connect)(process.env.MONGO_LOCAL_CONNECTION);
     yield schemas_1.User.findOneAndDelete({ "_id": id }).exec();
     yield schemas_1.Room.findOneAndDelete({ "_id": id }).exec();
     yield (0, connection_1.disconnect)();

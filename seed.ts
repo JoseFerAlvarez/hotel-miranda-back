@@ -23,7 +23,7 @@ const userList: IntUser[] = [];
 run();
 
 async function run() {
-    await connect();
+    await connect(process.env.MONGO_ATLAS_CONNECTION);
 
     await insertRooms(20);
     await insertUsers(20);

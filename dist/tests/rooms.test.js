@@ -32,7 +32,7 @@ const room = {
     cancellation: 'Ea quibusdam doloremque accusamus eum eos praesentium'
 };
 beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, connection_1.connect)();
+    yield (0, connection_1.connect)(process.env.MONGO_LOCAL_CONNECTION);
 }));
 afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, connection_1.disconnect)();

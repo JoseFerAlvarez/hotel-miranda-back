@@ -18,7 +18,7 @@ const userList = [];
 run();
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0, connection_1.connect)();
+        yield (0, connection_1.connect)(process.env.MONGO_ATLAS_CONNECTION);
         yield insertRooms(20);
         yield insertUsers(20);
         yield insertContacts(20);

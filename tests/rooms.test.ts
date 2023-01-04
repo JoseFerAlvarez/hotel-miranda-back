@@ -21,7 +21,7 @@ const room = {
 };
 
 beforeAll(async () => {
-    await connect();
+    await connect(process.env.MONGO_LOCAL_CONNECTION);
 });
 
 afterAll(async () => {
