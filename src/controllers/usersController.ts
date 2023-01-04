@@ -1,6 +1,7 @@
 import { connect, disconnect } from "../db/connection";
 import { User } from "../Schemas/schuser";
 import { IntUser } from "../interfaces/interfaces";
+import { getHashPass } from "../helpers/helpers";
 
 const userList = async (req, res, next) => {
     await connect();
@@ -31,13 +32,16 @@ const userDetail = async (req, res, next) => {
 const userPost = async (req, res, next) => {
     await connect();
 
+    const user: IntUser = req.body.user;
+    user.pass = await getHashPass(user.pass);
+
     await User
-        .create(req.body.user)
+        .create(user)
         .catch((e: Error) => next(e));
 
     res.json({
         message: "New user posted",
-        newuser: req.body.user
+        newuser: user
     });
 
     await disconnect();
@@ -47,14 +51,25 @@ const userPut = async (req, res, next) => {
     await connect();
 
     const user: IntUser = await User
-        .findOneAndUpdate({ "_id": req.params.iduser }, req.body.user)
+        .findOne({ "_id": req.params.iduser })
+        .exec()
+        .catch((e: Error) => next(e));
+
+    const newuser = req.body.user;
+
+    if (user.pass !== newuser.pass) {
+        newuser.pass = await getHashPass(newuser.pass);
+    }
+
+    await User
+        .findOneAndUpdate({ "_id": req.params.iduser }, newuser)
         .exec()
         .catch((e: Error) => next(e));
 
     res.json({
         message: "User put",
         olduser: user,
-        newuser: req.body.user
+        newuser: newuser
     });
 
     await disconnect();
