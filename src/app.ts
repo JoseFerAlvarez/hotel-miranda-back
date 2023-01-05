@@ -5,6 +5,9 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import passport from "passport";
 
+import * as dotenv from "dotenv";
+dotenv.config();
+
 import {
     routerPublic,
     routerRooms,

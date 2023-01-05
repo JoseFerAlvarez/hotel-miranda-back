@@ -2,6 +2,9 @@ import passport from "passport";
 import passportLocal from "passport-local";
 import passportJwt from "passport-jwt";
 
+import { dbQuery } from "../db/connection";
+import { IntUser } from "../interfaces/interfaces";
+
 const LocalStrategy = passportLocal.Strategy;
 const JwtStrategy = passportJwt.Strategy;
 const ExtractJwt = passportJwt.ExtractJwt;
@@ -17,14 +20,22 @@ passport.use(
         },
         async (email, password, done) => {
             try {
-                if (email === "josefer@gmail.com" && password === "1234") {
-                    const user = {
-                        _id: 1,
-                        email: "josefer@gmail.com",
+
+                const user: IntUser = await dbQuery("SELECT * FROM users WHERE email = ? AND pass = ?;", [email, password])
+                    .then((user: IntUser): IntUser => user)
+
+                if (!user) {
+                    if (email === "josefer@gmail.com" && password === "1234") {
+                        const user = {
+                            _id: 1,
+                            email: "josefer@gmail.com",
+                        }
+                        return done(null, user, { message: "Logged in successfully" });
+                    } else {
+                        return done(null, false, { message: "Invalid credentials" });
                     }
-                    return done(null, user, { message: "Logged in successfully" });
                 } else {
-                    return done(null, false, { message: "Invalid credentials" });
+                    return done(null, { _id: user.iduser, email: user.email }, { message: "Logged in successfully" });
                 }
             } catch (error) {
                 return done(error);

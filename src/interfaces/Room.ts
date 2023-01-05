@@ -1,12 +1,12 @@
-interface Room {
-    id: number;
-    number: number;
-    photo: string;
-    type: string;
-    amenities?: string[];
-    price: number;
-    offer: number;
-    status: boolean;
+interface IntRoom {
+    idroom?: number;
+    numroom: number;
+    photo?: string;
+    typeroom?: number;
+    amenities?: string;
+    price?: number;
+    offer?: number;
+    status: number;
 }
 
-export default Room;
+export default IntRoom;

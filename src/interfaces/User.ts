@@ -1,14 +1,14 @@
-interface User {
-    id: number;
-    photo: string;
-    name: string;
-    position: string;
+interface IntUser {
+    iduser?: number;
+    nameuser: string;
+    photo?: string;
+    position?: number;
     email: string;
-    phone: string;
-    date: string;
-    description: string;
-    state: boolean;
+    phone?: string;
+    date?: string;
+    description?: string;
+    status: number;
     pass: string;
 }
 
-export default User;
+export default IntUser;

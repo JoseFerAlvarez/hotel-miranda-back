@@ -1,11 +1,11 @@
-import Booking from "./Booking";
-import Express from "express";
-import Room from "./Room";
-import User from "./User";
+import IntBooking from "./Booking";
+import IntRoom from "./Room";
+import IntUser from "./User";
+import IntContact from "./Contact";
 
 export {
-    Booking,
-    Express,
-    Room,
-    User
+    IntBooking,
+    IntRoom,
+    IntUser,
+    IntContact
 };
