@@ -71,7 +71,7 @@ function generateRandomRoom() {
     return __awaiter(this, void 0, void 0, function* () {
         return yield new schemas_1.Room({
             numroom: faker_1.faker.datatype.number({ max: 1000 }),
-            photos: generateRandomPhotos(),
+            photos: yield generateRandomPhotos(),
             type: generateRandomType(),
             amenities: generateRandomAmenities(),
             price: faker_1.faker.datatype.number({ max: 100000 }),
@@ -84,9 +84,10 @@ function generateRandomRoom() {
 /* Generate a random user */
 function generateRandomUser() {
     return __awaiter(this, void 0, void 0, function* () {
+        const photo = yield fetch(faker_1.faker.image.imageUrl(1920, 1080, "face")).then((response) => response.url);
         return yield new schemas_1.User({
             name: faker_1.faker.name.fullName(),
-            photo: faker_1.faker.image.imageUrl(1920, 1080, "face"),
+            photo: photo,
             position: generateRandomPosition(),
             email: faker_1.faker.internet.email(),
             phone: faker_1.faker.phone.number('+34 6## ## ## ##'),
@@ -145,12 +146,14 @@ function generateRandomAmenities() {
     return faker_1.faker.helpers.arrayElements(amenities, number);
 }
 function generateRandomPhotos() {
-    const number = Math.round(Math.random() * (5 - 3) + 3);
-    const photos = [];
-    for (let i = 0; i < number; i++) {
-        photos.push(faker_1.faker.image.imageUrl(1920, 1080, "room"));
-    }
-    return photos;
+    return __awaiter(this, void 0, void 0, function* () {
+        const number = Math.round(Math.random() * (5 - 3) + 3);
+        const photos = [];
+        for (let i = 0; i < number; i++) {
+            photos.push(yield fetch(faker_1.faker.image.imageUrl(1920, 1080, "room")).then((response) => response.url));
+        }
+        return photos;
+    });
 }
 /* Function helpers to generate a random user */
 function generateRandomPosition() {
@@ -160,14 +163,14 @@ function generateRandomPosition() {
 /* Function helpers to generate a random booking */
 function getRandomUser(user) {
     return __awaiter(this, void 0, void 0, function* () {
-        const userQuery = schemas_1.User.findOne({ user });
+        const userQuery = schemas_1.User.findOne({ "_id": user._id });
         return yield userQuery.exec()
             .then((result) => result);
     });
 }
 function getRandomRoom(room) {
     return __awaiter(this, void 0, void 0, function* () {
-        const roomQuery = schemas_1.Room.findOne({ room });
+        const roomQuery = schemas_1.Room.findOne({ "_id": room._id });
         return yield roomQuery.exec()
             .then((result) => result);
     });

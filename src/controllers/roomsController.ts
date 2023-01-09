@@ -31,12 +31,13 @@ const roomDetail = async (req, res, next) => {
 const roomPost = async (req, res, next) => {
     await connect();
 
-    await Room.create(req.body.room)
+    const room: IntRoom = await Room.create(req.body.room)
+        .then((room) => room)
         .catch((e) => next(e));
 
     res.json({
         message: "New room posted",
-        newroom: req.body.room
+        newroom: room
     });
 
     await disconnect();

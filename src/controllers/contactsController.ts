@@ -31,13 +31,14 @@ const contactDetail = async (req, res, next) => {
 const contactPost = async (req, res, next) => {
     await connect();
 
-    await Contact
+    const contact: IntContact = await Contact
         .create(req.body.contact)
+        .then((contact) => contact)
         .catch((e: Error) => next(e));
 
     res.json({
         message: "New contact posted",
-        newcontact: req.body.contact
+        newcontact: contact
     });
 
     await disconnect();

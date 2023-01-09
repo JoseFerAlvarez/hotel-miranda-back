@@ -34,11 +34,12 @@ const roomDetail = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 exports.roomDetail = roomDetail;
 const roomPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, connection_1.connect)();
-    yield schroom_1.Room.create(req.body.room)
+    const room = yield schroom_1.Room.create(req.body.room)
+        .then((room) => room)
         .catch((e) => next(e));
     res.json({
         message: "New room posted",
-        newroom: req.body.room
+        newroom: room
     });
     yield (0, connection_1.disconnect)();
 });

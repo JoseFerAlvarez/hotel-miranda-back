@@ -36,13 +36,16 @@ const bookingsPost = async (req, res, next) => {
     const userid: typeof Types.ObjectId = booking.user_id;
     const roomid: typeof Types.ObjectId = booking.room_id;
 
+    let newbooking: IntBooking = null;
+
     if (await userExists(userid) && await roomExists(roomid)) {
-        await Booking.create(booking)
+        newbooking = await Booking.create(booking)
+            .then((booking) => booking)
             .catch((e: Error) => next(e));
 
         res.json({
             message: "New booking posted",
-            newbooking: booking
+            newbooking: newbooking
         });
     } else {
         res.json({

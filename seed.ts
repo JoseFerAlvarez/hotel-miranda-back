@@ -16,7 +16,6 @@ import {
     IntUser
 } from "./src/interfaces/interfaces";
 
-
 const roomList: IntRoom[] = [];
 const userList: IntUser[] = [];
 
@@ -78,7 +77,7 @@ async function insertContacts(number: number): Promise<void> {
 async function generateRandomRoom(): Promise<IntRoom> {
     return await new Room<IntRoom>({
         numroom: faker.datatype.number({ max: 1000 }),
-        photos: generateRandomPhotos(),
+        photos: await generateRandomPhotos(),
         type: generateRandomType(),
         amenities: generateRandomAmenities(),
         price: faker.datatype.number({ max: 100000 }),
@@ -90,9 +89,11 @@ async function generateRandomRoom(): Promise<IntRoom> {
 
 /* Generate a random user */
 async function generateRandomUser(): Promise<IntUser> {
+    const photo = await fetch(faker.image.imageUrl(1920, 1080, "face")).then((response) => response.url);
+
     return await new User<IntUser>({
         name: faker.name.fullName(),
-        photo: faker.image.imageUrl(1920, 1080, "face"),
+        photo: photo,
         position: generateRandomPosition(),
         email: faker.internet.email(),
         phone: faker.phone.number('+34 6## ## ## ##'),
@@ -152,11 +153,11 @@ function generateRandomAmenities(): string[] {
     return faker.helpers.arrayElements(amenities, number);
 }
 
-function generateRandomPhotos(): string[] {
+async function generateRandomPhotos(): Promise<string[]> {
     const number: number = Math.round(Math.random() * (5 - 3) + 3);
     const photos: string[] = [];
     for (let i = 0; i < number; i++) {
-        photos.push(faker.image.imageUrl(1920, 1080, "room"));
+        photos.push(await fetch(faker.image.imageUrl(1920, 1080, "room")).then((response) => response.url));
     }
 
     return photos;
@@ -171,14 +172,14 @@ function generateRandomPosition(): string {
 
 /* Function helpers to generate a random booking */
 async function getRandomUser(user): Promise<IntUser> {
-    const userQuery = User.findOne({ user });
+    const userQuery = User.findOne({ "_id": user._id });
 
     return await userQuery.exec()
         .then((result) => result);
 }
 
 async function getRandomRoom(room): Promise<IntRoom> {
-    const roomQuery = Room.findOne({ room });
+    const roomQuery = Room.findOne({ "_id": room._id });
 
     return await roomQuery.exec()
         .then((result) => result);
