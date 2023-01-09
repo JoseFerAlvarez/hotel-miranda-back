@@ -27,7 +27,10 @@ const loginAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function
                     return next(error);
                 const body = { _id: user._id, email: user.email };
                 const token = jsonwebtoken_1.default.sign({ user: body }, process.env.SECRET_TOKEN);
-                return res.json({ token });
+                return res.json({
+                    user: body,
+                    token: token
+                });
             }));
         }
         catch (error) {
