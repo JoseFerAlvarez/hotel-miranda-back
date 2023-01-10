@@ -37,12 +37,14 @@ const bookingsPost = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
     const booking = req.body.booking;
     const userid = booking.user_id;
     const roomid = booking.room_id;
+    let newbooking = null;
     if ((yield userExists(userid)) && (yield roomExists(roomid))) {
-        yield schemas_1.Booking.create(booking)
+        newbooking = yield schemas_1.Booking.create(booking)
+            .then((booking) => booking)
             .catch((e) => next(e));
         res.json({
             message: "New booking posted",
-            newbooking: booking
+            newbooking: newbooking
         });
     }
     else {

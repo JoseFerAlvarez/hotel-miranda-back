@@ -50,10 +50,14 @@ const roomPut = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
         .findOneAndUpdate({ "_id": req.params.idroom }, req.body.room)
         .exec()
         .catch((e) => next(e));
+    const newroom = yield schroom_1.Room
+        .findOne({ "_id": req.params.idroom })
+        .exec()
+        .catch((e) => next(e));
     res.json({
         message: "Room put",
         oldroom: room,
-        newroom: req.body.room
+        newroom: newroom
     });
     yield (0, connection_1.disconnect)();
 });

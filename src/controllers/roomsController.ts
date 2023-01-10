@@ -51,10 +51,15 @@ const roomPut = async (req, res, next) => {
         .exec()
         .catch((e) => next(e));
 
+    const newroom: IntRoom = await Room
+        .findOne({ "_id": req.params.idroom })
+        .exec()
+        .catch((e: Error) => next(e));
+
     res.json({
         message: "Room put",
         oldroom: room,
-        newroom: req.body.room
+        newroom: newroom
     });
 
     await disconnect();

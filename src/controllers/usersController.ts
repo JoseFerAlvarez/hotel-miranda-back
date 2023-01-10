@@ -32,17 +32,15 @@ const userDetail = async (req, res, next) => {
 const userPost = async (req, res, next) => {
     await connect();
 
-    const user: IntUser = req.body.user;
-    user.pass = await getHashPass(user.pass);
-
-    const newuser: IntUser = await User
-        .create(req.body.user)
+    const user: IntUser = await User.create(req.body.user)
         .then((user) => user)
         .catch((e: Error) => next(e));
 
+    user.pass = await getHashPass(user.pass);
+
     res.json({
         message: "New user posted",
-        newuser: newuser
+        newuser: user
     });
 
     await disconnect();

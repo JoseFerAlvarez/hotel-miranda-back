@@ -34,12 +34,13 @@ const contactDetail = (req, res, next) => __awaiter(void 0, void 0, void 0, func
 exports.contactDetail = contactDetail;
 const contactPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, connection_1.connect)();
-    yield schcontact_1.Contact
+    const contact = yield schcontact_1.Contact
         .create(req.body.contact)
+        .then((contact) => contact)
         .catch((e) => next(e));
     res.json({
         message: "New contact posted",
-        newcontact: req.body.contact
+        newcontact: contact
     });
     yield (0, connection_1.disconnect)();
 });
