@@ -35,11 +35,12 @@ async function createRoomsTable() {
             idroom INT NOT NULL AUTO_INCREMENT,
             numroom SMALLINT NOT NULL,
             photo VARCHAR(500),
-            typeroom TINYINT,
+            typeroom VARCHAR(50),
             amenities VARCHAR(500),
             price INT,
             offer INT,
             status TINYINT NOT NULL,
+            cancellation VARCHAR(2000),
             PRIMARY KEY (idroom));`,
         null);
 }
@@ -67,7 +68,7 @@ async function createBookingsTable() {
             bookingorder VARCHAR(100) NOT NULL,
             checkin VARCHAR(100) NOT NULL,
             checkout VARCHAR(100) NOT NULL,
-            typeroom TINYINT NOT NULL,
+            typeroom VARCHAR(50) NOT NULL,
             numroom SMALLINT NOT NULL,
             price INT NOT NULL,
             request VARCHAR(255),
@@ -96,7 +97,7 @@ async function createContactsTable() {
 async function insertRooms(number: number): Promise<void> {
     for (let i = 0; i < number; i++) {
         const room: IntRoom = await setRandomRoom();
-        rooms.push(room);
+        await rooms.push(room);
         await dbQuery("INSERT INTO rooms SET ?", room);
     }
 }
@@ -104,7 +105,7 @@ async function insertRooms(number: number): Promise<void> {
 async function insertUsers(number: number): Promise<void> {
     for (let i = 0; i < number; i++) {
         const user: IntUser = await setRandomUser();
-        users.push(user);
+        await users.push(user);
         await dbQuery("INSERT INTO users SET ?", user);
     }
 }
@@ -114,7 +115,7 @@ async function insertBookings(number: number): Promise<void> {
         const room: IntRoom = rooms[Math.round(Math.random() * rooms.length - 1)];
         const user: IntUser = users[Math.round(Math.random() * rooms.length - 1)];
         const booking: IntBooking = await setRandomBooking(room, user);
-        bookings.push(booking);
+        await bookings.push(booking);
         await dbQuery("INSERT INTO bookings SET ?", booking);
     }
 }
@@ -122,7 +123,7 @@ async function insertBookings(number: number): Promise<void> {
 async function insertContacts(number: number): Promise<void> {
     for (let i = 0; i < number; i++) {
         const contact: IntContact = await setRandomContact();
-        contacts.push(contact);
+        await contacts.push(contact);
         await dbQuery("INSERT INTO contacts SET ?", contact);
     }
 }
@@ -130,12 +131,13 @@ async function insertContacts(number: number): Promise<void> {
 async function setRandomRoom(): Promise<IntRoom> {
     return await {
         numroom: faker.datatype.number({ max: 1000 }),
-        photo: faker.image.imageUrl(1920, 1080, "room"),
-        typeroom: faker.datatype.number({ min: 0, max: 3 }),
-        amenities: String(faker.random.words(10)),
+        photo: await generateRandomPhoto(),
+        typeroom: generateRandomType(),
+        amenities: generateRandomAmenities(),
         price: faker.datatype.number({ max: 100000 }),
-        offer: faker.datatype.number({ max: 100 }),
-        status: faker.datatype.number({ min: 0, max: 1 })
+        offer: faker.datatype.number({ max: 90 }),
+        status: faker.datatype.number({ min: 0, max: 1 }),
+        cancellation: faker.lorem.lines(3)
     }
 }
 
@@ -185,6 +187,22 @@ async function setRandomContact(): Promise<IntContact> {
         header: faker.random.words(5),
         comment: faker.random.words(30)
     }
+}
+
+function generateRandomAmenities(): string {
+    const number: number = Math.round(Math.random() * 10 - 1);
+    const amenities: string[] = ["Air conditioner", "Breakfast", "Cleaning", "Grocery", "Shop near", "High speed WiFi", "Kitchen", "Shower", "Single bed", "Towels"];
+
+    return faker.helpers.arrayElements(amenities, number).toString();
+}
+
+async function generateRandomPhoto(): Promise<string> {
+    return await fetch(faker.image.imageUrl(1920, 1080, "room")).then((response) => response.url);
+}
+
+function generateRandomType(): string {
+    const roomtypes: string[] = ["Single Bed", "Double Bed", "Double Superior", "Suite"];
+    return faker.helpers.arrayElement(roomtypes);
 }
 
 

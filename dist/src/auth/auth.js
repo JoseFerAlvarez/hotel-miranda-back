@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const passport_1 = __importDefault(require("passport"));
 const passport_local_1 = __importDefault(require("passport-local"));
 const passport_jwt_1 = __importDefault(require("passport-jwt"));
+const connection_1 = require("../db/connection");
 const LocalStrategy = passport_local_1.default.Strategy;
 const JwtStrategy = passport_jwt_1.default.Strategy;
 const ExtractJwt = passport_jwt_1.default.ExtractJwt;
@@ -24,15 +25,22 @@ passport_1.default.use("login", new LocalStrategy({
     passwordField: 'password'
 }, (email, password, done) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        if (email === "josefer@gmail.com" && password === "1234") {
-            const user = {
-                _id: 1,
-                email: "josefer@gmail.com",
-            };
-            return done(null, user, { message: "Logged in successfully" });
+        const user = yield (0, connection_1.dbQuery)("SELECT * FROM users WHERE email = ? AND pass = ?;", [email, password])
+            .then((user) => user);
+        if (!user) {
+            if (email === "josefer@gmail.com" && password === "1234") {
+                const user = {
+                    _id: 1,
+                    email: "josefer@gmail.com",
+                };
+                return done(null, user, { message: "Logged in successfully" });
+            }
+            else {
+                return done(null, false, { message: "Invalid credentials" });
+            }
         }
         else {
-            return done(null, false, { message: "Invalid credentials" });
+            return done(null, { _id: user.iduser, email: user.email }, { message: "Logged in successfully" });
         }
     }
     catch (error) {

@@ -2,11 +2,12 @@ interface IntRoom {
     idroom?: number;
     numroom: number;
     photo?: string;
-    typeroom?: number;
+    typeroom?: string;
     amenities?: string;
     price?: number;
     offer?: number;
     status: number;
+    cancellation?: string;
 }
 
 export default IntRoom;

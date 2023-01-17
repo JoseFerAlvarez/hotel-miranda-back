@@ -4,7 +4,7 @@ interface IntBooking {
     bookingorder: string;
     checkin: string;
     checkout: string;
-    typeroom: number;
+    typeroom: string;
     numroom: number;
     price: number;
     request?: string;
