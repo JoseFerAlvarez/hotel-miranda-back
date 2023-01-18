@@ -161,12 +161,19 @@ async function getHashPass(pass: string): Promise<string> {
 }
 
 async function setRandomBooking(room: IntRoom, user: IntUser): Promise<IntBooking> {
+    const bookingOrder: Date = generateRandomDate(null);
+    const bookingCheckIn: Date = generateRandomDate(bookingOrder);
+    const bookingCheckOut: Date = generateRandomDate(bookingCheckIn);
+
+    const bookingOrderFormat: string = bookingOrder.toLocaleDateString("es-ES");
+    const bookingCheckInFormat: string = bookingCheckIn.toLocaleDateString("es-ES");
+    const bookingCheckOutFormat: string = bookingCheckOut.toLocaleDateString("es-ES");
 
     return await {
         nameuser: user.nameuser,
-        bookingorder: String(faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
-        checkin: String(faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
-        checkout: String(faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
+        bookingorder: bookingOrderFormat,
+        checkin: bookingCheckInFormat,
+        checkout: bookingCheckOutFormat,
         typeroom: room.typeroom,
         numroom: room.numroom,
         price: room.price,
@@ -205,4 +212,11 @@ function generateRandomType(): string {
     return faker.helpers.arrayElement(roomtypes);
 }
 
+function generateRandomDate(date: Date | null): Date {
+    const initDate = "2020-01-01T00:00:00.000Z";
+    const currentDate = String(new Date(Date.now()).toISOString());
+    const randomdate: Date = faker.date.between(date || initDate, currentDate);
+
+    return randomdate;
+}
 

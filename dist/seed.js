@@ -195,11 +195,17 @@ function getHashPass(pass) {
 }
 function setRandomBooking(room, user) {
     return __awaiter(this, void 0, void 0, function* () {
+        const bookingOrder = generateRandomDate(null);
+        const bookingCheckIn = generateRandomDate(bookingOrder);
+        const bookingCheckOut = generateRandomDate(bookingCheckIn);
+        const bookingOrderFormat = bookingOrder.toLocaleDateString("es-ES");
+        const bookingCheckInFormat = bookingCheckIn.toLocaleDateString("es-ES");
+        const bookingCheckOutFormat = bookingCheckOut.toLocaleDateString("es-ES");
         return yield {
             nameuser: user.nameuser,
-            bookingorder: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
-            checkin: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
-            checkout: String(faker_1.faker.date.between('2021-01-01T00:00:00.000Z', '2022-12-01T00:00:00.000Z')),
+            bookingorder: bookingOrderFormat,
+            checkin: bookingCheckInFormat,
+            checkout: bookingCheckOutFormat,
             typeroom: room.typeroom,
             numroom: room.numroom,
             price: room.price,
@@ -236,5 +242,11 @@ function generateRandomPhoto() {
 function generateRandomType() {
     const roomtypes = ["Single Bed", "Double Bed", "Double Superior", "Suite"];
     return faker_1.faker.helpers.arrayElement(roomtypes);
+}
+function generateRandomDate(date) {
+    const initDate = "2020-01-01T00:00:00.000Z";
+    const currentDate = String(new Date(Date.now()).toISOString());
+    const randomdate = faker_1.faker.date.between(date || initDate, currentDate);
+    return randomdate;
 }
 //# sourceMappingURL=seed.js.map
