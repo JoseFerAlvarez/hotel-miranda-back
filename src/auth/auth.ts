@@ -1,6 +1,6 @@
 import { connect, disconnect } from "../db/connection";
 import { User } from "../Schemas/schuser";
-import { getHashPass } from "../helpers/helpers";
+import { comparePassHash, getHashPass } from "../helpers/helpers";
 
 import passport from "passport";
 import passportLocal from "passport-local";
@@ -24,11 +24,7 @@ passport.use(
             await connect();
 
             try {
-
-                const pass: string = await getHashPass(password);
-                const user: IntUser = await User.findOne({ "email": email, "pass": pass });
-
-                await disconnect();
+                const user: IntUser = await User.findOne({ "email": email });
 
                 if (!user) {
                     if (email === process.env.DEFAULT_USER && password === process.env.DEFAULT_PASSWORD) {
@@ -40,7 +36,7 @@ passport.use(
                     } else {
                         return done(null, false, { message: "Invalid credentials" });
                     }
-                } else {
+                } else if (comparePassHash(password, user.pass)) {
                     return done(null, { _id: user._id, email: user.email }, { message: "Logged in successfully" });
                 }
             } catch (error) {

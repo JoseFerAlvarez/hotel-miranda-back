@@ -35,13 +35,23 @@ const userDetail = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 exports.userDetail = userDetail;
 const userPost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, connection_1.connect)();
-    const user = yield schuser_1.User.create(req.body.user)
+    const user = {
+        name: req.body.user.name,
+        photo: req.body.user.photo,
+        position: req.body.user.position,
+        email: req.body.user.email,
+        phone: req.body.user.phone,
+        date: req.body.user.date,
+        description: req.body.user.description,
+        status: req.body.user.status,
+        pass: yield (0, helpers_1.getHashPass)(req.body.user.pass)
+    };
+    const newuser = yield schuser_1.User.create(user)
         .then((user) => user)
         .catch((e) => next(e));
-    user.pass = yield (0, helpers_1.getHashPass)(user.pass);
     res.json({
         message: "New user posted",
-        newuser: user
+        newuser: newuser
     });
     yield (0, connection_1.disconnect)();
 });

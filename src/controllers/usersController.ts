@@ -31,14 +31,25 @@ const userDetail = async (req, res, next) => {
 
 const userPost = async (req, res, next) => {
     await connect();
-    const user: IntUser = { ...req.body.user, pass: await getHashPass(req.body.user.pass) };
+    const user: IntUser = {
+        name: req.body.user.name,
+        photo: req.body.user.photo,
+        position: req.body.user.position,
+        email: req.body.user.email,
+        phone: req.body.user.phone,
+        date: req.body.user.date,
+        description: req.body.user.description,
+        status: req.body.user.status,
+        pass: await getHashPass(req.body.user.pass)
+    };
 
-    await User.create(user)
+    const newuser: IntUser = await User.create(user)
+        .then((user) => user)
         .catch((e: Error) => next(e));
 
     res.json({
         message: "New user posted",
-        newuser: user
+        newuser: newuser
     });
 
     await disconnect();

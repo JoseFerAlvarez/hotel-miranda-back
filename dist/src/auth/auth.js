@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const connection_1 = require("../db/connection");
 const schuser_1 = require("../Schemas/schuser");
-const helpers_1 = require("../helpers/helpers");
 const passport_1 = __importDefault(require("passport"));
 const passport_local_1 = __importDefault(require("passport-local"));
 const passport_jwt_1 = __importDefault(require("passport-jwt"));
@@ -28,9 +27,7 @@ passport_1.default.use("login", new LocalStrategy({
 }, (email, password, done) => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, connection_1.connect)();
     try {
-        const pass = yield (0, helpers_1.getHashPass)(password);
-        const user = yield schuser_1.User.findOne({ "email": email, "pass": pass });
-        yield (0, connection_1.disconnect)();
+        const user = yield schuser_1.User.findOne({ "email": email });
         if (!user) {
             if (email === process.env.DEFAULT_USER && password === process.env.DEFAULT_PASSWORD) {
                 const user = {
