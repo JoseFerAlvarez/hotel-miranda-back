@@ -19,10 +19,10 @@ run();
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         yield (0, connection_1.connect)(process.env.MONGO_ATLAS_CONNECTION);
-        yield insertRooms(20);
-        yield insertUsers(20);
-        yield insertContacts(20);
-        yield insertBookings(20);
+        yield insertRooms(100);
+        yield insertUsers(100);
+        yield insertContacts(100);
+        yield insertBookings(100);
         yield (0, connection_1.disconnect)();
     });
 }
@@ -131,7 +131,8 @@ function generateRandomContact() {
             email: faker_1.faker.internet.email(),
             phone: faker_1.faker.phone.number('+34 6## ## ## ##'),
             header: faker_1.faker.lorem.lines(1),
-            comment: faker_1.faker.lorem.lines()
+            comment: faker_1.faker.lorem.lines(),
+            archived: faker_1.faker.datatype.number({ min: 0, max: 1 })
         });
     });
 }

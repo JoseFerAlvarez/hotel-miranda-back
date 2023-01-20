@@ -24,11 +24,11 @@ run();
 async function run() {
     await connect(process.env.MONGO_ATLAS_CONNECTION);
 
-    await insertRooms(20);
-    await insertUsers(20);
+    await insertRooms(100);
+    await insertUsers(100);
 
-    await insertContacts(20);
-    await insertBookings(20);
+    await insertContacts(100);
+    await insertBookings(100);
 
     await disconnect();
 }
@@ -136,7 +136,8 @@ async function generateRandomContact(): Promise<IntContact> {
         email: faker.internet.email(),
         phone: faker.phone.number('+34 6## ## ## ##'),
         header: faker.lorem.lines(1),
-        comment: faker.lorem.lines()
+        comment: faker.lorem.lines(),
+        archived: faker.datatype.number({ min: 0, max: 1 })
     });
 }
 

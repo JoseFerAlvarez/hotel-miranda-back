@@ -10,6 +10,7 @@ const contactSchema = new Schema<IntContact>({
     phone: String,
     header: { type: String, required: true },
     comment: { type: String, required: true },
+    archived: { type: Number, required: true }
 });
 
 export const Contact = mongoose.model("contact", contactSchema);

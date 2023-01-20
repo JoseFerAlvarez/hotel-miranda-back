@@ -13,6 +13,7 @@ const contactSchema = new Schema({
     phone: String,
     header: { type: String, required: true },
     comment: { type: String, required: true },
+    archived: { type: Number, required: true }
 });
 exports.Contact = mongoose_1.default.model("contact", contactSchema);
 //# sourceMappingURL=schcontact.js.map

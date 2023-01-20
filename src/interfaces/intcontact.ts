@@ -7,7 +7,8 @@ interface IntContact {
     email: string,
     phone?: string,
     header: string,
-    comment: string
+    comment: string,
+    archived: number
 }
 
 export default IntContact;
