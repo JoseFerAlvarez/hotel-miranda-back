@@ -19,10 +19,10 @@ run();
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         yield (0, connection_1.connect)(process.env.MONGO_ATLAS_CONNECTION);
-        yield insertRooms(100);
-        yield insertUsers(100);
-        yield insertContacts(100);
-        yield insertBookings(100);
+        yield insertRooms(50);
+        yield insertUsers(50);
+        yield insertContacts(50);
+        yield insertBookings(50);
         yield (0, connection_1.disconnect)();
     });
 }

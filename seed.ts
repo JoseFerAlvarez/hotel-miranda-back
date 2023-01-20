@@ -24,11 +24,11 @@ run();
 async function run() {
     await connect(process.env.MONGO_ATLAS_CONNECTION);
 
-    await insertRooms(100);
-    await insertUsers(100);
+    await insertRooms(50);
+    await insertUsers(50);
 
-    await insertContacts(100);
-    await insertBookings(100);
+    await insertContacts(50);
+    await insertBookings(50);
 
     await disconnect();
 }
