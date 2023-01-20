@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const connection_1 = require("../db/connection");
 const schuser_1 = require("../Schemas/schuser");
+const helpers_1 = require("../helpers/helpers");
 const passport_1 = __importDefault(require("passport"));
 const passport_local_1 = __importDefault(require("passport-local"));
 const passport_jwt_1 = __importDefault(require("passport-jwt"));
@@ -40,7 +41,7 @@ passport_1.default.use("login", new LocalStrategy({
                 return done(null, false, { message: "Invalid credentials" });
             }
         }
-        else {
+        else if ((0, helpers_1.comparePassHash)(password, user.pass)) {
             return done(null, { _id: user._id, email: user.email }, { message: "Logged in successfully" });
         }
     }
