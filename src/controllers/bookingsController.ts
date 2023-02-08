@@ -115,10 +115,12 @@ const bookingsCheckIn = async (req, res, next) => {
                 .catch((e: Error) => next(e));
 
             res.json({
+                message: "Booking checked succesfully",
                 booking: booking
             });
         } else {
             res.json({
+                message: "The booking is already checked",
                 booking: booking,
             });
         }
