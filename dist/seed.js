@@ -18,7 +18,7 @@ const userList = [];
 run();
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0, connection_1.connect)(process.env.MONGO_ATLAS_CONNECTION);
+        yield (0, connection_1.connect)(process.env.MONGO_LOCAL_CONNECTION);
         yield insertRooms(50);
         yield insertUsers(50);
         yield insertContacts(50);
@@ -117,7 +117,9 @@ function generateRandomBooking(room, user) {
             amenities: room.amenities,
             photos: room.photos,
             description: faker_1.faker.lorem.lines(),
-            status: faker_1.faker.datatype.number({ min: 0, max: 2 }),
+            reference: faker_1.faker.vehicle.vrm(),
+            checked: faker_1.faker.datatype.number({ min: 0, max: 1 }),
+            status: faker_1.faker.datatype.number({ min: 0, max: 2 })
         });
     });
 }

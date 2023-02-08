@@ -1,5 +1,6 @@
 import express from "express";
 import {
+    bookingsCheckIn,
     bookingsDelete,
     bookingsDetail,
     bookingsList,
@@ -23,5 +24,8 @@ routerBookings.put(('/:idbooking'), bookingsPut);
 
 /* DELETE an existing booking. */
 routerBookings.delete(('/:idbooking'), bookingsDelete);
+
+/* POST booking by reference*/
+routerBookings.post(('/search/:reference'), bookingsCheckIn);
 
 export default routerBookings;

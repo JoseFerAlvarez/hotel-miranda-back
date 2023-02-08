@@ -15,6 +15,8 @@ interface IntBooking {
     amenities?: string[],
     photos?: string[],
     description?: string,
+    reference: string,
+    checked: number,
     status: number
 }
 

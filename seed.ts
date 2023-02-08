@@ -22,7 +22,7 @@ const userList: IntUser[] = [];
 run();
 
 async function run() {
-    await connect(process.env.MONGO_ATLAS_CONNECTION);
+    await connect(process.env.MONGO_LOCAL_CONNECTION);
 
     await insertRooms(50);
     await insertUsers(50);
@@ -122,7 +122,9 @@ async function generateRandomBooking(room: IntRoom, user: IntUser): Promise<IntB
         amenities: room.amenities,
         photos: room.photos,
         description: faker.lorem.lines(),
-        status: faker.datatype.number({ min: 0, max: 2 }),
+        reference: faker.vehicle.vrm(),
+        checked: faker.datatype.number({ min: 0, max: 1 }),
+        status: faker.datatype.number({ min: 0, max: 2 })
     });
 }
 

@@ -21,6 +21,8 @@ const bookingSchema = new Schema({
     amenities: Array,
     photos: Array,
     description: String,
+    reference: { type: String, required: true },
+    checked: { type: Number, required: true },
     status: { type: Number, required: true },
 });
 exports.Booking = mongoose_1.default.model("booking", bookingSchema);

@@ -99,6 +99,37 @@ const bookingsDelete = async (req, res, next) => {
     await disconnect();
 }
 
+const bookingsCheckIn = async (req, res, next) => {
+    await connect();
+
+    const booking: IntBooking = await Booking
+        .findOne({ "reference": req.params.reference })
+        .exec()
+        .catch((e: Error) => next(e));
+
+    if (booking) {
+        if (!booking.checked) {
+            booking.checked = 1
+            await Booking.findOneAndUpdate({ "reference": req.params.reference }, booking)
+                .exec()
+                .catch((e: Error) => next(e));
+
+            res.json({
+                booking: booking
+            });
+        } else {
+            res.json({
+                booking: booking,
+            });
+        }
+    } else {
+        res.sendStatus(404);
+    }
+
+
+    await disconnect();
+}
+
 /* Function helpers to check the user and room ids */
 async function userExists(userid: typeof Types.ObjectId): Promise<boolean> {
     return await User
@@ -120,5 +151,6 @@ export {
     bookingsDetail,
     bookingsPost,
     bookingsPut,
-    bookingsDelete
+    bookingsDelete,
+    bookingsCheckIn
 }

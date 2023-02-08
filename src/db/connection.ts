@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const mongoDB = process.env.MONGO_ATLAS_CONNECTION;
+const mongoDB = process.env.MONGO_LOCAL_CONNECTION;
 
 export async function connect(database?: string) {
     await mongoose.connect(database || mongoDB);

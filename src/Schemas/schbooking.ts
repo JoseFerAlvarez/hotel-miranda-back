@@ -18,6 +18,8 @@ const bookingSchema = new Schema<IntBooking>({
     amenities: Array,
     photos: Array,
     description: String,
+    reference: { type: String, required: true },
+    checked: { type: Number, required: true },
     status: { type: Number, required: true },
 });
 

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.bookingsDelete = exports.bookingsPut = exports.bookingsPost = exports.bookingsDetail = exports.bookingsList = void 0;
+exports.bookingsCheckIn = exports.bookingsDelete = exports.bookingsPut = exports.bookingsPost = exports.bookingsDetail = exports.bookingsList = void 0;
 const connection_1 = require("../db/connection");
 const schemas_1 = require("../Schemas/schemas");
 const bookingsList = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -92,6 +92,34 @@ const bookingsDelete = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     yield (0, connection_1.disconnect)();
 });
 exports.bookingsDelete = bookingsDelete;
+const bookingsCheckIn = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    yield (0, connection_1.connect)();
+    const booking = yield schemas_1.Booking
+        .findOne({ "reference": req.params.reference })
+        .exec()
+        .catch((e) => next(e));
+    if (booking) {
+        if (!booking.checked) {
+            booking.checked = 1;
+            yield schemas_1.Booking.findOneAndUpdate({ "reference": req.params.reference }, booking)
+                .exec()
+                .catch((e) => next(e));
+            res.json({
+                booking: booking
+            });
+        }
+        else {
+            res.json({
+                booking: booking,
+            });
+        }
+    }
+    else {
+        res.sendStatus(404);
+    }
+    yield (0, connection_1.disconnect)();
+});
+exports.bookingsCheckIn = bookingsCheckIn;
 /* Function helpers to check the user and room ids */
 function userExists(userid) {
     return __awaiter(this, void 0, void 0, function* () {

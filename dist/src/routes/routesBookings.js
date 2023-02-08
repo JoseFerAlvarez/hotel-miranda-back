@@ -16,5 +16,7 @@ routerBookings.post(('/'), bookingsController_1.bookingsPost);
 routerBookings.put(('/:idbooking'), bookingsController_1.bookingsPut);
 /* DELETE an existing booking. */
 routerBookings.delete(('/:idbooking'), bookingsController_1.bookingsDelete);
+/* POST booking by reference*/
+routerBookings.post(('/search/:reference'), bookingsController_1.bookingsCheckIn);
 exports.default = routerBookings;
 //# sourceMappingURL=routesBookings.js.map

@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.disconnect = exports.connect = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
-const mongoDB = process.env.MONGO_ATLAS_CONNECTION;
+const mongoDB = process.env.MONGO_LOCAL_CONNECTION;
 function connect(database) {
     return __awaiter(this, void 0, void 0, function* () {
         yield mongoose_1.default.connect(database || mongoDB);
