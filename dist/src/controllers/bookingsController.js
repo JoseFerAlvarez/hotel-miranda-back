@@ -105,11 +105,13 @@ const bookingsCheckIn = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
                 .exec()
                 .catch((e) => next(e));
             res.json({
+                message: "Booking checked succesfully",
                 booking: booking
             });
         }
         else {
             res.json({
+                message: "The booking is already checked",
                 booking: booking,
             });
         }
