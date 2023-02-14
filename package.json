@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./dist/src/index.js",
+    "start": "node ./dist/api/index.js",
     "seed": "node -r dotenv/config ./dist/seed.js dotenv_config_path=./.env",
     "tsc": "tsc",
     "postinstall": "npm run tsc",

@@ -1,20 +1,20 @@
 import { faker } from '@faker-js/faker';
-import { connect, disconnect } from "./src/db/connection";
-import { getHashPass } from './src/helpers/helpers';
+import { connect, disconnect } from "./api/db/connection";
+import { getHashPass } from './api/helpers/helpers';
 
 import {
     Room,
     User,
     Booking,
     Contact
-} from "./src/Schemas/schemas";
+} from "./api/Schemas/schemas";
 
 import {
     IntRoom,
     IntBooking,
     IntContact,
     IntUser
-} from "./src/interfaces/interfaces";
+} from "./api/interfaces/interfaces";
 
 
 const roomList: IntRoom[] = [];

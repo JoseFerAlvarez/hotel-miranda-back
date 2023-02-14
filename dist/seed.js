@@ -10,9 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const faker_1 = require("@faker-js/faker");
-const connection_1 = require("./src/db/connection");
-const helpers_1 = require("./src/helpers/helpers");
-const schemas_1 = require("./src/Schemas/schemas");
+const connection_1 = require("./api/db/connection");
+const helpers_1 = require("./api/helpers/helpers");
+const schemas_1 = require("./api/Schemas/schemas");
 const roomList = [];
 const userList = [];
 run();

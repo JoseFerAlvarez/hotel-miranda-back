@@ -93,10 +93,9 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "src/**/*",
-    "src/*.ts",
+    "api/**/*",
+    "api/*.ts",
     "tests/*",
-    "*.ts",
-    "dist/routes/routes.js"
+    "*.ts"
   ]
 }

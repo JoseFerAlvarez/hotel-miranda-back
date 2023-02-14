@@ -13,10 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
-const index_1 = __importDefault(require("../src/index"));
+const index_1 = __importDefault(require("../api/index"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const connection_1 = require("../src/db/connection");
-const schemas_1 = require("../src/Schemas/schemas");
+const connection_1 = require("../api/db/connection");
+const schemas_1 = require("../api/Schemas/schemas");
 const mongoose_1 = __importDefault(require("mongoose"));
 const token = jsonwebtoken_1.default.sign({ user: { _id: 1, email: process.env.DEFAULT_USER } }, process.env.SECRET_TOKEN);
 const id = "888888888888888888888888";

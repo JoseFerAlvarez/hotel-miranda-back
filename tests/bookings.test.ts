@@ -1,8 +1,8 @@
 import request from "supertest";
-import server from "../src/index";
+import server from "../api/index";
 import jwt from "jsonwebtoken";
-import { connect, disconnect } from "../src/db/connection";
-import { Booking, User, Room } from "../src/Schemas/schemas";
+import { connect, disconnect } from "../api/db/connection";
+import { Booking, User, Room } from "../api/Schemas/schemas";
 import mongoose from "mongoose";
 
 const token: string = jwt.sign({ user: { _id: 1, email: process.env.DEFAULT_USER } }, process.env.SECRET_TOKEN);
