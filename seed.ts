@@ -1,20 +1,20 @@
 import { faker } from '@faker-js/faker';
-import { connect, disconnect } from "./db/connection";
-import { getHashPass } from './helpers/helpers';
+import { connect, disconnect } from "./src/db/connection";
+import { getHashPass } from './src/helpers/helpers';
 
 import {
     Room,
     User,
     Booking,
     Contact
-} from "./Schemas/schemas";
+} from "./src/Schemas/schemas";
 
 import {
     IntRoom,
     IntBooking,
     IntContact,
     IntUser
-} from "./interfaces/interfaces";
+} from "./src/interfaces/interfaces";
 
 
 const roomList: IntRoom[] = [];
@@ -170,14 +170,14 @@ function generateRandomPosition(): string {
 }
 
 /* Function helpers to generate a random booking */
-async function getRandomUser(user): Promise<IntUser> {
+async function getRandomUser(user): Promise<any> {
     const userQuery = User.findOne({ user });
 
     return await userQuery.exec()
         .then((result) => result);
 }
 
-async function getRandomRoom(room): Promise<IntRoom> {
+async function getRandomRoom(room): Promise<any> {
     const roomQuery = Room.findOne({ room });
 
     return await roomQuery.exec()

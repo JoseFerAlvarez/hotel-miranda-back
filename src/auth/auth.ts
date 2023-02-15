@@ -1,5 +1,5 @@
 import { connect, disconnect } from "../db/connection";
-import { User } from "../Schemas/schuser";
+import { User } from "../Schemas/schemas";
 import { getHashPass } from "../helpers/helpers";
 
 import passport from "passport";
