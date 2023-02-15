@@ -6,7 +6,7 @@
     "start": "node ./dist/api/index.js",
     "seed": "node -r dotenv/config ./dist/seed.js dotenv_config_path=./.env",
     "tsc": "tsc",
-    "postinstall": "npm run tsc",
+    "build": "npm run tsc",
     "dev": "ts-node-dev --respawn --pretty --transpile-only index.ts",
     "test": "jest"
   },

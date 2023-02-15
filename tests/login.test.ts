@@ -1,5 +1,5 @@
 import request from "supertest";
-import server from "../api/index";
+import server from "../index";
 
 describe("Login route test", (): void => {
     test("Correct login", async (): Promise<void> => {
