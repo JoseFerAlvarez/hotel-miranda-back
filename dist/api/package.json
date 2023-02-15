@@ -8,7 +8,8 @@
     "tsc": "tsc",
     "postinstall": "npm run tsc",
     "dev": "ts-node-dev --respawn --pretty --transpile-only index.ts",
-    "test": "jest"
+    "test": "jest",
+    "build": "npx ts-node build.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
