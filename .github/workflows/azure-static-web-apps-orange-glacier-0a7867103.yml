@@ -37,7 +37,7 @@ jobs:
           DEFAULT_USER: ${{ secrets.DEFAULT_USER }}
           DEFAULT_PASSWORD: ${{ secrets.DEFAULT_PASSWORD }}
       - shell: bash
-        run: echo "$env:SECRET_TOKEN"
+        run: echo ${{ secrets.SECRET_TOKEN }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
