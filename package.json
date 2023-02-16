@@ -3,9 +3,9 @@
   "name": "hotel-miranda-back",
   "homepage": "https://orange-glacier-0a7867103.2.azurestaticapps.net",
   "private": true,
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
-    "start": "node -r module-alias/register ./dist --env=production",
+    "start": "node ./dist/index.js",
     "seed": "node -r dotenv/config ./dist/seed.js dotenv_config_path=./.env",
     "tsc": "tsc",
     "build": "npx ts-node build.ts",
