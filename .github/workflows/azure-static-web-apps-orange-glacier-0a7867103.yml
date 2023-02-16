@@ -37,7 +37,7 @@ jobs:
           DEFAULT_USER: ${{ secrets.DEFAULT_USER }}
           DEFAULT_PASSWORD: ${{ secrets.DEFAULT_PASSWORD }}
       - shell: bash
-        run: node ./dist/index.js && ls dist
+        run: node ./dist/index.js
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
