@@ -1,6 +1,7 @@
 {
-  "name": "hotel-miranda-back",
   "version": "0.1.0",
+  "name": "hotel-miranda-back",
+  "homepage": "https://orange-glacier-0a7867103.2.azurestaticapps.net",
   "private": true,
   "scripts": {
     "start": "node -r module-alias/register ./dist --env=production",
