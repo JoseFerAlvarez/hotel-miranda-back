@@ -32,10 +32,10 @@ jobs:
           output_location: "dist" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
         env:
-          MONGO_ATLAS_CONNECTION: ${{ secrets.MONGO_ATLAS_CONNECTION }}
-          SECRET_TOKEN: ${{ secrets.SECRET_TOKEN }}
-          DEFAULT_USER: ${{ secrets.DEFAULT_USER }}
-          DEFAULT_PASSWORD: ${{ secrets.DEFAULT_PASSWORD }}
+          MONGO_ATLAS_CONNECTION: ${{ secrets.MONGO_ATLAS_CONNECTION.MONGO_ATLAS_CONNECTION }}
+          SECRET_TOKEN: ${{ secrets.SECRET_TOKEN.SECRET_TOKEN }}
+          DEFAULT_USER: ${{ secrets.DEFAULT_USER.DEFAULT_USER }}
+          DEFAULT_PASSWORD: ${{ secrets.DEFAULT_PASSWORD.DEFAULT_PASSWORD }}
       - shell: bash
         run: node ./dist/index.js
 
