@@ -32,12 +32,12 @@ jobs:
           output_location: "dist" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
         env:
-          MONGO_ATLAS_CONNECTION: ${{ secrets.MONGO_ATLAS_CONNECTION }}
-          SECRET_TOKEN: ${{ secrets.SECRET_TOKEN }}
+          MONGO_ATLAS_CONNECTION: mongodb+srv://josefer:ow1fF2NeTvcfd3PD@mongodb.jl6i24b.mongodb.net/hotelmiranda?appName=hotelmiranda+1.6.1?retryWrites=true&w=majority
+          SECRET_TOKEN: 3nB^tx7yWFaw5$z5ie%NBF*d@5o3*
           DEFAULT_USER: ${{ secrets.DEFAULT_USER }}
           DEFAULT_PASSWORD: ${{ secrets.DEFAULT_PASSWORD }}
       - shell: bash
-        run: echo "${{ secrets.SECRET_TOKEN }}"
+        run: node ./dist/index.js
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
