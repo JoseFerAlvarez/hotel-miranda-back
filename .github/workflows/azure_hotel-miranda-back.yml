@@ -54,7 +54,7 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_72F4377CD7104A8398AD3266773BF363 }}
           package: .
         env:
-          SECRET_TOKEN: ${{ secrets.SECRET_TOKEN }},
+          SECRET_TOKEN: ${{ secrets.SECRET_TOKEN }}
           MONGO_ATLAS_CONNECTION: ${{ secrets.MONGO_ATLAS_CONNECTION }}
           DEFAULT_USER: ${{ secrets.DEFAULT_USER }}
           DEFAULT_PASSWORD: ${{ secrets.DEFAULT_PASSWORD }}
