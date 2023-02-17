@@ -1,0 +1,1 @@
+(npm install build and test) npm run test --if-present
