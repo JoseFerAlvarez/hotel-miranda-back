@@ -1,9 +1,9 @@
 {
   "version": "0.1.0",
   "name": "hotel-miranda-back",
-  "homepage": "https://orange-glacier-0a7867103.2.azurestaticapps.net",
+  "homepage": "https://hotel-miranda-back.azurewebsites.net",
   "private": true,
-  "main": "./dist/index.js",
+  "main": "./dist/app.js",
   "scripts": {
     "start": "node ./dist/app.js",
     "seed": "node -r dotenv/config ./dist/seed.js dotenv_config_path=./.env",
