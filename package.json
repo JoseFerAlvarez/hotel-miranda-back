@@ -1,7 +1,6 @@
 {
   "version": "0.1.0",
   "name": "hotel-miranda-back",
-  "homepage": "https://hotel-miranda-back.azurewebsites.net",
   "private": true,
   "main": "./dist/app.js",
   "scripts": {
