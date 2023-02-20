@@ -3,6 +3,6 @@ import { loginAuth } from "../controllers/loginController";
 
 const routerPublic = express.Router();
 /** Login */
-routerPublic.post("/login", loginAuth);
+routerPublic.post("/", loginAuth);
 
 export default routerPublic;

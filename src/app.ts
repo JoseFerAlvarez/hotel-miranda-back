@@ -4,7 +4,6 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import passport from "passport";
 import cors from "cors";
-import { connect, disconnect } from "./db/connection";
 
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -32,7 +31,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routerPublic);
+app.use('/login', routerPublic);
 app.use('/rooms', passport.authenticate("jwt", { session: false }), routerRooms);
 app.use('/users', passport.authenticate("jwt", { session: false }), routerUsers);
 app.use('/bookings', passport.authenticate("jwt", { session: false }), routerBookings);
